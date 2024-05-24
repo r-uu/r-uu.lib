@@ -1,0 +1,92 @@
+@startuml
+class de.ruu.lib.fx.comp.FXCAppStoppedEvent {
++ <<Create>> FXCAppStoppedEvent(FXCApp)
+}
+
+class de.ruu.lib.fx.comp.FXCAppStoppedEvent$FXCAppStoppedEventDispatcher {
+}
+abstract class de.ruu.lib.fx.comp.FXCAppRunner {
+- {static} String META_INF_BEANS_XML
++ {static} void run(Class<? extends FXCApp>,String[],Runnable)
++ {static} void run(Class<? extends FXCApp>,String[])
+- {static} void checkIfBeansXMLIsPresent(Class<?>)
+}
+
+
+interface de.ruu.lib.fx.comp.FXCView {
+~ Parent getLocalRoot()
+~ FXCViewService getService()
+}
+
+class de.ruu.lib.fx.comp.FXCAppStartedEvent {
++ <<Create>> FXCAppStartedEvent(FXCApp,DefaultFXCView)
+}
+
+class de.ruu.lib.fx.comp.FXCAppStartedEvent$FXCAppStartedEventDispatcher {
+}
+interface de.ruu.lib.fx.comp.FXCViewController {
+}
+interface de.ruu.lib.fx.comp.FXCViewService {
+}
+abstract class de.ruu.lib.fx.comp.DefaultFXCView {
+- Parent localRoot
+- FXCViewService service
+- Optional<? extends FXCViewController> controllerOptional
+- Scene scene
+- String fxmlResourceName
+- String cssResourceName
++ Parent getLocalRoot()
++ FXCViewService getService()
+# Optional<? extends FXCViewController> getController()
+- FXMLLoader createFXMLLoader()
+# Scene getScene()
+# void addStylesheet(Scene)
+# String getFXLMResourceName()
+# String getCSSResourceName()
+# Class<? extends FXCViewService> getServiceClass()
+# Optional<Class<? extends FXCViewController>> getControllerClass()
+# String getServiceClassName()
+# String getControllerClassName()
+# String getClassNameApp()
+}
+
+
+abstract class de.ruu.lib.fx.comp.FXCApp {
+- Stage primaryStage
+- Optional<DefaultFXCView> primaryViewOptional
++ void start(Stage)
++ void stop()
+# Optional<DefaultFXCView> optionalPrimaryView()
+# Optional<Class<? extends DefaultFXCView>> optionalViewClass()
+# String getClassNameView()
+# StageStyle getStageStyle()
+# String getStageTitle()
+# Optional<Image> getStageIcon()
+- void onStageShowing()
+- void onApplicationStarted(DefaultFXCView)
+- void onApplicationStopped()
+}
+
+
+class de.ruu.lib.fx.comp.FXCApp$StageShowingEvent {
++ <<Create>> StageShowingEvent(FXCApp,Stage)
+}
+
+abstract class de.ruu.lib.fx.comp.DefaultFXCViewController {
+# void initialize()
+}
+
+
+
+de.ruu.lib.util.AbstractEvent <|-- de.ruu.lib.fx.comp.FXCAppStoppedEvent
+de.ruu.lib.fx.comp.FXCAppStoppedEvent +.. de.ruu.lib.fx.comp.FXCAppStoppedEvent$FXCAppStoppedEventDispatcher
+de.ruu.lib.fx.comp.EventDispatcher <|-- de.ruu.lib.fx.comp.FXCAppStoppedEvent$FXCAppStoppedEventDispatcher
+de.ruu.lib.util.AbstractEvent <|-- de.ruu.lib.fx.comp.FXCAppStartedEvent
+de.ruu.lib.fx.comp.FXCAppStartedEvent +.. de.ruu.lib.fx.comp.FXCAppStartedEvent$FXCAppStartedEventDispatcher
+de.ruu.lib.fx.comp.EventDispatcher <|-- de.ruu.lib.fx.comp.FXCAppStartedEvent$FXCAppStartedEventDispatcher
+de.ruu.lib.fx.comp.FXCView <|.. de.ruu.lib.fx.comp.DefaultFXCView
+javafx.application.Application <|-- de.ruu.lib.fx.comp.FXCApp
+de.ruu.lib.fx.comp.FXCApp +.. de.ruu.lib.fx.comp.FXCApp$StageShowingEvent
+de.ruu.lib.fx.comp.AbstractEvent <|-- de.ruu.lib.fx.comp.FXCApp$StageShowingEvent
+de.ruu.lib.fx.comp.FXCViewController <|.. de.ruu.lib.fx.comp.DefaultFXCViewController
+@enduml
