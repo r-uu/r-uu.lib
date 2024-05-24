@@ -1,2 +1,2 @@
 # r-uu.lib
-library of potentially reusable java code
+r-uu's library of potentially reusable java code
