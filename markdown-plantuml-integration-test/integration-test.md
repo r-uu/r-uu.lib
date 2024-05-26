@@ -6,15 +6,15 @@ a->b
 ```
 
 # include local file puml
-```plantuml 2
-@startuml
+```plantuml
+@startuml 2
 !include integration-test.puml
 @enduml
 ```
 
 # include local file iuml
-```plantuml 3
-@startuml
+```plantuml
+@startuml 3
 !include integration-test.iuml
 @enduml
 ```
