@@ -1,8 +1,9 @@
 # FX Comp
 
-FX Comp is a software architecture proposal for building complex Java FX applications. It provides a software framework that supports implementing this architecture and comes with tools for generation of artifacts that adhere to it.
+FX Comp is a software architecture proposal for building complex Java FX applications. It provides a software 
+framework that supports implementing this architecture and comes with tools for generating artifacts that adhere to it.
 
-To explain some of the challenges of developing bigger applications with Java FX here is a brief overview of how it works.
+To explain some of the challenges of developing bigger applications with Java FX here is a brief overview of how Java FX works.
 
 Java FX is a UI framework that supports comfortable design of feature rich user interfaces with a visual design tool named SceneBuilder. SceneBuilder is a WYSIWYG editor that produces configuration files (.fxml) for load-time creation of an application's UI layout.
 

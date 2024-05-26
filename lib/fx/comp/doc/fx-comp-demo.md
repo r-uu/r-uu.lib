@@ -35,3 +35,14 @@ class EmptyController extends DefaultFXCViewController
 ### App
 
 No surprise here either: To start up a Java FX application that runs a FX Comp component it's sufficient to subclass from FX App.
+
+```
+package de.ruu.lib.fx.comp.demo.empty;
+
+import de.ruu.lib.fx.comp.FXCApp;
+
+public class EmptyApp extends FXCApp { }
+```
+
+## FX Comp Demo - Composing Applications from a hierarchy of FX Comp components
+
