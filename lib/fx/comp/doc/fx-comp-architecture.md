@@ -37,6 +37,8 @@ FX Comp components are autonomous software building blocks which can run for the
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
+![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overviee.puml)
+
 @startuml FX Comp Architecture
 ''''''''''
 ' settings
