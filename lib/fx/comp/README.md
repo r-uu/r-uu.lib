@@ -46,6 +46,6 @@ As the name suggests components play a central role in this approach. In **FX Co
 
 FX Comp architecture is designed for modularisation with JPMS to allow for advanced approaches to handling complexity in large Java FX applications. In general, it is possible to define, test and run each component in its own module. With JPMS modules strong encapsulation can be provided for FX Comp components.
 
-[r-uu.lib](../../../README.md)
-
 [FX Comp Architecture](doc/fx-comp-architecture.md)
+
+[back](../../../README.md)

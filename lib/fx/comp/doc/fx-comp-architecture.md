@@ -9,6 +9,7 @@ An important design goal of FX Comp is to make development of complex user inter
 To achieve this for FX Comp driven applications there are several ways for inter component communication. The diagram shows how tightly coupled components can use synchronous API calls or exchange events when they a loosely coupled. 
 
 ![FX Comp Architecture](fx-comp-architecture.png)
+
 *conceptual overview of FX Comp collaboration*
 
 ### View
@@ -33,11 +34,11 @@ A component in FX Comp provides access to custom services. For example an editor
 
 FX Comp components are autonomous software building blocks which can run for themselves in a JavaFX application. This allows for early user feedback regarding the visual design and eases testing the implementation of the component's behaviour. 
 
-## FX Comp Architecture - Detailed Technical Overview
+## FX Comp Architecture - A More Detailed Technical Overview
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
-![FX Comp Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overviee.puml)
+![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overview.puml)
 
 *top level types for FX Comp*
 
@@ -58,3 +59,5 @@ In fact service calls to other components as well as producing and consuming eve
 This abstract class helps to create standalone JavaFX Applications that run a single FX Comp component.
 
 [FX Comp Demo](fx-comp-demo.md)
+
+[back](../README)
