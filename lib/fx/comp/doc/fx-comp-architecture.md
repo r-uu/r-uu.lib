@@ -37,6 +37,10 @@ A component in FX Comp provides access to custom services. For example an editor
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
+```mermaid
+a -> b
+```
+
 ```plantuml
 @startuml FX Comp Architecture
 ''''''''''
