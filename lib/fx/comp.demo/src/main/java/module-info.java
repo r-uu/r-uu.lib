@@ -1,9 +1,11 @@
 module de.ruu.lib.fx.comp.demo.hierarchy
 {
+	exports de.ruu.lib.fx.comp.demo.empty;
 	exports de.ruu.lib.fx.comp.demo.hierarchy;
 	exports de.ruu.lib.fx.comp.demo.hierarchy.sub1;
 	exports de.ruu.lib.fx.comp.demo.hierarchy.sub2;
 
+	opens   de.ruu.lib.fx.comp.demo.empty;
 	opens   de.ruu.lib.fx.comp.demo.hierarchy;
 	opens   de.ruu.lib.fx.comp.demo.hierarchy.sub1;
 	opens   de.ruu.lib.fx.comp.demo.hierarchy.sub2;

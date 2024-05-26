@@ -66,8 +66,6 @@ public abstract class FXCApp extends Application
 	 *
 	 * @fires {@link StageShowingEvent}
 	 * @fires {@link FXCAppStartedEvent}
-	 */
-	/**
 	 *
 	 * @param primaryStage
 	 * @throws ExceptionInInitializerError
