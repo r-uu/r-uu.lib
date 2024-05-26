@@ -20,4 +20,4 @@ a->b
 ```
 
 # use url
-![use url](http://www.plantuml.com/plantuml/proxy?cache=no&src=markdown-plantuml-integration-test/integration)
+![use url](https://github.com/r-uu/r-uu.lib/blob/main/markdown-plantuml-integration-test/integration-test.puml)
