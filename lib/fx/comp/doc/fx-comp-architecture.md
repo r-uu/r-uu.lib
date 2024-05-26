@@ -31,17 +31,12 @@ A component in FX Comp provides access to custom services. For example an editor
 
 ### App
 
-
+FX Comp components are autonomous software building blocks which can run for themselves in a JavaFX application. This allows for early user feedback regarding the visual design and eases testing the implementation of the component's behaviour. 
 
 ## FX Comp Architecture - Detailed Technical Overview
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
-```plantuml
-!include https://github.com/r-uu/r-uu.lib/blob/main/lib/fx/comp/doc/fx-comp-architecture-overview.puml
-```
-
-```plantuml
 @startuml FX Comp Architecture
 ''''''''''
 ' settings
