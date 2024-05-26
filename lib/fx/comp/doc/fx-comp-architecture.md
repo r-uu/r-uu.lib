@@ -37,84 +37,8 @@ FX Comp components are autonomous software building blocks which can run for the
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
-![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overviee.puml)
+![FX Comp Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overviee.puml)
 
-@startuml FX Comp Architecture
-''''''''''
-' settings
-''''''''''
-'  left to right direction
-'  top to bottom direction
-  skinparam linetype ortho
-  ' avoids nesting of packages
-  set separator none
-  package de.ruu.lib.fx.comp
-  {
-'''''''
-' types
-'''''''
-    interface FXCView
-    {
-      ~ Parent getLocalRoot()
-      ~ FXCViewService getService()
-    }
-    interface FXCViewController
-    interface FXCViewService
-    abstract class DefaultFXCView
-    {
-'    - Parent localRoot
-'    - FXCViewService service
-'    - Optional<? extends FXCViewController> controllerOptional
-'    - Scene scene
-'    - String fxmlResourceName
-'    - String cssResourceName
-      + Parent getLocalRoot()
-      + FXCViewService getService()
-      # Optional<? extends FXCViewController> getController()
-'    - FXMLLoader createFXMLLoader()
-'    # Scene getScene()
-'    # void addStylesheet(Scene)
-'    # String getFXLMResourceName()
-'    # String getCSSResourceName()
-'    # Class<? extends FXCViewService> getServiceClass()
-'    # Optional<Class<? extends FXCViewController>> getControllerClass()
-'    # String getServiceClassName()
-'    # String getControllerClassName()
-'    # String getClassNameApp()
-    }
-    abstract class DefaultFXCViewController
-    {
-      # void initialize()
-    }
-    abstract class FXCApp
-    {
-    }
-  }
-  package javafx.scene
-  {
-    abstract class Parent
-    {
-    }
-  }
-  package javafx.application
-  {
-    abstract class Application
-    {
-    }
-  }
-'''''''''''
-' relations
-'''''''''''
-  FXCView                  "provides"             ..       Parent
-  FXCView                  "provides"             ..       FXCViewService
-  FXCView                                       <|..       DefaultFXCView
-  FXCViewController                             <|..       DefaultFXCViewController
-  DefaultFXCView           "bootstraps default"   ..       FXCViewController
-  DefaultFXCViewController                      -[hidden]> FXCApp
-  Application                                   <|..       FXCApp
-  FXCApp                                        -[hidden]> Application
-@enduml
-```
 *top level types for FX Comp*
 
 The above diagrams shows the most important types that typically are used when creating FX Comp driven applications.
