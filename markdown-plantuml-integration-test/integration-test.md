@@ -20,4 +20,6 @@ a->b
 ```
 
 # use url
+@startuml
 ![use url](https://github.com/r-uu/r-uu.lib/blob/main/markdown-plantuml-integration-test/integration-test.puml)
+@enduml
