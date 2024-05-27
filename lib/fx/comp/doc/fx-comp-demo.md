@@ -46,3 +46,4 @@ public class EmptyApp extends FXCApp { }
 
 ## FX Comp Demo - Composing Applications from a hierarchy of FX Comp components
 
+[back](./fx-comp-architecture.md)

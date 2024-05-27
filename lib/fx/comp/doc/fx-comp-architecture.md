@@ -30,7 +30,7 @@ FX Comp supports layout configuration of user interface components in .fxml file
 
 A component in FX Comp provides access to custom services. For example an editor component for a customer might provide a ```Customer getInitialCustomerValue()``` and a  ```Customer getModifiedCustomerValue()``` method. Service methods are usually defined in Java interfaces.
 
-### App
+### App and AppRunner
 
 FX Comp components are autonomous software building blocks which can run for themselves in a JavaFX application. This allows for early user feedback regarding the visual design and eases testing the implementation of the component's behaviour. 
 
@@ -54,9 +54,15 @@ Implementations of FXCViewController classes are the working horses in a FX Comp
 
 In fact service calls to other components as well as producing and consuming events is done inside controller classes. However, controllers do not depend on other view's controllers. Instead, they only depend on the interfaces of the views they collaborate with.
 
+## Runtime Environment
+
+![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-runtime-environment.puml)
+
 ### FXCApp
 
 This abstract class helps to create standalone JavaFX Applications that run a single FX Comp component.
+
+### FXCAppRunner
 
 [FX Comp Demo](fx-comp-demo.md)
 
