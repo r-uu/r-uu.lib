@@ -1,4 +1,4 @@
-[back](../README)
+[back](../readme.md)
 
 ## FX Comp Architecture - Conceptual Overview
 
@@ -68,4 +68,4 @@ Bootstraps environment (CDI etc.).
 
 [FX Comp Demo](fx-comp-demo.md)
 
-[back](../README)
+[back](../readme.md)

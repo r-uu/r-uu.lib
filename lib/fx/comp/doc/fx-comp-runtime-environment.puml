@@ -13,12 +13,6 @@
 	{
 		+ void start(Stage)
 		+ void stop()
-		# Optional<DefaultFXCView> optionalPrimaryView()
-		# Optional<Class<? extends DefaultFXCView>> optionalViewClass()
-		# String getClassNameView()
-		# StageStyle getStageStyle()
-		# String getStageTitle()
-		# Optional<Image> getStageIcon()
 	}
 
 	abstract class FXCAppRunner
@@ -32,5 +26,5 @@
   	class Application
   }
   FXCApp       -|> Application
-  FXCAppRunner ->  FXCApp
+  FXCAppRunner ..> FXCApp
 @enduml

@@ -46,4 +46,59 @@ public class EmptyApp extends FXCApp { }
 
 ## FX Comp Demo - Composing Applications from a hierarchy of FX Comp components
 
+This chapter describes a simple scenario where two FXComp components are composed to build a third FXComp component.
+
+### Layout - Create and Maintain FXML configuration with visual editor
+
+![scenebuilder](fx-comp-demo-hierarchy-scenebuilder.png)
+
+### Controller
+
+```
+package de.ruu.lib.fx.comp.demo.hierarchy;
+
+import de.ruu.lib.fx.comp.DefaultFXCViewController;
+import de.ruu.lib.fx.comp.demo.hierarchy.sub1.HierarchyDemoSub1;
+import de.ruu.lib.fx.comp.demo.hierarchy.sub2.HierarchyDemoSub2;
+import jakarta.inject.Inject;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class HierarchyDemoMainController extends DefaultFXCViewController
+{
+	@FXML private AnchorPane root;
+	@FXML private AnchorPane main;
+	@FXML private Button btnShow1;
+	@FXML private Button btnShow2;
+
+	@Inject private HierarchyDemoSub1 sub1;
+	@Inject private HierarchyDemoSub2 sub2;
+
+	@Override @FXML protected void initialize()
+	{
+		main.getChildren().add(sub1.getLocalRoot());
+		
+		btnShow1.setOnAction(e -> onBtnShow1(e));
+		btnShow2.setOnAction(e -> onBtnShow2(e));
+	}
+
+	private void onBtnShow1(ActionEvent e)
+	{
+		main.getChildren().removeAll(main.getChildren());
+		main.getChildren().add(sub1.getLocalRoot());
+	}
+
+	private void onBtnShow2(ActionEvent e)
+	{
+		main.getChildren().removeAll(main.getChildren());
+		main.getChildren().add(sub2.getLocalRoot());
+	}
+}
+```
+
 [back](./fx-comp-architecture.md)
