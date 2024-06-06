@@ -50,9 +50,15 @@ This chapter describes a simple scenario where two FXComp components are compose
 
 ### Layout - Create and Maintain FXML configuration with visual editor
 
+The picture below shows a very simple layout configuration. There are two buttons an Java FX ```AnchorPane``` called main.
+
 ![scenebuilder](fx-comp-demo-hierarchy-scenebuilder.png)
 
 ### Controller
+
+The following code shows, how action methods (```onBtnShow1```, ```onBtnShow2```) repopulate the Java FX ```AnchorPane``` ```main with``` a new Java FX components (```sub1``` and ```sub2```).
+
+Note the elegance of how Java FX controller classes can make use of two different versions of inversion of control (IOC): Java FX loader takes care of initialisation for all relevant Java FX controls and containers while CDI manages the instance values of custom FX Comp components such as ```sub1``` and ```sub2```.
 
 ```
 package de.ruu.lib.fx.comp.demo.hierarchy;

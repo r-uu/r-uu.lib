@@ -10,7 +10,6 @@ module ruu.lib.jpa.se.hibernate.postgres
 	requires jakarta.persistence;
 	requires java.sql;
 	requires lombok;
-//requires slf4j.api;
 	requires org.slf4j;
 	requires microprofile.config.api;
 	requires org.hibernate.orm.core;

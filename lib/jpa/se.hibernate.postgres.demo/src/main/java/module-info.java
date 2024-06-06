@@ -9,7 +9,6 @@ module ruu.lib.jpa.se.hibernate.postgres.demo
 	requires jakarta.interceptor;
 	requires jakarta.persistence;
 	requires lombok;
-//requires slf4j.api;
 	requires org.slf4j;
 	requires ruu.lib.cdi.se;
 	requires ruu.lib.jpa.core;

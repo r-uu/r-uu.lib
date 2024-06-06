@@ -24,7 +24,7 @@
         <dependency>
             <groupId>ruu</groupId>
             <artifactId>ruu.lib.mapstruct</artifactId>
-            <scope>compile</scope>
+<!--            <scope>compile</scope>-->
         </dependency>
     </dependencies>
 

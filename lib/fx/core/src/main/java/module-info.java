@@ -9,8 +9,7 @@ module ruu.lib.fx.core
 
 	requires transitive javafx.controls;
 	requires transitive javafx.fxml;
-	requires lombok;
-//requires slf4j.api;
+	requires static lombok;
 	requires org.slf4j;
 
 	requires ruu.lib.util;

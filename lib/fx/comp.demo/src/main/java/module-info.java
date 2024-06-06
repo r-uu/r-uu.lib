@@ -16,10 +16,10 @@ module de.ruu.lib.fx.comp.demo.hierarchy
 	requires javafx.controls;
 	requires javafx.graphics;
 	requires javafx.fxml;
-	requires lombok;
+
+	requires static lombok;
 	
 	requires org.apache.logging.log4j;
-//requires slf4j.api;
 	requires org.slf4j;
 
 	requires ruu.lib.cdi.se;

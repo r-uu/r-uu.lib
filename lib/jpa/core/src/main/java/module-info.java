@@ -9,6 +9,5 @@ module ruu.lib.jpa.core
 	requires jakarta.persistence;
 	requires java.sql;
 	requires lombok;
-//	requires ruu.lib.mapstruct;
 	requires ruu.lib.util;
 }

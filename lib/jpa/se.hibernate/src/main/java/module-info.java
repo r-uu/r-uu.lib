@@ -5,7 +5,7 @@ module ruu.lib.jpa.se.hibernate
 	requires jakarta.persistence;
 	requires jakarta.xml.bind;
 	requires java.sql;
-	requires lombok;
+	requires static lombok;
 	requires org.hibernate.orm.core;
 
 	requires ruu.lib.jpa.core;

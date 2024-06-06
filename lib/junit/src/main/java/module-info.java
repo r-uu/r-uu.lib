@@ -4,7 +4,7 @@ module ruu.lib.junit
 
 	requires jakarta.inject;
 	requires lombok;
-//requires slf4j.api;
+	requires org.junit.platform.commons;
 	requires org.slf4j;
 	requires microprofile.config.api;
 	requires ruu.lib.util;

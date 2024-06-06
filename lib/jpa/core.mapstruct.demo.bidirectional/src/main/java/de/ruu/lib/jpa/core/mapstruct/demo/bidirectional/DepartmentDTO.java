@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static java.util.Objects.isNull;
+import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Slf4j

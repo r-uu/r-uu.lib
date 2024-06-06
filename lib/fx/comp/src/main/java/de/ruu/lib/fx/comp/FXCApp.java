@@ -61,11 +61,11 @@ public abstract class FXCApp extends Application
 	 * Starts a {@link FXCApp}. The main purpose of this method is to obtain a {@link DefaultFXCView} instance
 	 * and to pass the {@link Scene} object of that instance to the primary stage of this application. Finally the primary
 	 * stage will be displayed and events were being fired to signal the display and start of the application.
+	 * <p>
+	 * fires {@link StageShowingEvent}<p>
+	 * fires {@link FXCAppStartedEvent}
 	 *
 	 * @throws ExceptionInInitializerError if a {@link DefaultFXCView} instance can not be obtained successfully
-	 *
-	 * @fires {@link StageShowingEvent}
-	 * @fires {@link FXCAppStartedEvent}
 	 *
 	 * @param primaryStage
 	 * @throws ExceptionInInitializerError

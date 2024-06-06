@@ -1,5 +1,15 @@
 package de.ruu.lib.jpa.se.hibernate.postgres;
 
+import static de.ruu.lib.jpa.se.hibernate.PersistenceUnitProperties.HBM2DLLAuto.CREATE;
+import static java.util.Objects.isNull;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.hibernate.dialect.PostgreSQL10Dialect;
+
 import de.ruu.lib.jdbc.core.JDBCURL;
 import de.ruu.lib.jdbc.postgres.DataSourceFactory;
 import de.ruu.lib.jpa.se.hibernate.EntityManagerFactoryProducer;
@@ -9,14 +19,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.hibernate.dialect.PostgreSQL10Dialect;
-
-import javax.sql.DataSource;
-import java.util.List;
-
-import static de.ruu.lib.jpa.se.hibernate.PersistenceUnitProperties.HBM2DLLAuto.CREATE;
-import static java.util.Objects.isNull;
 
 @Slf4j
 public abstract class AbstractEntityManagerProducer
@@ -24,11 +26,11 @@ public abstract class AbstractEntityManagerProducer
 	private EntityManager entityManager;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbhost", defaultValue = "127.0.0.1")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbhost", defaultValue = "localhost")
 	private String host;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbport", defaultValue = "5433")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbport", defaultValue = "5432")
 	private Integer port;
 
 	@Inject

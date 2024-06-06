@@ -122,29 +122,25 @@ fi
 # purpose of this section is to fetch config/wsl/bash directory from windows filesystem into wsl filesystem and to make
 # the configuration available by sourcing the configuration in ~/config/wsl/bash/config.sh
 
-echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-echo "starting configuration of bash environment"
-echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+echo "starting configuration of bash environment from .bashrc"
+echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-echo "create directory for config/wsl (if not already present)"
-mkdir -p \
-         ~/config/wsl
+# echo "remove directory for config"
+rmdir -r ~/config
 
-echo "fetch config/wsl from windows filesystem into wsl filesystem"
-cp -a -r /mnt/c/Users/${USER}/develop/github/ruu/config/wsl/bash \
-         ~/config/wsl
+echo "fetch config from windows filesystem into wsl filesystem"
+cp -a -r -v /mnt/c/Users/${USER}/develop/github/r-uu.lib/config ~
 
-echo "convert ~/config/wsl files (including config/wsl/.bashrc) to unix files"
-dos2unix ~/config/wsl/bash/*
-# hidden files like ~/config/wsl/bash/.bashrc are not converted by the previous command, therefore:
-dos2unix ~/config/wsl/bash/.bashrc
+# echo "convert ~/config files to unix files"
+find ~/config -type f -print0 | xargs -0 dos2unix
 
-echo "copy config/wsl/bash/.bashrc to user home directory to make content of this file available in next bash session"
-cp       ~/config/wsl/bash/.bashrc ~
+# echo "copy ~/config/wsl/bash/.bashrc to ~ to make content of this file available in next bash session"
+cp -v ~/config/wsl/bash/.bashrc ~
+cp -v ~/config/wsl/bash/.bash_aliases ~
 
-echo "source ~/config/wsl/bash/config.sh to make shell configuration available in this session"
-source   ~/config/wsl/bash/config.sh
-
-echo "finished configuration of bash environment"
+echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+echo "finished configuration of bash environment from .bashrc"
+echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 ### configuration of bash environment

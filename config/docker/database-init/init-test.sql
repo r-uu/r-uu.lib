@@ -14,5 +14,9 @@
 --	BYPASSRLS
 --	CONNECTION LIMIT -1;
 
-DROP   SCHEMA IF EXISTS test;
-CREATE SCHEMA           test AUTHORIZATION test;
+DROP   DATABASE IF EXISTS test;
+CREATE DATABASE           test;
+DROP   SCHEMA   IF EXISTS test;
+DROP   ROLE     IF EXISTS test;
+CREATE ROLE               test;
+CREATE SCHEMA             test AUTHORIZATION test;

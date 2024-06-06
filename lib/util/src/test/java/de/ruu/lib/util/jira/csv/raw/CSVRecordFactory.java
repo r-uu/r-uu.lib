@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
-import io.smallrye.common.constraint.NotNull;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,8 +23,8 @@ public class CSVRecordFactory
 	 *         optionalPredicate} if predicate is available
 	 */
 	public static Map<String, TreeSet<CSVRecord>> recordsByKey(
-			@NotNull List<String>                   csvDataRows,
-			@NotNull Optional<Predicate<CSVRecord>> optionalPredicate)
+			@NonNull List<String>                   csvDataRows,
+			@NonNull Optional<Predicate<CSVRecord>> optionalPredicate)
 	{
 //		log.debug("processing {} data rows", csvDataRows.size());
 
@@ -68,7 +68,7 @@ public class CSVRecordFactory
 		return result;
 	}
 	
-	public static Map<String, TreeSet<CSVRecord>> recordsByKey(@NotNull List<String> csvDataRows)
+	public static Map<String, TreeSet<CSVRecord>> recordsByKey(@NonNull List<String> csvDataRows)
 	{
 		return recordsByKey(csvDataRows, Optional.empty());
 	}

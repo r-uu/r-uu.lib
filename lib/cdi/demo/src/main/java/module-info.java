@@ -11,7 +11,6 @@ module ruu.lib.cdi.se.demo
 	requires jakarta.el;
 	requires jakarta.inject;
 	requires lombok;
-//requires slf4j.api;
 	requires org.slf4j;
 	requires ruu.lib.cdi.se;
 }

@@ -13,7 +13,7 @@
 
 	<modules>
 		<module>lib</module>
-  </modules>
+	</modules>
 
 	<properties>
 
@@ -21,6 +21,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
 		<java.version>22</java.version>
+		<javafx.version>22.0.1</javafx.version>
 
 		<!-- maven compiler does not work with combination of source/target and release,
 		     so release will not be used until that is fixed
@@ -444,13 +445,23 @@
 			</dependency>
 			<dependency>
 				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-base</artifactId>
+				<version>${javafx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-controls</artifactId>
-				<version>22.0.1</version>
+				<version>${javafx.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-fxml</artifactId>
-				<version>22.0.1</version>
+				<version>${javafx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-graphics</artifactId>
+				<version>${javafx.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.postgresql</groupId>
@@ -579,8 +590,11 @@
 					<target>${java.version}</target>
 					<release>${java.version}</release>
 					<enablePreview>true</enablePreview>
-<!--					<compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
 					<compilerArgs>--enable-preview</compilerArgs>
+<!--					<compilerArgs>-->
+<!--						<arg>-sourcepath</arg>-->
+<!--						<arg>${project.basedir}/src/main/java${path.separator}${project.basedir}/src/test/java${project.basedir}/target/generated-sources/annotations${path.separator}${project.basedir}/target/generated-test-sources/test-annotations${path.separator}/</arg>-->
+<!--					</compilerArgs>-->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.projectlombok</groupId>
@@ -599,6 +613,9 @@
 						</path>
 						<!-- other annotation processors -->
 					</annotationProcessorPaths>
+					<!-- let compiler pick up generated stuff -->
+					<generatedSourcesDirectory>${project.build}/generated-sources</generatedSourcesDirectory>
+					<generatedSourcesDirectory>${project.build}/generated-test-sources</generatedSourcesDirectory>
 				</configuration>
 			</plugin>
 			<plugin>

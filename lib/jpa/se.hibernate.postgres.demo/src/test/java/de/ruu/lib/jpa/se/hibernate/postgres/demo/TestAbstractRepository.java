@@ -1,21 +1,29 @@
 package de.ruu.lib.jpa.se.hibernate.postgres.demo;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.List;
+import java.util.Optional;
+
+import de.ruu.lib.jpa.se.Transactional;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import de.ruu.lib.cdi.common.CDIExtension;
 import de.ruu.lib.cdi.se.CDIContainer;
 import de.ruu.lib.junit.DisabledOnServerNotListening;
 import jakarta.enterprise.inject.spi.CDI;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-@DisabledOnServerNotListening(propertyNameHost = "database.host", propertyNamePort = "database.port")
+@DisabledOnServerNotListening
+(
+		propertyNameHost = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbhost",
+		propertyNamePort = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbport"
+)
 @Slf4j class TestAbstractRepository
 {
 	/** bootstrap CDI in Java SE with {@link TransactionalInterceptor} */

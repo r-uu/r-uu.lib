@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 
 services:
   postgres:
@@ -14,10 +14,16 @@ services:
       - ${postgres_host_port}:${postgres_container_port}
     volumes:
       - ruu_data:/var/lib/postgresql/data
-      - ./database-init/init-modules.sql:/docker-entrypoint-initdb.d/init-modules.sql
+      - ./database-init/init-staging.sql:/docker-entrypoint-initdb.d/init-staging.sql
       - ./database-init/init-test.sql:/docker-entrypoint-initdb.d/init-test.sql
     networks:
       - ruu_network
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080
 
 volumes:
   ruu_data:

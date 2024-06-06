@@ -5,7 +5,7 @@ echo starting bash configuration
 # docker command aliases for taggable server
 alias docker-daemon-start="sudo service docker start"
 alias docker-daemon-stop=" sudo service docker stop"
-alias docker-system-prune="sudo docker system prune --all --volumes --force"
+alias docker-system-prune="sudo docker system prune --all --volumes --force && sudo docker volume prune --all --force"
 
 alias cd-config-docker="cd ~/config/docker"
 
@@ -27,8 +27,6 @@ alias shell-reset="clear && exec $SHELL"
 
 alias update-docker="chmod +x ~/config/wsl/bash/update-docker.sh && ~/config/wsl/bash/update-docker.sh"
 #alias update-vps="   chmod +x ~/config/wsl/bash/update-vps.sh    && ~/config/wsl/bash/update-vps.sh"
-
-
 
 echo "run shell-reset to make updates in config.sh available"
 

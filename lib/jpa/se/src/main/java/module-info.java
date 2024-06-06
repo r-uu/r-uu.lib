@@ -8,6 +8,5 @@ module ruu.lib.jpa.se
 	requires jakarta.interceptor;
 	requires jakarta.persistence;
 	requires lombok;
-//requires slf4j.api;
 	requires org.slf4j;
 }

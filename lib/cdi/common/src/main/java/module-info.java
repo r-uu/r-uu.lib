@@ -4,7 +4,6 @@ module ruu.lib.cdi.common
 	opens   de.ruu.lib.cdi.common;
 
 	requires jakarta.cdi;
-	requires lombok;
-//requires slf4j.api;
+	requires static lombok;
 	requires org.slf4j;
 }

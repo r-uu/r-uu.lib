@@ -24,12 +24,14 @@ hs_err_pid*
 replay_pid*
 
 # eclipse
-*.factorypath
+.factorypath
+.classpath
+.project
 
 # idea
 .idea
 
-*/.env/*
-*/gen/*
-*/target/*
-/.project
+# local (secret)
+.env
+
+/target

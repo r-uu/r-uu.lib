@@ -32,12 +32,12 @@ public abstract class FXCAppRunner
 		{
 			if (runBeforeAppLaunch != null)
 			{
-				log.debug("launching runnable before application launch");
+				log.debug("starting runnable before application launch");
 				runBeforeAppLaunch.run();
 				log.debug("finished runnable before application launch");
 			}
 
-			log.debug("launching application class: " + appClass.getName());
+			log.debug("starting application class: " + appClass.getName());
 			Application.launch(appClass, args);
 			log.debug("finished application class: " + appClass.getName());
 		}

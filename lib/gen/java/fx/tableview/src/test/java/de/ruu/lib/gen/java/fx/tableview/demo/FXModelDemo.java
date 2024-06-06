@@ -1,7 +1,8 @@
 package de.ruu.lib.gen.java.fx.tableview.demo;
 
-import de.ruu.lib.gen.java.fx.tableview.JavaModelDemo;
 import java.math.BigDecimal;
+
+import de.ruu.lib.gen.java.fx.tableview.JavaModelDemo;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;

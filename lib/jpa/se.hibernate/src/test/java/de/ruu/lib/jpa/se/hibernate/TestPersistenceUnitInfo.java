@@ -5,6 +5,7 @@ import static org.hamcrest.core.Is.is;
 
 import javax.sql.DataSource;
 
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.jupiter.api.Test;
 
@@ -15,17 +16,37 @@ class TestPersistenceUnitInfo
 {
 	@Test void test()
 	{
-		String host         = "localhost";
-		int    port         = 5433;
-		String databaseName = "modules";
+		String databaseHost =
+				ConfigProvider
+						.getConfig()
+						.getOptionalValue("database.host", String .class)
+						.orElse("localhost");
+		int    databasePort =
+				ConfigProvider
+						.getConfig()
+						.getOptionalValue("database.port", Integer.class)
+						.orElse(5433);
+		String databaseName =
+				ConfigProvider
+						.getConfig()
+						.getOptionalValue("database.name", String.class)
+						.orElse("test");
+		String databaseUser =
+				ConfigProvider
+						.getConfig()
+						.getOptionalValue("database.user", String.class)
+						.orElse("test");
+		String databasePass =
+				ConfigProvider
+						.getConfig()
+						.getOptionalValue("database.pass", String.class)
+						.orElse("test");
 
-		JDBCURL jdbcURL = new JDBCURL(host, port, databaseName);
+		JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);
 
-		String user                = "modules";
-		String password            = "modules";
 		String persistenceUnitName = "modules";
 
-		DataSourceFactory dataSourceFactory = new DataSourceFactory(jdbcURL, user, password);
+		DataSourceFactory dataSourceFactory = new DataSourceFactory(jdbcURL, databaseUser, databasePass);
 		DataSource        dataSource        = dataSourceFactory.create();
 
 		PersistenceUnitInfo persistenceUnitInfo =

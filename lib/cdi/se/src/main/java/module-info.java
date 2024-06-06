@@ -7,7 +7,6 @@ module ruu.lib.cdi.se
 	requires jakarta.el;
 	requires jakarta.inject;
 	requires jakarta.interceptor;
-	requires lombok;
-//requires slf4j.api;
+	requires static lombok;
 	requires org.slf4j;
 }
