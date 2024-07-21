@@ -1,17 +1,8 @@
 package de.ruu.lib.gen.java.fx.bean;
 
-import static de.ruu.lib.archunit.Util.firstActualTypeArgument;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaType;
 import com.tngtech.archunit.core.domain.JavaTypeVariable;
-
 import de.ruu.lib.archunit.Util;
 import de.ruu.lib.gen.java.context.CompilationUnitContext;
 import javafx.beans.property.BooleanProperty;
@@ -40,6 +31,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.NonNull;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import static de.ruu.lib.archunit.Util.firstActualTypeArgument;
 
 public interface FXMapper
 {

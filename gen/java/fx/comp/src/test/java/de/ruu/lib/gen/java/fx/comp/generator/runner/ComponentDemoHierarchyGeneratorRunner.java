@@ -1,4 +1,4 @@
-package de.ruu.lib.gen.java.fx.comp.runner;
+package de.ruu.lib.gen.java.fx.comp.generator.runner;
 
 import java.io.IOException;
 

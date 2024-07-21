@@ -15,7 +15,7 @@ import static de.ruu.lib.util.Strings.isNullOrEmptyOrBlank;
 /**
  * Some JSONB implementations (e.g. <a href="https://github.com/eclipse-ee4j/yasson">yasson</a>) struggle to bind sets
  * with custom element types {@code T}. This adapter helps solving issues adapting from json by attempting to sanitise
- * the json string in {@link #adaptFromJson(Object)}.
+ * the json string in {@link #adaptFromJson(JsonValue)}.
  *
  * @author r-uu
  *

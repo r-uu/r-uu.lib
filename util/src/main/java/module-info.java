@@ -10,6 +10,8 @@ module de.ruu.lib.util
 	exports de.ruu.lib.util.rs.filter.logging;
 
 	opens de.ruu.lib.util.jsonb to org.eclipse.yasson;
+	exports de.ruu.lib.util.jsonb.recursion;
+	opens de.ruu.lib.util.jsonb.recursion to org.eclipse.yasson;
 
 	requires static lombok;
 	requires org.slf4j;

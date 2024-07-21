@@ -1,5 +1,26 @@
 package de.ruu.lib.gen.java.fx.bean;
 
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaMethod;
+import com.tngtech.archunit.core.domain.JavaType;
+import de.ruu.lib.gen.GeneratorException;
+import de.ruu.lib.gen.java.CompilationUnitFileWriter;
+import de.ruu.lib.gen.java.GeneratorCodeBlock;
+import de.ruu.lib.gen.java.context.CompilationUnitContext;
+import de.ruu.lib.gen.java.element.method.GeneratorMethod;
+import de.ruu.lib.gen.java.element.method.GeneratorParameters;
+import de.ruu.lib.gen.java.element.type.GeneratorClass;
+import de.ruu.lib.util.Strings;
+import de.ruu.lib.util.Time;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static de.ruu.lib.archunit.Util.isCollection;
 import static de.ruu.lib.archunit.Util.publicMethodsWithAnnotationAndSortedByName;
 import static de.ruu.lib.gen.java.CompilationUnitFileWriter.writer;
@@ -20,27 +41,6 @@ import static de.ruu.lib.gen.java.element.method.GeneratorParameters.parameters;
 import static de.ruu.lib.gen.java.fx.bean.FXMapper.importManagement;
 import static de.ruu.lib.gen.java.fx.bean.FXMapper.mapToFXProperty;
 import static de.ruu.lib.util.Constants.LS;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaMethod;
-
-import de.ruu.lib.gen.GeneratorException;
-import de.ruu.lib.gen.java.CompilationUnitFileWriter;
-import de.ruu.lib.gen.java.GeneratorCodeBlock;
-import de.ruu.lib.gen.java.context.CompilationUnitContext;
-import de.ruu.lib.gen.java.element.method.GeneratorMethod;
-import de.ruu.lib.gen.java.element.method.GeneratorParameters;
-import de.ruu.lib.gen.java.element.type.GeneratorClass;
-import de.ruu.lib.util.Strings;
-import de.ruu.lib.util.Time;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Analyses a provided {@link JavaClass} that represents an existing java type ({@link FXBeanGenerator#source}).
@@ -116,19 +116,24 @@ public class FXBeanGenerator
 		// generate fields
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			codeBlock
-					.add
-					(
-							field(context, propertyType(method), name(method))
-									.modifiers(fieldModifiers(context).visibility(PRIVATE))
-					);
-			fieldsAdded = true;
+			if (canBeMapped(method.getReturnType()))
+			{
+				codeBlock
+						.add
+								(
+										field(context, propertyType(method), name(method))
+												.modifiers(fieldModifiers(context).visibility(PRIVATE))
+								);
+				fieldsAdded = true;
+			}
 		}
 
 		// if fields have been added add child node separator to separate field declarations from
 		// constructor
 		if (fieldsAdded) codeBlock.add(codeBlock.childNodesSeparator().toString());
 	}
+
+	private boolean canBeMapped(JavaType type) { return type.getName().equals(Void.TYPE.getName()) == false; }
 
 	private void addGeneratorForPropertyConstructor(GeneratorCodeBlock codeBlock)
 	{
@@ -169,16 +174,19 @@ public class FXBeanGenerator
 		// generate methods
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			codeBlock
-					// add child node separator before each getter
-					.add(codeBlock.childNodesSeparator().toString())
-					.add
-					(
-							method(context, propertyType(method), name(method))
-									.modifiers(methodModifiers(context).visibility(PUBLIC))
-									.childNodesSeparator(LS)
-									.codeBlock(codeBlokk(context).add("return " + name(method) + ";"))
-					);
+			if (canBeMapped(method.getReturnType()))
+			{
+				codeBlock
+						// add child node separator before each getter
+						.add(codeBlock.childNodesSeparator().toString())
+						.add
+								(
+										method(context, propertyType(method), name(method))
+												.modifiers(methodModifiers(context).visibility(PUBLIC))
+												.childNodesSeparator(LS)
+												.codeBlock(codeBlokk(context).add("return " + name(method) + ";"))
+								);
+			}
 		}
 	}
 
@@ -188,7 +196,8 @@ public class FXBeanGenerator
 
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			result.add(parameter(context, propertyType(method), name(method)));
+			if (canBeMapped(method.getReturnType()))
+					result.add(parameter(context, propertyType(method), name(method)));
 		}
 
 		return result;
@@ -210,7 +219,10 @@ public class FXBeanGenerator
 
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			assignments.add("this." + name(method) + " = " + name(method) + ";");
+			if (canBeMapped(method.getReturnType()))
+			{
+				assignments.add("this." + name(method) + " = " + name(method) + ";");
+			}
 		}
 		
 		result.add(String.join(LS, assignments));
@@ -226,40 +238,44 @@ public class FXBeanGenerator
 
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			String propertyType = propertyType(method);
-			String propertyImplementation;
+			if (canBeMapped(method.getReturnType()))
+			{
+				String propertyType = propertyType(method);
 
-			// make sure we provide a correct property implementation type to import manager
-			if (propertyType.contains("<"))
-			{
-				// build property type with prefix and without generic type parameters
-				propertyImplementation =
-						"javafx.beans.property.Simple" + propertyType.substring(0, propertyType.indexOf("<"));
-			}
-			else
-			{
-				// build property type with prefix and without generic type parameters
-				propertyImplementation =
-						"javafx.beans.property.Simple" + propertyType;
-			}
-			
-			// provide a correct property implementation type to import manager
-			propertyImplementation = context.importManager().useType(propertyImplementation);
+				String propertyImplementation;
 
-			if (isCollection(method.getReturnType()))
-			{
-				assignments.add(name(method) + " = new " + propertyImplementation + "<>();");
-				assignments.add(name(method) + ".addAll(" + parameterName + "." + name(method) + "());");
-			}
-			else
-			{
+				// make sure we provide a correct property implementation type to import manager
 				if (propertyType.contains("<"))
 				{
-					assignments.add(name(method) + " = new " + propertyImplementation + "<>(" + parameterName + "." + name(method) + "());");
+					// build property type with prefix and without generic type parameters
+					propertyImplementation =
+							"javafx.beans.property.Simple" + propertyType.substring(0, propertyType.indexOf("<"));
 				}
 				else
 				{
-					assignments.add(name(method) + " = new " + propertyImplementation + "(" + parameterName + "." + name(method) + "());");
+					// build property type with prefix and without generic type parameters
+					propertyImplementation =
+							"javafx.beans.property.Simple" + propertyType;
+				}
+
+				// provide a correct property implementation type to import manager
+				propertyImplementation = context.importManager().useType(propertyImplementation);
+
+				if (isCollection(method.getReturnType()))
+				{
+					assignments.add(name(method) + " = new " + propertyImplementation + "<>();");
+					assignments.add(name(method) + ".addAll(" + parameterName + "." + name(method) + "());");
+				}
+				else
+				{
+					if (propertyType.contains("<"))
+					{
+						assignments.add(name(method) + " = new " + propertyImplementation + "<>(" + parameterName + "." + name(method) + "());");
+					}
+					else
+					{
+						assignments.add(name(method) + " = new " + propertyImplementation + "(" + parameterName + "." + name(method) + "());");
+					}
 				}
 			}
 		}
