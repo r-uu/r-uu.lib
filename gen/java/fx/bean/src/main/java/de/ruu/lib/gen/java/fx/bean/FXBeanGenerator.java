@@ -12,9 +12,10 @@ import de.ruu.lib.gen.java.element.method.GeneratorParameters;
 import de.ruu.lib.gen.java.element.type.GeneratorClass;
 import de.ruu.lib.util.Strings;
 import de.ruu.lib.util.Time;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,11 +54,15 @@ public class FXBeanGenerator
 	@NonNull private final String simpleFileName; // simple file name for target
 
 	@NonNull private final JavaClass source;      // source
-	
+	@NonNull private final JavaClass toSourceType;
+
 	@NonNull private CompilationUnitContext context;
 
 	public FXBeanGenerator(
-			@NonNull String packageName, @NonNull String simpleFileName, @NonNull JavaClass source)
+			@NonNull String packageName,
+			@NonNull String simpleFileName,
+			@NonNull JavaClass source,
+			@NonNull JavaClass toSourceType)
 	{
 		if (packageName   .isEmpty()) throw new IllegalArgumentException(    "package name may not be empty");
 		if (simpleFileName.isEmpty()) throw new IllegalArgumentException("simple file name may not be empty");
@@ -66,6 +71,7 @@ public class FXBeanGenerator
 		this.simpleFileName = simpleFileName;
 
 		this.source         = source;
+		this.toSourceType   = toSourceType;
 		
 		context = context(packageName, simpleFileName);
 	}
@@ -87,8 +93,10 @@ public class FXBeanGenerator
 						(
 								annotations(context)
 										.childNodesSeparator(LS)
-										.add(annotation(context, RequiredArgsConstructor.class))
+//										.add(annotation(context, RequiredArgsConstructor.class))
+										.add(annotation(context, AllArgsConstructor.class))
 										.add(annotation(context, Builder.class))
+										.add(annotation(context, Getter.class))
 						)
 						.modifiers(modifiers(context).visibility(PUBLIC))
 						.codeBlock(classCodeBlock())
@@ -102,9 +110,10 @@ public class FXBeanGenerator
 		GeneratorCodeBlock result = codeBlokk(context).childNodesSeparator(LS);
 
 		addGeneratorsForFields            (result);
-		addGeneratorForPropertyConstructor(result);
+//		addGeneratorForPropertyConstructor(result);
 		addGeneratorForCopyConstructor    (result);
-		addGeneratorsForFluentStyleGetters(result);
+		addGeneratorForToSource           (result);
+//		addGeneratorsForFluentStyleGetters(result);
 
 		return result;
 	}
@@ -123,12 +132,13 @@ public class FXBeanGenerator
 								(
 										field(context, propertyType(method), name(method))
 												.modifiers(fieldModifiers(context).visibility(PRIVATE))
+												.assignment("new " + context.importManager().useType("Simple" + propertyType(method)) + "()")
 								);
 				fieldsAdded = true;
 			}
 		}
 
-		// if fields have been added add child node separator to separate field declarations from
+		// if fields have been added, add child node separator to separate field declarations from
 		// constructor
 		if (fieldsAdded) codeBlock.add(codeBlock.childNodesSeparator().toString());
 	}
@@ -167,6 +177,21 @@ public class FXBeanGenerator
 						.codeBlock(constructorBeanCodeBlock(parameterName));
 
 		codeBlock.add(constructor);
+		// separate property constructor from code to follow
+		codeBlock.add(codeBlock.childNodesSeparator().toString());
+	}
+
+	private void addGeneratorForToSource(GeneratorCodeBlock codeBlock)
+	{
+		GeneratorMethod toSource =
+				method(context, context.importManager().useType(source.getFullName()), "toSource")
+						.childNodesSeparator(LS)
+						.modifiers(methodModifiers(context).visibility(PUBLIC))
+						.childNodesSeparator(LS)
+						.codeBlock(toSourceCodeBlock())
+				;
+
+		codeBlock.add(toSource);
 	}
 
 	private void addGeneratorsForFluentStyleGetters(GeneratorCodeBlock codeBlock)
@@ -282,6 +307,29 @@ public class FXBeanGenerator
 		
 		result.add(String.join(LS, assignments));
 		
+		return result;
+	}
+
+	private GeneratorCodeBlock toSourceCodeBlock()
+	{
+		GeneratorCodeBlock result = codeBlokk(context);
+
+		result.add(
+				"return new " + context.importManager().useType(toSourceType.getFullName()) + "(");
+
+		List<String> fieldValues = new ArrayList<>();
+
+		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
+		{
+			if (canBeMapped(method.getReturnType()))
+			{
+				fieldValues.add(method.getName() + ".getValue()");
+			}
+		}
+
+		result.add(String.join(", ", fieldValues));
+		result.add(");");
+
 		return result;
 	}
 

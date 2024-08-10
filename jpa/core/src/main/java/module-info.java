@@ -11,4 +11,5 @@ module de.ruu.lib.jpa.core
 	requires java.sql;
 	requires static lombok;
 	requires de.ruu.lib.util;
+	requires jakarta.json.bind;
 }

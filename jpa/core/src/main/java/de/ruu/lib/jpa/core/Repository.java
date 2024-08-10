@@ -8,15 +8,15 @@ import java.util.Optional;
 /**
  * Generic DAO interface for common data access functionality
  *
- * @param <T> object's type, it must implement at least {@link Entity}
  * @param <I> primary key's type
+ * @param <T> object's type, it must implement at least {@link Entity}
  *
  * @author r-uu
  */
-public interface Repository<T extends Entity<I, ? extends DTO<I, ?>>, I extends Serializable>
+public interface Repository<T extends Entity<I>, I extends Serializable>
 {
 	/** @return {@code Class<T>} of entity */
-	Class<? extends Entity> entityClass();
+	Class<? extends Entity<I>> entityClass();
 
 	/**
 	 * Retrieve a persisted object using the given id as primary key.

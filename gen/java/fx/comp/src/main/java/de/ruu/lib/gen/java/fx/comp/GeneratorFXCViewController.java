@@ -14,11 +14,9 @@ import java.io.IOException;
 import static de.ruu.lib.gen.java.CompilationUnitFileWriter.writer;
 import static de.ruu.lib.gen.java.GeneratorCodeBlock.codeBlokk;
 import static de.ruu.lib.gen.java.Visibility.PROTECTED;
-import static de.ruu.lib.gen.java.Visibility.PUBLIC;
 import static de.ruu.lib.gen.java.context.CompilationUnitContext.context;
 import static de.ruu.lib.gen.java.doc.GeneratorJavaDoc.javaDoc;
 import static de.ruu.lib.gen.java.element.GeneratorAnnotations.annotations;
-import static de.ruu.lib.gen.java.element.GeneratorModifiers.modifiers;
 import static de.ruu.lib.gen.java.element.GeneratorModifiersMethod.methodModifiers;
 import static de.ruu.lib.gen.java.element.method.GeneratorMethod.method;
 import static de.ruu.lib.gen.java.element.type.GeneratorClass.classType;
@@ -54,6 +52,7 @@ public class GeneratorFXCViewController
 						extendsClause(context)
 								.extendsClause(DefaultFXCViewController.class)
 				)
+				.childNodesSeparator(LS)
 				.codeBlock
 				(
 						codeBlokk(context)

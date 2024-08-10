@@ -1,17 +1,15 @@
 package de.ruu.lib.gen.java.fx.tableview;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.fx.bean.FXBeanGenerator;
 import de.ruu.lib.gen.java.fx.tableview.demo.FXModelDemo;
 import de.ruu.lib.util.Files;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 class FXTableViewConfiguratorGeneratorTest
 {
@@ -26,7 +24,8 @@ class FXTableViewConfiguratorGeneratorTest
 				(
 						"de.ruu.lib.gen.java.fx.tableview.demo",
 						"FXModelDemo",
-						new ClassFileImporter().importClass(JavaModelDemo.class)
+						new ClassFileImporter().importClass(JavaModelDemo.class),
+						new ClassFileImporter().importClass(JavaModelDemoDTO.class)
 				);
 
 		generator.run();

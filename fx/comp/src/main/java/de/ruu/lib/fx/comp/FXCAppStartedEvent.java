@@ -12,12 +12,13 @@ public class FXCAppStartedEvent extends AbstractEvent<FXCApp, DefaultFXCView>
 	/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
 	static
 	{
-		Module addReadsRetriever   = FXCAppStartedEvent.class.getModule();
-		Module moduleToBeRetrieved = FXCAppStartedEvent.class.getClassLoader().getUnnamedModule();
+		Module addReadsReceiver   = FXCAppStartedEvent.class.getModule();
+//		Module addReadsReceiver   = WeldClientProxy.class.getModule();
+		Module moduleToBeReceived = FXCAppStartedEvent.class.getClassLoader().getUnnamedModule();
 		
-		log.debug("setting add-reads vm option for module {} to {}", addReadsRetriever.getName(), moduleToBeRetrieved.getName());
-		addReadsRetriever.addReads(moduleToBeRetrieved);
-		log.debug("set     add-reads vm option for module {} to {}", addReadsRetriever.getName(), moduleToBeRetrieved.getName());
+		log.debug("setting add-reads vm option for module {} to {}", addReadsReceiver.getName(), moduleToBeReceived.getName());
+		addReadsReceiver.addReads(moduleToBeReceived);
+		log.debug("set     add-reads vm option for module {} to {}", addReadsReceiver.getName(), moduleToBeReceived.getName());
 	}
 
 	public FXCAppStartedEvent(final FXCApp source, final DefaultFXCView data) { super(source, data); }

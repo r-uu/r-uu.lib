@@ -1,12 +1,5 @@
 package de.ruu.lib.jpa.core;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import de.ruu.lib.jpa.core.criteria.Criteria;
 import de.ruu.lib.jpa.core.criteria.restriction.Restrictions;
 import de.ruu.lib.util.Reflection;
@@ -15,21 +8,28 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
 
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * Abstract implementation of generic DAO.
  * <p>
  * Note: It is intentional that there is no automatic transaction handling here.
  *
- * @param <T> entity type, it implements at least {@code Entity2<I>}
  * @param <I> entity's primary key, it has to be {@link Serializable}
+ * @param <T> entity type, it implements at least {@code Entity2<I>}
  * @see Entity
  *
  * @author r-uu
  */
-public abstract class AbstractRepository<T extends Entity<I, ?>, I extends Serializable>
+public abstract class AbstractRepository<T extends Entity<I>, I extends Serializable>
 		implements Repository<T, I>, AutoCloseable
 {
-	private final Class<Entity<I, ?>> clazz;
+	private final Class<Entity<I>> clazz;
 
 	/**
 	 * Determines value for {@link #clazz} from type arguments of implementing class by reflection. Also works for proxied
@@ -48,7 +48,7 @@ public abstract class AbstractRepository<T extends Entity<I, ?>, I extends Seria
 
 			try
 			{
-				clazz = (Class<Entity<I, ?>>) Class.forName(type.getTypeName());
+				clazz = (Class<Entity<I>>) Class.forName(type.getTypeName());
 			}
 			catch (ClassNotFoundException e)
 			{
@@ -63,7 +63,7 @@ public abstract class AbstractRepository<T extends Entity<I, ?>, I extends Seria
 
 	protected abstract EntityManager entityManager();
 
-	@Override public Class<Entity<I, ?>> entityClass() { return clazz; }
+	@Override public Class<Entity<I>> entityClass() { return clazz; }
 
 	@SuppressWarnings(value = "unchecked")
 	@Override

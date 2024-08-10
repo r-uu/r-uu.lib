@@ -32,7 +32,7 @@ import static lombok.AccessLevel.PROTECTED;
 @EqualsAndHashCode
 @ToString
 @MappedSuperclass
-public abstract class AbstractEntity<D extends AbstractDTO<?>> implements Entity<Long, D>
+public abstract class AbstractEntity<D extends AbstractDTO<?>> implements Entity<Long>
 {
 	@Serial private static final long serialVersionUID = 1L;
 
@@ -70,7 +70,7 @@ public abstract class AbstractEntity<D extends AbstractDTO<?>> implements Entity
 	 * @param source
 	 * @throws NullPointerException if {@code source} is {@code null}
 	 */
-	protected void mapIdAndVersion(@NonNull AbstractDTO source)
+	protected void mapIdAndVersion(@NonNull D source)
 	{
 		// set fields that can not be modified from outside
 		id      = source.getId();

@@ -16,6 +16,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import static de.ruu.lib.archunit.Util.publicMethodsWithAnnotationAndSortedByNam
 import static de.ruu.lib.util.Constants.LS;
 import static de.ruu.lib.util.StringBuilders.sb;
 
+@Slf4j
 public class FXBeanEditorFXMLGenerator
 {
 	@NonNull private final String packageName;    // package name for target
@@ -72,7 +74,11 @@ public class FXBeanEditorFXMLGenerator
 		CompilationUnitResourceFileWriter writer =
 				CompilationUnitResourceFileWriter.writer(packageName, simpleFileName, "fxml");
 
-		writer.write(generator.generate().toString());
+		String result = generator.generate().toString();
+
+		log.debug("\n{}", result);
+
+		writer.write(result);
 	}
 
 	private StringBuilder imports()
@@ -112,24 +118,39 @@ public class FXBeanEditorFXMLGenerator
 
 	private StringBuilder gridPane()
 	{
-		StringBuilder result = sb(STR.
-"""
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-\{ children() }
-</GridPane>
-"""
-);
+		StringBuilder result = sb(
+//STR.
+//"""
+//<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19">
+//  <columnConstraints>
+//    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+//    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+//  </columnConstraints>
+//  <rowConstraints>
+//    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+//    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+//    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+//    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+//    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+//  </rowConstraints>
+//\{ children() }
+//</GridPane>
+//"""
+"<GridPane maxHeight=\"1.7976931348623157E308\" maxWidth=\"1.7976931348623157E308\" minHeight=\"-Infinity\" minWidth=\"-Infinity\" xmlns:fx=\"http://javafx.com/fxml/1\" xmlns=\"http://javafx.com/javafx/19\">                                                                 \n" +
+"  <columnConstraints>                                                             \n" +
+"    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\"/>\n" +
+"    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\"/>\n" +
+"  </columnConstraints>                                                            \n" +
+"  <rowConstraints>                                                                \n" +
+"    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
+"    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
+"    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
+"    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
+"    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
+"  <rowConstraints>" +
+children() +
+"</GridPane>"
+		);
 		return result;
 	}
 
@@ -154,16 +175,22 @@ public class FXBeanEditorFXMLGenerator
 
 		for (JavaMethod method : publicMethodsWithAnnotationAndSortedByName(source, FXProperty.class))
 		{
-			String fxId = "lbl" + Strings.firstLetterToUpperCase(method.getName());
-			String text = method.getName();
+			// generate labels only for methods that return a type that matches to a supported fx control
+			Optional<String> optional = FXMapper.mapToFXControl(method.getReturnType(), processor);
 
-			result.append(
-					"    <" + importManager.useType(Label.class) + " "
-					+ "fx:id=\"" + fxId + "\" "
-					+ "text=\"" + text + "\" "
-					+ "GridPane.rowIndex=\"" + rowIndex + "\"/>"
-					+ LS);
-			rowIndex++;
+			if (optional.isPresent())
+			{
+				String fxId = "lbl" + Strings.firstLetterToUpperCase(method.getName());
+				String text = method.getName();
+
+				result.append(
+						"    <" + importManager.useType(Label.class) + " "
+								+ "fx:id=\"" + fxId + "\" "
+								+ "text=\"" + text + "\" "
+								+ "GridPane.rowIndex=\"" + rowIndex + "\"/>"
+								+ LS);
+				rowIndex++;
+			}
 		}
 
 		return result;
@@ -185,7 +212,7 @@ public class FXBeanEditorFXMLGenerator
 			if (optional.isPresent())
 			{
 				String controlSimpleName = optional.get();
-				String fxId;
+				String fxId = "";
 
 				if      (controlSimpleName.equals(TextField.class.getSimpleName()))
 				{
@@ -209,10 +236,11 @@ public class FXBeanEditorFXMLGenerator
 				}
 				else
 				{
-					fxId = "unexpected fx control type: " + controlSimpleName;
+					log.error("unexpected fx control type {}, skipping generation", controlSimpleName);
+					continue; // TODO remove code smell
 				}
 
-				fxId += Strings.firstLetterToUpperCase(method.getReturnType().toErasure().getSimpleName());
+				fxId += Strings.firstLetterToUpperCase(method.getName());
 
 				result.append(
 						"    <"
@@ -220,12 +248,13 @@ public class FXBeanEditorFXMLGenerator
 						+ importManager.useType(GridPane.class) + ".columnIndex=\"" + colIndex + "\" "
 						+ importManager.useType(GridPane.class) + ".rowIndex=\""    + rowIndex + "\"/>"
 						+ LS);
+
+				rowIndex++;
 			}
 			else
 			{
-				result.append("no control found for " + method.getReturnType().getName() + LS);
+				log.warn("no control found for return type {} of method {}", method.getReturnType().getName(), method.getName());
 			}
-			rowIndex++;
 		}
 		
 		return result;

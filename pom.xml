@@ -21,12 +21,15 @@
         <module>cdi</module>
         <module>fx</module>
         <module>gen</module>
+        <module>jackson</module>
         <module>jdbc</module>
         <module>jpa</module>
         <module>junit</module>
         <module>mapstruct</module>
         <module>util</module>
-        <module>mapstruct.explore</module>
+        <module>mapstruct-explore</module>
+        <module>jsonb</module>
+        <module>jsonb-demo</module>
     </modules>
 
 </project>
