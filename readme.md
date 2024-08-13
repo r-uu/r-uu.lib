@@ -6,4 +6,4 @@ r-uu's library of potentially reusable java code
 
   r-uu's umbrella project that offers software libraries that are designed to ease the development of major or large applications with javafx-based user interfaces.
 
-[back](../r-uu/readme.md)
+[back](https://github.com/r-uu/r-uu)
