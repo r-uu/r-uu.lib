@@ -81,12 +81,19 @@ As the name suggests components play a central role in this approach. In **FX Co
 
 **FX Comp** takes care of plumbing together everything and provides easy bootstrapping.
 
-**FX Comp Generator Tools** produce basic versions of above-mentioned artifacts. These are the usual starting points for further customisation and development. However, after initial generation each component can be run as Java FX application which is extremely useful for early user feedback and testing.
+**FX Comp Generator Tools** produce basic versions of above-mentioned artifacts. These are the usual starting points 
+for further customisation and development. However, after initial generation each component can be run as Java FX 
+application which is extremely useful for early user feedback and testing. You can find a more detailed description 
+about these tools [here](../../gen/java/fx/comp/readme.md).
 
 FX Comp architecture is designed for modularisation with JPMS to allow for advanced approaches to handling complexity in large Java FX applications. In general, it is possible to define, test and run each component in its own module. With JPMS modules strong encapsulation can be provided for FX Comp components.
 
-## 
+You'll find a more in-depth explanation of the above concepts here:
 
 [FX Comp Architecture](doc/fx-comp-architecture.md)
+
+If you prefer getting your hands dirty directly have a look at the simplistic example:
+
+[FX Comp Example](doc/fx-comp-demo.md)
 
 [back](../../../README.md)
