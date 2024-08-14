@@ -1,8 +1,10 @@
 [back](./fx-comp-architecture.md)
 
+If you are interested in how to use CDI based IOC with FX Comp you might want to skip to [an example](#fx-comp-demo---composing-applications-from-a-hierarchy-of-fx-comp-components)
+
 ## FX Comp Demo - Empty
 
-This application demonstrates how to get a minimal FX Comp driven application up an running with minimum effort. Many times it is sufficient to simply subclass from classes defined by FX Comp architecture.
+This application demonstrates how to get a minimal FX Comp driven application up and running with minimum effort. Many times it is sufficient to simply subclass from classes defined by FX Comp architecture.
 
 ### View
 
@@ -50,7 +52,8 @@ This chapter describes a simple scenario where two FXComp components are compose
 
 ### Layout - Create and Maintain FXML configuration with visual editor
 
-The picture below shows a very simple layout configuration. There are two buttons an Java FX ```AnchorPane``` called main.
+The picture below shows a very simple layout configuration. There are two buttons and a Java FX ```AnchorPane``` 
+called main.
 
 ![scenebuilder](fx-comp-demo-hierarchy-scenebuilder.png)
 
