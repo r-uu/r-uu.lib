@@ -2,7 +2,9 @@
 
 First of all - honour to whom honour is due!
 
-Many concepts of the FX Comp architecture were initially inspired by [Adam Bien](https://github.com/AdamBien) and his [afterburner.fx](https://github.com/AdamBien/afterburner.fx) project.
+Many concepts of the FX Comp architecture were initially inspired by [Adam Bien](https://github.com/AdamBien) and 
+his [afterburner.fx](https://github.com/AdamBien/afterburner.fx) project. However, FX Comp pushes the limits of 
+afterburner.fx by leveraging industry standards for CDI-based IOC and application event messaging.
 
 # FX Comp Architecture - Conceptual Overview
 
@@ -42,7 +44,9 @@ FX Comp components are autonomous software building blocks that can be run indep
 
 FX Comp components are structured into a couple of collaborating Java types. In the following the collaboration is described in more technical detail.
 
-![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.lib/main/lib/fx/comp/doc/fx-comp-architecture-overview.puml)
+<!--![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.
+lib/main/lib/fx/comp/doc/fx-comp-architecture-overview.puml)-->
+![](fx-comp-architecture-overview.png)
 
 *top level types for FX Comp*
 
@@ -62,9 +66,9 @@ Implementations of FXCViewController are the working horses in a FX Comp driven 
 
 # Runtime Environment
 
-![](fx-comp-architecture-overview.png)
 <!--![use url iuml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/r-uu/r-uu.
 lib/fx/comp/doc/fx-comp-runtime-environment.puml)-->
+![](fx-comp-runtime-environment.png)
 
 ## FXCApp
 

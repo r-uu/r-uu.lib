@@ -71,7 +71,7 @@
   FXCViewController                             <|..       DefaultFXCViewController
   DefaultFXCView           "bootstraps default"   ..       FXCViewController
   DefaultFXCViewController                      -[hidden]> FXCApp
-  Application                                   <|..       FXCApp
+  Application                                   <|--       FXCApp
   FXCApp                                        -[hidden]> Application
 @enduml
 ```

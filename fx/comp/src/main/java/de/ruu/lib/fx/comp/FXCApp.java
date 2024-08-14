@@ -1,10 +1,5 @@
 package de.ruu.lib.fx.comp;
 
-import static de.ruu.lib.util.BooleanFunctions.not;
-import static java.util.Objects.isNull;
-
-import java.util.Optional;
-
 import de.ruu.lib.util.AbstractEvent;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.application.Application;
@@ -13,6 +8,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
+
+import static de.ruu.lib.util.BooleanFunctions.not;
+import static java.util.Objects.isNull;
 
 /**
  * Base class for JavaFX {@link Application}s with CDI support. <code>FXCApp</code>s provide convenient support
@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
  *             DefaultFXCView#getControllerClassName()} and / or {@link DefaultFXCView#getControllerClass()}.
  *   </li>
  * </ul>
+ *
  * While {@link FXCApp} instances itself are not CDI managed, the above mentioned {@link DefaultFXCView} and
  * its {@link FXCViewController} objects are CDI managed. This makes CDI available for JavaFX applications while
  * preserving benefits from JavaFX injection via <code>@FXML</code> annotations.

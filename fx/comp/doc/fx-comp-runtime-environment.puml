@@ -23,7 +23,7 @@
   }
   package javafx.application
   {
-  	class Application
+  	abstract class Application
   }
   FXCApp       -|> Application
   FXCAppRunner ..> FXCApp
