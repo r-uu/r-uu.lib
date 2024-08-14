@@ -4,10 +4,10 @@ r-uu.lib-fx is an umbrella project that offers software libraries that facilitat
 
 - [r-uu.lib-fx-comp](comp/readme.md)
 
-  FX Comp is a proposal for a software architecture for creating complex Java FX applications. It provides a software framework that supports the implementation of this architecture and comes with tools for creating artefacts that correspond to this architecture.
+  FX Comp is a proposal of a software architecture for creating complex Java FX applications. It provides a software framework that supports the implementation of this architecture and comes with tools for creating artefacts that correspond to this architecture.
   
 - [r-uu.lib-fx-core](core/readme.md)
 
-  ```r-uu.lib-fx-core``` extends the JavaFX standard components with new and extended features. In addition, there are some utilities in ```en.ruu.lib.fx.FXUtil``` that have proven to be useful.
+  ```r-uu.lib-fx-core``` extends the JavaFX standard components with new and extended features. In addition, there are some utilities in ```de.ruu.lib.fx.FXUtil``` that have proven to be useful.
 
 [back](../readme.md)
