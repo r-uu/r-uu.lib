@@ -17,19 +17,24 @@ In Java FX application logic can be decoupled strictly from layout using FXML fo
 runtime a so called ```FXMLLoader``` can be configured to use a custom controller object. Then ```FXMLLoader```
 automatically injects references to relevant UI controls into the controller.
 
-A controller is an instance of a regular Java class with annotated fields for each relevant UI control. Thereby these
-classes can take control over the application's behaviour. With this approach UI behaviour can be cleanly separated from
-UI layout.
+A controller is an instance of a regular Java class with ```@FXML``` annotated fields for each relevant UI control. 
+With this and the JavaFX component injection mechanism "regular" classes can take control over the application's 
+behaviour. Using this approach the definition of the UI behaviour can be cleanly separated from the design of the UI 
+layout.
 
 To make this work it is necessary to tell the loader which controls shall be bound to which controller fields. This is
 easily done by giving a unique name to each relevant UI control in the visual designer and by making sure the controller
 class has an equally named ```@FXML``` annotated field for each of the controls. The following code snippets show
-examples for two buttons in a ```.fxml``` file and their corresponding fields in controller class:
+examples for two buttons in a ```.fxml``` file and their corresponding fields in controller class.
+
+FXML with two button controls:
 
 ```xml
 <Button fx:id="btnOk"     text="ok" />
 <Button fx:id="btnCancel" text="cancel" />
 ```
+
+Java code for two button controls / fields:
 
 ```java
 @FXML private Button btnOk;
@@ -43,7 +48,7 @@ In the diagram below the "information flow" in a typical JavaFX application is o
 ## Challenges for Java FX application architecture
 
 While with this mechanism layout configuration can be strictly decoupled from application code, the size of controller 
-classes still grows very fast and the code becomes hard to maintain and extend quickly.
+classes still grows very fast and the code quickly becomes hard to maintain and extend.
 
 To accomplish this a typical approach is to decompose big classes into smaller ones that can be understood more 
 easily. However, this is where the design of Java FX proves to be an obstacle initially.[^1]
@@ -59,7 +64,8 @@ extension.
 
 ### Many controllers for many layout configurations
 
-Second, there is no built-in concept in Java FX for cooperation of multiple sub parts of a user interface. This can certainly be solved in one way or another but there is a great chance of creating very tightly coupled systems with an unmanageable number of dependencies and without following a common strategy for the overall system design.
+Second, there is no built-in concept in Java FX for cooperation of multiple (sub) parts of a user interface. This can 
+certainly be solved in one way or another but there is a great chance of creating very tightly coupled systems with an unmanageable number of dependencies and without following a common strategy for the overall system design.
 
 ## Welcome FX Comp
 
@@ -78,6 +84,8 @@ As the name suggests components play a central role in this approach. In **FX Co
 **FX Comp Generator Tools** produce basic versions of above-mentioned artifacts. These are the usual starting points for further customisation and development. However, after initial generation each component can be run as Java FX application which is extremely useful for early user feedback and testing.
 
 FX Comp architecture is designed for modularisation with JPMS to allow for advanced approaches to handling complexity in large Java FX applications. In general, it is possible to define, test and run each component in its own module. With JPMS modules strong encapsulation can be provided for FX Comp components.
+
+## 
 
 [FX Comp Architecture](doc/fx-comp-architecture.md)
 
