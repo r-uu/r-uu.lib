@@ -12,12 +12,15 @@ class TestJDBCProperties
 {
 	@Test void test()
 	{
-		String user     = "modules";
-		String password = "modules";
+		String host     = "localhost";
+		int    port     = 5432;
+		String database = "lib_test";
+		String user     = database;
+		String password = database;
 
 		JDBCProperties jdbcProperties =
 				new JDBCProperties(
-						new JDBCURL("localhost", 5433, "modules"), user, password);
+						new JDBCURL(host, port, database), user, password);
 
 		assertThat(jdbcProperties, is(not(nullValue())));
 

@@ -33,23 +33,24 @@ class EntityManagerFactoryProducerTest
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.port", Integer.class)
-						.orElse(5433);
+						.orElse(5432);
 		String databaseName =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.name", String.class)
-						.orElse("test");
+						.orElse("lib_test");
 		String databaseUser =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.user", String.class)
-						.orElse("test");
+						.orElse("lib_test");
 		String databasePass =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.pass", String.class)
-						.orElse("test");
-		String persistenceUnitName = "demo_test";
+						.orElse("lib_test");
+
+		String persistenceUnitName = "lib_test";
 
 		de.ruu.lib.jdbc.postgres.JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);
 

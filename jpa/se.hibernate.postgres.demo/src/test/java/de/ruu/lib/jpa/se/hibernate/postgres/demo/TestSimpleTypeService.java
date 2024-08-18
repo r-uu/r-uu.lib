@@ -17,11 +17,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@DisabledOnServerNotListening
-(
-		propertyNameHost = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbhost",
-		propertyNamePort = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbport"
-)
+@DisabledOnServerNotListening(propertyNameHost = "database.host", propertyNamePort = "database.port")
 @Slf4j class TestSimpleTypeService
 {
 	private static SeContainer seContainer; // initialisation and closure handled in before/after all methods

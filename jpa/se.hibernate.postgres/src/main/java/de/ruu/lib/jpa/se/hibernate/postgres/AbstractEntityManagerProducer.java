@@ -31,19 +31,19 @@ public abstract class AbstractEntityManagerProducer
 	private Integer port;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbname", defaultValue = "demo_test")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbname", defaultValue = "lib_test")
 	private String dbName;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbuser", defaultValue = "demo_test")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbuser", defaultValue = "lib_test")
 	private String username;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbpass", defaultValue = "demo_test")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbpass", defaultValue = "lib_test")
 	private String password;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.puname", defaultValue = "demo_test")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.puname", defaultValue = "lib_test")
 	private String puname;
 
 	/** call this method from method annotated with {@link jakarta.enterprise.inject.Produces} in subclasses */

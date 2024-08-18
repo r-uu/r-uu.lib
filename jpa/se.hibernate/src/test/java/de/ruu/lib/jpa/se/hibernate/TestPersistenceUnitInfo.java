@@ -1,16 +1,15 @@
 package de.ruu.lib.jpa.se.hibernate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
-import javax.sql.DataSource;
-
+import de.ruu.lib.jdbc.postgres.DataSourceFactory;
+import de.ruu.lib.jdbc.postgres.JDBCURL;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.jupiter.api.Test;
 
-import de.ruu.lib.jdbc.postgres.DataSourceFactory;
-import de.ruu.lib.jdbc.postgres.JDBCURL;
+import javax.sql.DataSource;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 class TestPersistenceUnitInfo
 {
@@ -25,22 +24,22 @@ class TestPersistenceUnitInfo
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.port", Integer.class)
-						.orElse(5433);
+						.orElse(5432);
 		String databaseName =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.name", String.class)
-						.orElse("test");
+						.orElse("lib_test");
 		String databaseUser =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.user", String.class)
-						.orElse("test");
+						.orElse("lib_test");
 		String databasePass =
 				ConfigProvider
 						.getConfig()
 						.getOptionalValue("database.pass", String.class)
-						.orElse("test");
+						.orElse("lib_test");
 
 		JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);
 
