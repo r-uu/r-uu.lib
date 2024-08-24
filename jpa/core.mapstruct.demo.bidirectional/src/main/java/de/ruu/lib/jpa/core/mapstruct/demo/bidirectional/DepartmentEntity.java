@@ -63,8 +63,8 @@ public class DepartmentEntity extends AbstractMappedEntity<DepartmentDTO>
 
 	@Override public void afterMapping(@NonNull DepartmentDTO input)
 	{
-		log.debug("after mapping starting");
-		log.debug("after mapping finished");
+		log.debug("starting");
+		log.debug("finished");
 	}
 
 	@Override public @NonNull DepartmentDTO toTarget() { return Mapper.INSTANCE.map(this); }

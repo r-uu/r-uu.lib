@@ -2,14 +2,7 @@ package de.ruu.lib.jpa.core.mapstruct.demo.bidirectional;
 
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedDTO;
 import de.ruu.lib.util.Strings;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,8 +50,8 @@ public class DepartmentDTO extends AbstractMappedDTO<DepartmentEntity>
 
 	@Override public void afterMapping(@NonNull DepartmentEntity input)
 	{
-		log.debug("after mapping starting");
-		log.debug("after mapping finished");
+		log.debug("starting");
+		log.debug("finished");
 	}
 
 	@Override public @NonNull DepartmentEntity toSource() { return Mapper.INSTANCE.map(this); }
