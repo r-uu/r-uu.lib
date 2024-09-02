@@ -9,6 +9,5 @@ module mapstruct.explore
 
 //	opens de.ruu.lib.mapstruct.explore.objectfactory to org.junit.platform.commons
 //			                                              , org.mapstruct
-	opens de.ruu.lib.mapstruct.explore.objectfactory to org.mapstruct
-			;
+	opens de.ruu.lib.mapstruct.explore.objectfactory to org.mapstruct;
 }

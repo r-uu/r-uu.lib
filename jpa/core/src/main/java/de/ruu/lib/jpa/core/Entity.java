@@ -1,5 +1,6 @@
 package de.ruu.lib.jpa.core;
 
+import jakarta.annotation.Nullable;
 import lombok.NonNull;
 
 import java.io.Serializable;
@@ -20,15 +21,15 @@ public interface Entity<I extends Serializable> extends Serializable
 
 	// fluent style accessors
 	/** @return primary key, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
-	I     id     ();
+	@Nullable I     id     ();
 	/** @return version, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
-	Short version();
+	@Nullable Short version();
 
 	// java bean style accessors for those who do not work with fluent style accessors (mapstruct)
 	/** @return primary key, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
-	default I getId()          { return id();      };
+	default @Nullable I     getId     () { return id();      };
 	/** @return version, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
-	default Short getVersion() { return version(); };
+	default @Nullable Short getVersion() { return version(); };
 
 	/** @return optional primary key, {@link Optional#empty()} indicates that entity was not (yet) persisted. */
 	default public @NonNull Optional<I>     optionalId()      { return Optional.ofNullable(id());      }
@@ -37,18 +38,18 @@ public interface Entity<I extends Serializable> extends Serializable
 
 	public static class EntityInfo<I extends Serializable> implements Entity<I>
 	{
-		private I     id;
-		private Short version;
+		@Nullable private I     id;
+		@Nullable private Short version;
 
-		public EntityInfo(I id, Short version)
+		public EntityInfo(@Nullable I id, @Nullable Short version)
 		{
 			this.id      = id;
 			this.version = version;
 		}
 
-		public EntityInfo(Entity<I> entity) { this(entity.id(), entity.version()); }
+		public EntityInfo(@NonNull Entity<I> entity) { this(entity.id(), entity.version()); }
 
-		@Override public I     id     () { return id;      }
-		@Override public Short version() { return version; }
+		@Override public @Nullable I     id     () { return id;      }
+		@Override public @Nullable Short version() { return version; }
 	}
 }

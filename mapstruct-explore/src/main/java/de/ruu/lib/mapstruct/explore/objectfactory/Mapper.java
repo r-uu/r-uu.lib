@@ -25,56 +25,56 @@ abstract class Mapper
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(ParentSource source, @MappingTarget ParentTarget target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(ParentTarget source, @MappingTarget ParentSource target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@AfterMapping void afterMapping(ParentSource source, @MappingTarget ParentTarget target)
 	{
-		log.debug("after source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.afterMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@AfterMapping void afterMapping(ParentTarget source, @MappingTarget ParentSource target)
 	{
-		log.debug("after source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.afterMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(ChildSource source, @MappingTarget ChildTarget target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(ChildTarget source, @MappingTarget ChildSource target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@AfterMapping void afterMapping(ChildSource source, @MappingTarget ChildTarget target)
 	{
-		log.debug("after source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.afterMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@AfterMapping void afterMapping(ChildTarget source, @MappingTarget ChildSource target)
 	{
-		log.debug("after source {}, target  {}", source, target);
+		log.debug("source {}, target  {}", source, target);
 		target.afterMapping(source); // invoke callback for mapping
 	}
 

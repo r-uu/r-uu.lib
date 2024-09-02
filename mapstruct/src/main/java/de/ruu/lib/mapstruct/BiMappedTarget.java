@@ -11,6 +11,10 @@ import lombok.NonNull;
  */
 public interface BiMappedTarget<S extends BiMappedSource<?>>
 {
+	/**
+	 * map values from {@code input} into private / protected fields of {@code this} {@link BiMappedTarget}
+	 * @param input
+	 */
 	void beforeMapping(@NonNull S input);
 	void afterMapping (@NonNull S input);
 
