@@ -30,6 +30,7 @@
         <module>mapstruct-explore</module>
         <module>jsonb</module>
         <module>jsonb-demo</module>
+        <module>tree</module>
     </modules>
 
 </project>

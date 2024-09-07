@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @EqualsAndHashCode
 @ToString
+@Slf4j
 public abstract class NodeAbstract<T extends Node<T>> implements Node<T>
 {
 	@NonNull  private String  name;
@@ -55,10 +57,13 @@ public abstract class NodeAbstract<T extends Node<T>> implements Node<T>
 	@Override
 	@NonNull
 	public Optional<T> parent() { return Optional.ofNullable(parent); }
+
 	@Override
 	@NonNull
-	public T parent(@Nullable T parent)
+	public T parent(@Nullable T parent) throws IllegalArgumentException
 	{
+		if (parent == this)
+				throw new IllegalArgumentException("no cycles allowed: can not assign parameter as parent to itself");
 		this.parent = parent;
 		return (T) this;
 	}
@@ -87,4 +92,6 @@ public abstract class NodeAbstract<T extends Node<T>> implements Node<T>
 		if (result) node.parent(null);
 		return result;
 	}
+
+	public void beforeMapping(NodeEntity source) { log.debug("source {}, target  {}", source, this); }
 }

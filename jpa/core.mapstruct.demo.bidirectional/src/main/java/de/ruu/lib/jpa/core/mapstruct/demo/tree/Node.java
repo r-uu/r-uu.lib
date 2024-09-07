@@ -11,7 +11,8 @@ public interface Node<T extends Node>
 	@NonNull String      name();
 	@NonNull T           name(@NonNull String name);
 	@NonNull Optional<T> parent();
-	@NonNull T           parent(@Nullable T parent);
+	/** @throws IllegalArgumentException if {@code parent} is {@code this}, makes sure no cycles in tree */
+	@NonNull T           parent(@Nullable T parent) throws IllegalArgumentException;
 	/** @return unmodifiable */
 	@NonNull List<T>     children();
 
