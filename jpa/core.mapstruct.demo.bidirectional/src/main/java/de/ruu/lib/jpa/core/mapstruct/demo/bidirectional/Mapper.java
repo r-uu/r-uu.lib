@@ -25,28 +25,28 @@ abstract class Mapper
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(DepartmentEntity source, @MappingTarget DepartmentDTO target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("\nsource\n{}\ntarget\n{}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(DepartmentDTO source, @MappingTarget DepartmentEntity target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("\nsource\n{}\ntarget\n{}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(EmployeeEntity source, @MappingTarget EmployeeDTO target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("\nsource\n{}\ntarget\n{}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(EmployeeDTO source, @MappingTarget EmployeeEntity target)
 	{
-		log.debug("before source {}, target  {}", source, target);
+		log.debug("\nsource\n{}\ntarget\n{}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping
 	}
 
