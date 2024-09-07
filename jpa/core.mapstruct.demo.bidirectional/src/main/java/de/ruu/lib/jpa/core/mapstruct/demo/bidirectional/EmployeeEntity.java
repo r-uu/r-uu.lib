@@ -1,7 +1,5 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.bidirectional;
 
-import static lombok.AccessLevel.PROTECTED;
-
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,6 +10,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+
+import static lombok.AccessLevel.PROTECTED;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -32,7 +32,9 @@ public class EmployeeEntity extends AbstractMappedEntity<EmployeeDTO>
 	// controlled in beforeMapping
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	@NonNull @Setter private DepartmentEntity department;
+	@NonNull
+	@Setter
+	private DepartmentEntity department;
 
 	EmployeeEntity(@NonNull DepartmentEntity department, @NonNull String name)
 	{

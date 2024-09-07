@@ -19,8 +19,8 @@ abstract class Mapper
 	abstract DepartmentEntity map(DepartmentDTO    input);
 	abstract DepartmentDTO    map(DepartmentEntity input);
 
-	abstract EmployeeEntity map(EmployeeDTO    input);
-	abstract EmployeeDTO    map(EmployeeEntity input);
+	abstract EmployeeEntity   map(EmployeeDTO    input);
+	abstract EmployeeDTO      map(EmployeeEntity input);
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(DepartmentEntity source, @MappingTarget DepartmentDTO target)
@@ -82,7 +82,6 @@ abstract class Mapper
 			DepartmentEntity department = CONTEXT.get(input.department(), DepartmentEntity.class);
 			if (department == null)
 					department = new DepartmentEntity(input.department().name());
-//					throw new IllegalStateException("department " + input.department() + " for employee " + result + " not in context");
 			result = new EmployeeEntity(department, input.name());
 			CONTEXT.put(input, result);
 			CONTEXT.put(result, input);
