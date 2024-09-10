@@ -57,7 +57,6 @@ public class DepartmentDTO extends AbstractMappedDTO<DepartmentEntity>
 	@Override public @NonNull DepartmentEntity toSource() { return Mapper.INSTANCE.map(this); }
 
 	// java bean style accessors for those who do not work with fluent style accessors (mapstruct)
-//	public @NonNull String getName()        { return name(); }
 	public String getDescription()                   { return description(); }
 	public void   setDescription(String description) {   this.description = description; }
 

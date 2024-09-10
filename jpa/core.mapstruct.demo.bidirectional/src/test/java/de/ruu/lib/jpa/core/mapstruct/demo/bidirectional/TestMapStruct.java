@@ -1,10 +1,12 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.bidirectional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TestMapStruct
 {
@@ -41,7 +43,7 @@ class TestMapStruct
 	@Test void mapInvalidNamedEmployeeDTO()
 	{
 		String name = null;
-		assertThrows(NullPointerException.class, () -> Mapper.INSTANCE.map(new EmployeeDTO(name, new DepartmentDTO("name"))));
+		assertThrows(NullPointerException.class, () -> Mapper.INSTANCE.map(new EmployeeDTO(new DepartmentDTO("name"), name)));
 	}
 
 	@Test void mapInvalidNamedDepartmentEntity()
@@ -54,7 +56,7 @@ class TestMapStruct
 	{
 		String           name       = null;
 		DepartmentEntity department = new DepartmentEntity("name");
-		assertThrows(NullPointerException.class,() -> Mapper.INSTANCE.map(new EmployeeEntity(name, department)));
+		assertThrows(NullPointerException.class,() -> Mapper.INSTANCE.map(new EmployeeEntity(department, name)));
 	}
 
 	@Test void mapValidDepartmentDTO()
@@ -80,7 +82,7 @@ class TestMapStruct
 	{
 		String         name       = "name";
 		DepartmentDTO  department = new DepartmentDTO(name);
-		EmployeeDTO    employee   = new EmployeeDTO(name, department);
+		EmployeeDTO    employee   = new EmployeeDTO(department, name);
 		EmployeeEntity employeeEntity = Mapper.INSTANCE.map(employee);
 		assertThat(employeeEntity                    , is(not(nullValue())));
 		assertThat(employeeEntity.name()             , is(name));
@@ -91,7 +93,7 @@ class TestMapStruct
 	{
 		String            name       = "name";
 		DepartmentEntity  department = new DepartmentEntity(name);
-		EmployeeEntity    employee   = new EmployeeEntity(name, department);
+		EmployeeEntity    employee   = new EmployeeEntity(department, name);
 		EmployeeDTO employeeDTO = Mapper.INSTANCE.map(employee);
 		assertThat(employeeDTO                    , is(not(nullValue())));
 		assertThat(employeeDTO.name()             , is(name));
@@ -106,7 +108,7 @@ class TestMapStruct
 
 		for (int i = 0; i < numberOfEmployees; i++)
 		{
-			department.add(new EmployeeDTO("name." + i, department));
+			department.add(new EmployeeDTO(department, "name." + i));
 		}
 
 		DepartmentEntity departmentEntity = Mapper.INSTANCE.map(department);
@@ -125,7 +127,7 @@ class TestMapStruct
 
 		for (int i = 0; i < numberOfEmployees; i++)
 		{
-			department.add(new EmployeeEntity("name." + i, department));
+			department.add(new EmployeeEntity(department, "name." + i));
 		}
 
 		DepartmentDTO departmentDTO = Mapper.INSTANCE.map(department);

@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -20,7 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
                           // @Getter(AccessLevel.NONE}))
 @Accessors(fluent = true) // generate fluent accessors with lombok and java-bean-style-accessors in non-abstract classes
                           // with ide, fluent accessors will (usually / by default) be ignored by mapstruct
-@RequiredArgsConstructor
+//@RequiredArgsConstructor// provide handmade required args constructor to properly handle relationships
 @NoArgsConstructor(access = PROTECTED, force = true) // generate no args constructor for jsonb, jaxb, jpa, mapstruct, ...
 public class EmployeeEntity extends AbstractMappedEntity<EmployeeDTO>
 {
@@ -36,9 +35,11 @@ public class EmployeeEntity extends AbstractMappedEntity<EmployeeDTO>
 	@Setter
 	private DepartmentEntity department;
 
+	/** provide handmade required args constructor to properly handle relationships */
 	EmployeeEntity(@NonNull DepartmentEntity department, @NonNull String name)
 	{
 		this.department = department;
+		name(name);
 		department.add(this);
 	}
 
