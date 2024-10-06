@@ -1,6 +1,7 @@
 module de.ruu.lib.gen.java.fx.bean.editor.demo
 {
 	exports de.ruu.lib.gen.java.fx.bean.editor.demo;
+	opens   de.ruu.lib.gen.java.fx.bean.editor.demo;
 
 	requires com.tngtech.archunit;
 

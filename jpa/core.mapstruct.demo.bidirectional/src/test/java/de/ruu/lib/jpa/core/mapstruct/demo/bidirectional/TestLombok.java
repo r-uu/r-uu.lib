@@ -1,11 +1,11 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.bidirectional;
 
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Test;
 
 class TestLombok
 {
@@ -57,7 +57,7 @@ class TestLombok
 		String name = null;
 		DepartmentDTO department = new DepartmentDTO("name");
 
-		assertThrows(NullPointerException.class, () -> new EmployeeDTO(name, department));
+		assertThrows(NullPointerException.class, () -> new EmployeeDTO(department, name));
 	}
 
 	@Test void invalidDepartmentEmployeeDTO()
@@ -65,7 +65,7 @@ class TestLombok
 		String name = "name";
 		DepartmentDTO department = null;
 
-		assertThrows(NullPointerException.class, () -> new EmployeeDTO(name, department));
+		assertThrows(NullPointerException.class, () -> new EmployeeDTO(department, name));
 	}
 
 	@Test void invalidNameDepartmentEntity()
@@ -80,7 +80,7 @@ class TestLombok
 		String name = null;
 		DepartmentEntity department = new DepartmentEntity("name");
 
-		assertThrows(NullPointerException.class, () -> new EmployeeEntity(name, department));
+		assertThrows(NullPointerException.class, () -> new EmployeeEntity(department, name));
 	}
 
 	@Test void validDepartmentDTO()
@@ -96,7 +96,7 @@ class TestLombok
 	{
 		String        name       = "name";
 		DepartmentDTO department = new DepartmentDTO(name);
-		EmployeeDTO   employee   = new EmployeeDTO(name, department);
+		EmployeeDTO   employee   = new EmployeeDTO(department, name);
 
 		assertThat(employee.name()      , is(name));
 		assertThat(employee.department(), is(department));

@@ -14,6 +14,7 @@ module de.ruu.lib.jpa.core.mapstruct.demo.bidirectional
 	requires static lombok;
 	requires jakarta.annotation;
 	requires org.apache.poi.poi;
+	requires jakarta.persistence;
 
 	opens de.ruu.lib.jpa.core.mapstruct.demo.bidirectional to org.mapstruct;
 }

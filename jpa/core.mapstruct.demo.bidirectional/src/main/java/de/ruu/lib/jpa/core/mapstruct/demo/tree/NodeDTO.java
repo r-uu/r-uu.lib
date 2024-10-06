@@ -1,5 +1,7 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.tree;
 
+import de.ruu.lib.jpa.core.AbstractDTO;
+import de.ruu.lib.jpa.core.AbstractEntity;
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedDTO;
 import de.ruu.lib.util.Strings;
 import jakarta.annotation.Nullable;
@@ -23,6 +25,8 @@ public class NodeDTO extends AbstractMappedDTO<NodeEntity> implements Node<NodeD
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@NonNull  private List<NodeDTO> children;
+
+	protected NodeDTO() { } // required by mapstruct
 
 	public NodeDTO(@NonNull String name)
 	{
@@ -99,5 +103,28 @@ public class NodeDTO extends AbstractMappedDTO<NodeEntity> implements Node<NodeD
 	public @NonNull NodeEntity toSource()
 	{
 		return MapperNodeEntityNodeDTO.INSTANCE.map(this);
+	}
+
+	public void beforeMapping(@NonNull NodeSimple source) { mapIdAndVersion(source); }
+
+	private class AbstractEntitySimple extends AbstractEntity<NodeDTO>
+	{
+		private @NonNull NodeSimple nodeSimple;
+		private AbstractEntitySimple(@NonNull NodeSimple nodeSimple) { this.nodeSimple = nodeSimple; }
+	}
+
+	/**
+	 * to be called in mapstruct callbacks by subclasses
+	 * <p>
+	 * Picks the {@link AbstractDTO#getId()} and {@link AbstractDTO#getVersion()} values and assigns them to the
+	 * respective fields in this class.
+	 *
+	 * @param source
+	 * @throws NullPointerException if {@code source} is {@code null}
+	 */
+	protected void mapIdAndVersion(@NonNull NodeSimple source)
+	{
+		// set fields that can not be modified from outside
+		super.mapIdAndVersion(new AbstractEntitySimple(source));
 	}
 }

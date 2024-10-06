@@ -1,12 +1,14 @@
 package de.ruu.lib.jpa.se.eclipselink;
 
 import de.ruu.lib.jpa.core.AbstractPersistenceUnitInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.persistence.jpa.PersistenceProvider;
+
+import javax.sql.DataSource;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
-import javax.sql.DataSource;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.persistence.jpa.PersistenceProvider;
+import java.util.List;
 
 /** persistence unit info with eclipselink as persistence provider */
 @Slf4j
@@ -21,6 +23,10 @@ public class PersistenceUnitInfo extends AbstractPersistenceUnitInfo
 	}
 
 	public void persistenceUnitRootURL(URL url) { persistenceUnitRootURL = url; }
+
+	@Override public String getScopeAnnotationName() { return null; }
+
+	@Override public List<String> getQualifierAnnotationNames() { return List.of(); }
 
 	/** enforce lazy initialisation */
 	@Override public URL getPersistenceUnitRootUrl() { return persistenceUnitRootURL(); }

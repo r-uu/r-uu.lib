@@ -20,6 +20,7 @@ public class HierarchyDemoMainAppRunner extends FXCAppRunner
 		// add-reads module of FXCAppStartedEvent to ALL-UNNAMED
 		Class<?> clazz = Class.forName(FXCAppStartedEvent.class.getName());
 		log.debug("loaded {}", clazz.getName());
+
 		FXCAppRunner.run(HierarchyDemoMainApp.class, args);
 		log.debug("finished HierarchyDemoMainAppRunner.class.getName()");
 	}

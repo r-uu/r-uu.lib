@@ -147,7 +147,7 @@ public class FXBeanEditorFXMLGenerator
 "    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
 "    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
 "    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" /> \n" +
-"  <rowConstraints>" +
+"  </rowConstraints>" +
 children() +
 "</GridPane>"
 		);

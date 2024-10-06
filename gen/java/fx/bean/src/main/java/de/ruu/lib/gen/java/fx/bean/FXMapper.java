@@ -33,6 +33,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -50,12 +51,6 @@ public interface FXMapper
 		static DeclaredTypeProcessor importManagement(CompilationUnitContext context) { return new ImportManagement(context); }
 	}
 
-	class DeclaredTypeProcessorEmpty implements DeclaredTypeProcessor
-	{
-		@Override public @NonNull String process(String   type) { return ""; }
-		@Override public @NonNull String process(Class<?> type) { return ""; }
-	}
-
 	class ImportManagement implements DeclaredTypeProcessor
 	{
 		@NonNull private CompilationUnitContext context;
@@ -69,6 +64,22 @@ public interface FXMapper
 
 	static DeclaredTypeProcessor importManagement(CompilationUnitContext context) { return DeclaredTypeProcessor.importManagement(context); }
 
+	/**
+	 * Generates fx property for {@code type} that represents
+	 *
+	 * <ul>
+	 *   <li>primitive data types such as {@code int} ({@link SimpleIntegerProperty} will be generated) or</li>
+	 *   <li>declared data types with corresponding fx property types such as {@link Integer} ({@link
+	 *       SimpleIntegerProperty} will be generated)</li>
+	 *   <li>(custom) declared data types as {@link LocalDate} ({@link
+	 *       SimpleObjectProperty} will be generated)</li>
+	 *   <li>arrays of above mentioned</li>
+	 * </ul>
+	 *
+	 * @param type
+	 * @param processor
+	 * @return
+	 */
 	static Optional<String> mapToFXProperty(@NonNull JavaType type, @NonNull DeclaredTypeProcessor processor)
 	{
 		Optional<String> result = Optional.empty();
@@ -91,11 +102,11 @@ public interface FXMapper
 				result = Optional.of(result.get() + "[]");
 			}
 		}
+
 		return result;
 	}
 
-	static String mapToFXPropertyImplementation(
-			@NonNull JavaType type, @NonNull DeclaredTypeProcessor processor)
+	static String mapToFXPropertyImplementation(@NonNull JavaType type, @NonNull DeclaredTypeProcessor processor)
 	{
 		String result;
 
@@ -115,8 +126,7 @@ public interface FXMapper
 		return result;
 	}
 	
-	static Optional<String> mapToFXControl(
-			@NonNull JavaType type, @NonNull DeclaredTypeProcessor processor)
+	static Optional<String> mapToFXControl(@NonNull JavaType type, @NonNull DeclaredTypeProcessor processor)
 	{
 		String fullName = type.toErasure().getFullName();
 	
@@ -371,6 +381,34 @@ public interface FXMapper
 					+ ", "
 					+ processor.process(classValue)
 					+ ">";
+		}
+		else if (typeAsClass.isAssignableTo(Optional.class))
+		{
+			JavaType firstActualTypeArgumentOfOptional         = firstActualTypeArgument(type).get();
+			String   firstActualTypeArgumentOfOptionalFullName =
+					processor.process(firstActualTypeArgumentOfOptional.toErasure().getFullName());
+
+			if (Util.isGeneric(firstActualTypeArgumentOfOptional))
+			{
+				Optional<JavaType> firstActualTypeArgumentOfGenericTypeForOptional =
+						firstActualTypeArgument(firstActualTypeArgumentOfOptional);
+				return
+						  processor.process(ObjectProperty.class)
+						+ "<"
+				    +    processor.process(typeAsClass.toErasure().getFullName())
+						+    "<"
+						+       processor.process(firstActualTypeArgumentOfGenericTypeForOptional.get().toErasure().getFullName())
+						+    ">"
+						+ ">"
+						;
+			}
+
+			return
+					  processor.process(ObjectProperty.class)
+			    + "<"
+					+    processor.process(typeAsClass.toErasure().getFullName())
+					+ ">"
+					;
 		}
 		else
 		{

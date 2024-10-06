@@ -1,25 +1,26 @@
 package de.ruu.lib.jpa.core;
 
-import static jakarta.persistence.SharedCacheMode.UNSPECIFIED;
-import static jakarta.persistence.ValidationMode.AUTO;
-import static jakarta.persistence.spi.PersistenceUnitTransactionType.RESOURCE_LOCAL;
-import static java.lang.Thread.currentThread;
-
+import jakarta.persistence.PersistenceUnitTransactionType;
 import jakarta.persistence.SharedCacheMode;
 import jakarta.persistence.ValidationMode;
 import jakarta.persistence.spi.ClassTransformer;
 import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.Accessors;
+
+import javax.sql.DataSource;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import javax.sql.DataSource;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
+
+import static jakarta.persistence.PersistenceUnitTransactionType.RESOURCE_LOCAL;
+import static jakarta.persistence.SharedCacheMode.UNSPECIFIED;
+import static jakarta.persistence.ValidationMode.AUTO;
+import static java.lang.Thread.currentThread;
 
 /** {@link #transactionType} is #RESOURCE_LOCAL by default */
 @RequiredArgsConstructor
@@ -123,6 +124,14 @@ public abstract class AbstractPersistenceUnitInfo implements PersistenceUnitInfo
 				result.put(PROPERTY_KEY_PERSISTENCE_UNIT_NEW_TEMP_CLASS_LOADER,     newTempClassLoader);
 
 		return result;
+	}
+
+	/** remove this method after upgrade to new jpa version */
+	@Override
+	@Deprecated
+	public jakarta.persistence.spi.PersistenceUnitTransactionType getTransactionType()
+	{
+		return jakarta.persistence.spi.PersistenceUnitTransactionType.RESOURCE_LOCAL;
 	}
 
 	public Properties properties() { return getProperties(); }

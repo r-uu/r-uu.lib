@@ -19,8 +19,7 @@ abstract class MapperNodeSimpleNodeDTO
 	abstract NodeSimple map(NodeDTO    input);
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
-	@BeforeMapping
-	void beforeMapping(NodeSimple source, @MappingTarget NodeDTO target)
+	@BeforeMapping void beforeMapping(NodeSimple source, @MappingTarget NodeDTO target)
 	{
 		log.debug("before source {}, target  {}", source, target);
 		target.beforeMapping(source); // invoke callback for mapping

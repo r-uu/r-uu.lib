@@ -10,16 +10,13 @@ module de.ruu.lib.gen.java
 	exports de.ruu.lib.gen.java.element.pckg;
 	exports de.ruu.lib.gen.java.element.type;
 	exports de.ruu.lib.gen.java.naming;
-	
-	requires            com.tngtech.archunit;
-//	requires transitive java.compiler;
-	requires            java.compiler;
-	requires            lombok;
-	requires            org.slf4j;
 
-//	requires transitive de.ruu.lib.gen.core;
-	requires            de.ruu.lib.gen.core;
-	requires            de.ruu.lib.util;
-//	requires transitive de.ruu.lib.archunit;
-	requires            de.ruu.lib.archunit;
+	requires com.tngtech.archunit;
+	requires java.compiler;
+	requires static lombok;
+	requires org.slf4j;
+
+	requires de.ruu.lib.gen.core;
+	requires de.ruu.lib.util;
+	requires de.ruu.lib.archunit;
 }

@@ -3,6 +3,7 @@ module de.ruu.lib.fx.demo
 	exports de.ruu.lib.fx.demo;
 	exports de.ruu.lib.fx.demo.bean;
 	exports de.ruu.lib.fx.demo.comp.main;
+	exports de.ruu.lib.fx.demo.gen.input;
 
 	opens de.ruu.lib.fx.demo.bean;
 	opens de.ruu.lib.fx.demo.comp.main;

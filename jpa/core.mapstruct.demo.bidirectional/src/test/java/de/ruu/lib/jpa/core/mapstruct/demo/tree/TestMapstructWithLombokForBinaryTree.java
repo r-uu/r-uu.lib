@@ -9,7 +9,7 @@ class TestMapstructWithLombokForBinaryTree
 {
 	@Test void createBinTreeWithSingleNodeForDTOs()
 	{
-		NodeDTO root = new NodeDTO<>("root");
+		NodeDTO root = new NodeDTO("root");
 
 		assertThat(root.children().isEmpty(), is(true));
 	}

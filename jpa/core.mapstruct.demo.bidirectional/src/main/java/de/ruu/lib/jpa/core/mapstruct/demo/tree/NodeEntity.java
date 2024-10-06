@@ -1,5 +1,6 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.tree;
 
+import de.ruu.lib.jpa.core.AbstractDTO;
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedEntity;
 import de.ruu.lib.util.Strings;
 import jakarta.annotation.Nullable;
@@ -14,12 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This is almost a complete copy of the code from {@link NodeSimple} or {@link NodeAbstract} just replacing generic type variables as T with concrete type like {@link NodeEntity} or {@link NodeDTO}.
+ * This is almost a complete copy of the code from {@link NodeSimple} or {@link AbstractMappedNode} just replacing generic type variables as T with concrete type like {@link NodeEntity} or {@link NodeDTO}.
  * TODO Is there a better way to go?
  * TODO Delegates perhaps?
  */
 @Slf4j
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class NodeEntity extends AbstractMappedEntity<NodeDTO> implements Node<NodeEntity>
 {
 	@NonNull  private String           name;
@@ -29,6 +31,8 @@ public class NodeEntity extends AbstractMappedEntity<NodeDTO> implements Node<No
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@NonNull  private List<NodeEntity> children;
+
+	protected NodeEntity() { } // required by mapstruct
 
 	public NodeEntity(@NonNull String name)
 	{
@@ -104,4 +108,29 @@ public class NodeEntity extends AbstractMappedEntity<NodeDTO> implements Node<No
 
 	@Override
 	public @NonNull NodeDTO toTarget() { return MapperNodeEntityNodeDTO.INSTANCE.map(this); }
+
+	public void beforeMapping(NodeSimple source) { mapIdAndVersion(source); }
+
+	private class AbstractDTOSimple extends AbstractDTO<NodeEntity>
+	{
+		private @NonNull NodeSimple nodeSimple;
+		private AbstractDTOSimple(@NonNull NodeSimple nodeSimple) { this.nodeSimple = nodeSimple; }
+	}
+
+  /**
+	 * to be called in mapstruct callbacks by subclasses
+	 * <p>
+	 * Picks the {@link AbstractDTO#getId()} and {@link AbstractDTO#getVersion()} values and assigns them to the
+	 * respective fields in this class.
+	 *
+	 * @param source
+	 * @throws NullPointerException if {@code source} is {@code null}
+   */
+
+
+	protected void mapIdAndVersion(@NonNull NodeSimple source)
+	{
+		// set fields that can not be modified from outside
+		super.mapIdAndVersion(new AbstractDTOSimple(source));
+	}
 }
