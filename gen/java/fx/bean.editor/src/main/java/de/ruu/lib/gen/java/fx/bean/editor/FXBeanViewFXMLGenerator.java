@@ -28,7 +28,7 @@ import static de.ruu.lib.util.Constants.LS;
 import static de.ruu.lib.util.StringBuilders.sb;
 
 @Slf4j
-public class FXBeanEditorFXMLGenerator
+public class FXBeanViewFXMLGenerator
 {
 	@NonNull private final String packageName;    // package name for target
 	@NonNull private final String simpleFileName; // simple file name for target
@@ -38,7 +38,7 @@ public class FXBeanEditorFXMLGenerator
 	private final CompilationUnitContext context;
 	private final DeclaredTypeProcessor  processor;
 
-	public FXBeanEditorFXMLGenerator(
+	public FXBeanViewFXMLGenerator(
 			@NonNull String packageName, @NonNull String simpleFileName, @NonNull JavaClass clazz)
 	{
 		if (packageName   .isEmpty()) throw new IllegalArgumentException(    "package name may not be empty");

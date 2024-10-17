@@ -13,7 +13,6 @@ public class FXCAppStartedEvent extends AbstractEvent<FXCApp, DefaultFXCView>
 	static
 	{
 		Module addReadsReceiver   = FXCAppStartedEvent.class.getModule();
-//		Module addReadsReceiver   = WeldClientProxy.class.getModule();
 		Module moduleToBeReceived = FXCAppStartedEvent.class.getClassLoader().getUnnamedModule();
 		
 		log.debug("setting add-reads vm option for module {} to {}", addReadsReceiver.getName(), moduleToBeReceived.getName());

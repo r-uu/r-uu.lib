@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 
-class FXTableViewConfiguratorGeneratorTest
+class GeneratorFXTableViewConfiguratorTest
 {
 	@BeforeAll
 	static void beforeAll() throws GeneratorException, IOException
@@ -40,8 +40,8 @@ class FXTableViewConfiguratorGeneratorTest
 
 	@Test void test() throws GeneratorException, IOException
 	{
-		FXTableViewConfiguratorGenerator generator =
-				new FXTableViewConfiguratorGenerator
+		GeneratorFXTableViewConfigurator generator =
+				new GeneratorFXTableViewConfigurator
 				(
 						"de.ruu.lib.gen.java.fx.tableview.demo",
 						"FXTableViewConfigurator",

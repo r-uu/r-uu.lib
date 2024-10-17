@@ -6,7 +6,7 @@ import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.bean.BeanGenerator;
 import de.ruu.lib.gen.java.fx.bean.FXBeanGenerator;
 import de.ruu.lib.gen.java.fx.bean.FXProperty;
-import de.ruu.lib.gen.java.fx.bean.editor.FXBeanEditorFXMLGenerator;
+import de.ruu.lib.gen.java.fx.bean.editor.FXBeanViewFXMLGenerator;
 import de.ruu.lib.gen.java.fx.comp.GeneratorFXCompBundle;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +67,8 @@ class GeneratorRunner
 		fxBeanGenerator.run();
 
 		log.debug("create java fxml for bean editor based on interface JavaModelDemo");
-		FXBeanEditorFXMLGenerator fxBeanEditorFXMLGenerator =
-				new FXBeanEditorFXMLGenerator
+		FXBeanViewFXMLGenerator fxBeanEditorFXMLGenerator =
+				new FXBeanViewFXMLGenerator
 				(
 						GeneratorRunner.class.getPackageName(),
 						"FXBeanEditorDemo.grid.",
