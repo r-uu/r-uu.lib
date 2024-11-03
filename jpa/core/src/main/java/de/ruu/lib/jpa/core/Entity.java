@@ -22,18 +22,18 @@ public interface Entity<I extends Serializable> extends Serializable
 	// fluent style accessors
 	/** @return primary key, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
 	@Nullable I     id     ();
-	/** @return version, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
+	/** @return version    , may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
 	@Nullable Short version();
 
 	// java bean style accessors for those who do not work with fluent style accessors (mapstruct)
 	/** @return primary key, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
 	default @Nullable I     getId     () { return id();      };
-	/** @return version, may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
+	/** @return version    , may be {@code null}, {@code null} indicates that entity was not (yet) persisted. */
 	default @Nullable Short getVersion() { return version(); };
 
 	/** @return optional primary key, {@link Optional#empty()} indicates that entity was not (yet) persisted. */
-	default public @NonNull Optional<I>     optionalId()      { return Optional.ofNullable(id());      }
-	/** @return optional version, {@link Optional#empty()} indicates that entity was not (yet) persisted. */
+	default public @NonNull Optional<I>     optionalId()      { return Optional.ofNullable(id     ()); }
+	/** @return optional version,     {@link Optional#empty()} indicates that entity was not (yet) persisted. */
 	default public @NonNull Optional<Short> optionalVersion() { return Optional.ofNullable(version()); }
 
 	public static class EntityInfo<I extends Serializable> implements Entity<I>

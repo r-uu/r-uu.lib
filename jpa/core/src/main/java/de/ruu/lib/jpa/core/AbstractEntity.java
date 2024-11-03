@@ -1,5 +1,6 @@
 package de.ruu.lib.jpa.core;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -41,13 +42,21 @@ public abstract class AbstractEntity<D extends AbstractDTO<?>> implements Entity
 	 * <p>may not be modified from outside type hierarchy (from non-{@link AbstractEntity}-subclasses)
 	 * <p>not {@code final} or {@code @NonNull} because otherwise there has to be a constructor with {@code id}-parameter
 	 */
+	@Nullable
 	@Setter(NONE) // redundant as long as there are no setters anyway, but just in case ...
 	@Id @GeneratedValue private Long id;
 
 	/** may be <pre>null</pre> if {@link AbstractEntity} was not (yet) persisted. */
+	@Nullable
 	@Setter(NONE) // redundant as long as there are no setters anyway, but just in case ...
 	@Version @Column(nullable = false)
 	private Short version;
+
+	protected AbstractEntity(Entity<Long> entity)
+	{
+		id      = entity.id();
+		version = entity.version();
+	}
 
 	// java bean style accessors for those who do not work with fluent style accessors (mapstruct)
 	/** bean style getter to comply with java bean conventions*/
@@ -70,7 +79,9 @@ public abstract class AbstractEntity<D extends AbstractDTO<?>> implements Entity
 	 * @param source
 	 * @throws NullPointerException if {@code source} is {@code null}
 	 */
-	protected <D extends AbstractDTO> void mapIdAndVersion(@NonNull D source)
+	protected void mapIdAndVersion(@NonNull D source) { mapIdAndVersion((Entity<Long>) source); }
+
+	protected void mapIdAndVersion(@NonNull Entity<Long> source)
 	{
 		// set fields that can not be modified from outside
 		id      = source.getId();

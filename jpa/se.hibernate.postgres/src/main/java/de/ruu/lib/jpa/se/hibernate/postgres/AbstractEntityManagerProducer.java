@@ -31,7 +31,7 @@ public abstract class AbstractEntityManagerProducer
 	private Integer port;
 
 	@Inject
-	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbname", defaultValue = "lib_test")
+	@ConfigProperty(name = "de.ruu.lib.jpa.se.hibernate.postgres.AbstractEntityManagerProducer.dbname", defaultValue = "lib")
 	private String dbName;
 
 	@Inject

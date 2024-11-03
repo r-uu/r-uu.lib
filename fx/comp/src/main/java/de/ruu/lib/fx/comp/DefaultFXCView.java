@@ -1,17 +1,17 @@
 package de.ruu.lib.fx.comp;
 
-import static de.ruu.lib.util.BooleanFunctions.not;
-import static java.util.Objects.isNull;
-
-import java.net.URL;
-import java.util.Optional;
-
 import de.ruu.lib.fx.FXUtil;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import lombok.extern.slf4j.Slf4j;
+
+import java.net.URL;
+import java.util.Optional;
+
+import static de.ruu.lib.util.BooleanFunctions.not;
+import static java.util.Objects.isNull;
 
 /**
  * Abstract base class for JavaFX visual components (<code>FXVComp</code> views).
