@@ -1,5 +1,6 @@
 package de.ruu.lib.jpa.core;
 
+import jakarta.annotation.Nullable;
 import jakarta.json.bind.annotation.JsonbProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public abstract class AbstractDTO<E extends AbstractEntity<?>> implements Entity
 	 */
 	@Setter(NONE) // redundant as long as there are no setters anyway, but just in case ...
 	@JsonbProperty("id")
-	private Long id;
+	@Nullable private Long id;
 
 	/**
 	 * May be {@code null} if corresponding {@link AbstractEntity} was not (yet) persisted.<p>
@@ -51,7 +52,7 @@ public abstract class AbstractDTO<E extends AbstractEntity<?>> implements Entity
 	 */
 	@Setter(NONE) // redundant as long as there are no setters anyway, but just in case ...
 	@JsonbProperty("version")
-	private Short version;
+	@Nullable private Short version;
 
 	/** no args default constructor for mapstruct */
 	protected AbstractDTO() { }
