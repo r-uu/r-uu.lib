@@ -5,8 +5,111 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/archunit/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/common/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/se/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/comp.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/comp/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/comp/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/tableview/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jackson/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jdbc/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jdbc/postgres/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct.demo.bidirectional/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.eclipselink/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jsonb-demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jsonb/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/junit/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/mapstruct-explore/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/mapstruct/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/tree/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/util/target/maven-archiver/pom.properties" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/archunit/pom.xml" />
+        <option value="$PROJECT_DIR$/archunit/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/common/pom.xml" />
+        <option value="$PROJECT_DIR$/cdi/common/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/cdi/demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/cdi/se/pom.xml" />
+        <option value="$PROJECT_DIR$/cdi/se/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/comp.demo/pom.xml" />
+        <option value="$PROJECT_DIR$/fx/comp.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/comp/pom.xml" />
+        <option value="$PROJECT_DIR$/fx/comp/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/core/pom.xml" />
+        <option value="$PROJECT_DIR$/fx/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/fx/demo/pom.xml" />
+        <option value="$PROJECT_DIR$/fx/demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/core/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/core/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor.demo/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean.editor/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/fx/bean/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/comp/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/fx/comp/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/gen/java/fx/tableview/pom.xml" />
+        <option value="$PROJECT_DIR$/gen/java/fx/tableview/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jackson/pom.xml" />
+        <option value="$PROJECT_DIR$/jackson/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jdbc/core/pom.xml" />
+        <option value="$PROJECT_DIR$/jdbc/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jdbc/postgres/pom.xml" />
+        <option value="$PROJECT_DIR$/jdbc/postgres/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct.demo.bidirectional/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct.demo.bidirectional/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/core.mapstruct/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/core/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/core/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.eclipselink/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/se.eclipselink/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres.demo/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres.demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate.postgres/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/se.hibernate/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jpa/se/pom.xml" />
+        <option value="$PROJECT_DIR$/jpa/se/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jsonb-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/jsonb-demo/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/jsonb/pom.xml" />
+        <option value="$PROJECT_DIR$/jsonb/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/junit/pom.xml" />
+        <option value="$PROJECT_DIR$/junit/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/mapstruct-explore/pom.xml" />
+        <option value="$PROJECT_DIR$/mapstruct-explore/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/mapstruct/pom.xml" />
+        <option value="$PROJECT_DIR$/mapstruct/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/tree/pom.xml" />
+        <option value="$PROJECT_DIR$/tree/target/maven-archiver/pom.properties" />
+        <option value="$PROJECT_DIR$/util/pom.xml" />
+        <option value="$PROJECT_DIR$/util/target/maven-archiver/pom.properties" />
+      </set>
+    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="22" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="23" project-jdk-type="JavaSDK" />
 </project>
