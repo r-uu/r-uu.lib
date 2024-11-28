@@ -42,14 +42,16 @@ public class EmployeeDTO extends AbstractMappedDTO<EmployeeEntity>
 	// java bean style accessors for those who do not work with fluent style accessors (mapstruct)
 	public @NonNull String getName() { return name(); }
 
-	@Override public void beforeMapping(@NonNull EmployeeEntity source)
+	void beforeMapping(@NonNull EmployeeEntity source)
 	{
+		super.beforeMapping(source);
 		log.debug("before mapping starting");
 		log.debug("before mapping finished");
 	}
 
-	@Override public void afterMapping(@NonNull EmployeeEntity source)
+	void afterMapping(@NonNull EmployeeEntity source)
 	{
+		super.afterMapping(source);
 		log.debug("after mapping starting");
 		log.debug("after mapping finished");
 	}

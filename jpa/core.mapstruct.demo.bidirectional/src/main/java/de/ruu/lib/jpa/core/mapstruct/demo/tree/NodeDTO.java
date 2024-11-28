@@ -2,6 +2,7 @@ package de.ruu.lib.jpa.core.mapstruct.demo.tree;
 
 import de.ruu.lib.jpa.core.AbstractDTO;
 import de.ruu.lib.jpa.core.AbstractEntity;
+import de.ruu.lib.jpa.core.Entity;
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedDTO;
 import de.ruu.lib.util.Strings;
 import jakarta.annotation.Nullable;
@@ -93,17 +94,14 @@ public class NodeDTO extends AbstractMappedDTO<NodeEntity> implements Node<NodeD
 	}
 
 	@Override
-	public void afterMapping(@NonNull NodeEntity input)
-	{
-		log.debug("starting");
-		log.debug("finished");
-	}
-
-	@Override
 	public @NonNull NodeEntity toSource()
 	{
 		return MapperNodeEntityNodeDTO.INSTANCE.map(this);
 	}
+
+	protected void beforeMapping(@NonNull Entity<Long> input) { super.beforeMapping(input); }
+
+	protected void afterMapping(@NonNull NodeEntity input) { super.afterMapping(input); }
 
 	public void beforeMapping(@NonNull NodeSimple source) { mapIdAndVersion(source); }
 

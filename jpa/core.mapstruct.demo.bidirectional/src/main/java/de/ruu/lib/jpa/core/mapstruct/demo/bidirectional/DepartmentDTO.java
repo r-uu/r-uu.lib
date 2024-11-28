@@ -1,5 +1,6 @@
 package de.ruu.lib.jpa.core.mapstruct.demo.bidirectional;
 
+import de.ruu.lib.jpa.core.Entity;
 import de.ruu.lib.jpa.core.mapstruct.AbstractMappedDTO;
 import de.ruu.lib.util.Strings;
 import lombok.*;
@@ -41,15 +42,17 @@ public class DepartmentDTO extends AbstractMappedDTO<DepartmentEntity>
 	@Getter(NONE)
 	private Set<EmployeeDTO> employees;
 
-	@Override public void beforeMapping(@NonNull DepartmentEntity input)
+	void beforeMapping(@NonNull DepartmentEntity input)
 	{
+		super.beforeMapping(input);
 		if (input.optionalEmployees().isPresent())
 				input.optionalEmployees().get().forEach(e -> add(e.toTarget()));
 		name(input.name());
 	}
 
-	@Override public void afterMapping(@NonNull DepartmentEntity input)
+	void afterMapping(@NonNull DepartmentEntity input)
 	{
+		super.afterMapping(input);
 		log.debug("starting");
 		log.debug("finished");
 	}

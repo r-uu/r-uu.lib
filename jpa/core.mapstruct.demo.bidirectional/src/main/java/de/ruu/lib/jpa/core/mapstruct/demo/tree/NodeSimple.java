@@ -92,7 +92,7 @@ public class NodeSimple extends AbstractMappedNode<NodeDTO, NodeEntity> implemen
 		return result;
 	}
 
-	@Override public void afterMapping(@NonNull NodeDTO    input) { }
+	protected void afterMapping(@NonNull NodeDTO    input) { super.a}
 	@Override public void afterMapping(@NonNull NodeEntity input) { }
 
 	@Override public @NonNull NodeDTO    toTarget() { return MapperNodeSimpleNodeDTO   .INSTANCE.map(this); }

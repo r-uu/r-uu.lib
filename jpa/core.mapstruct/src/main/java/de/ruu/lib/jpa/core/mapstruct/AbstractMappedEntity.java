@@ -12,7 +12,7 @@ import lombok.NonNull;
  * their restricted visibility or for other reasons such as mapping collections, optional values or necessary
  * translation of one value range into another.
  */
-public abstract class AbstractMappedEntity<D extends AbstractMappedDTO<AbstractMappedEntity<?>>>
+public abstract class AbstractMappedEntity<D extends AbstractMappedDTO<?>>
 		extends AbstractEntity<D>
 		implements BiMappedSource<D>
 {
@@ -22,6 +22,7 @@ public abstract class AbstractMappedEntity<D extends AbstractMappedDTO<AbstractM
 	 * @param input provides values for hidden fields returned by {@link AbstractDTO#id()} and {@link
 	 *              AbstractDTO#version()}.
 	 */
-	protected          void beforeMapping(@NonNull Entity<Long> input) { mapIdAndVersion(input); }
-	protected abstract void afterMapping (@NonNull Entity<Long> input);
+	protected void beforeMapping(@NonNull Entity<Long> input) { mapIdAndVersion(input); }
+	@SuppressWarnings("unused")
+	protected void afterMapping (@NonNull Entity<Long> input) { };
 }

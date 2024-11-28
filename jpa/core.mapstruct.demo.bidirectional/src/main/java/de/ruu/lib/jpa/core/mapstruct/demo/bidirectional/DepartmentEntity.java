@@ -54,15 +54,17 @@ public class DepartmentEntity extends AbstractMappedEntity<DepartmentDTO>
 		return this;
 	}
 
-	@Override public void beforeMapping(@NonNull DepartmentDTO input)
+	void beforeMapping(@NonNull DepartmentDTO input)
 	{
+		super.beforeMapping(input);
 		if (input.optionalEmployees().isPresent())
 				input.optionalEmployees().get().forEach(e -> add(e.toSource()));
 		name(input.name());
 	}
 
-	@Override public void afterMapping(@NonNull DepartmentDTO input)
+	void afterMapping(@NonNull DepartmentDTO input)
 	{
+		super.afterMapping(input);
 		log.debug("starting");
 		log.debug("finished");
 	}

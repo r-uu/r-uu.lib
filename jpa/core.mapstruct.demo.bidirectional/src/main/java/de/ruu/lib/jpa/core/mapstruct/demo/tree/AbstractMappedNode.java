@@ -11,6 +11,6 @@ public abstract class AbstractMappedNode
 		extends AbstractNode<D, E>
 		implements BiMappedSource<D>, BiMappedTarget<E>
 {
-	@Override public void beforeMapping(@NonNull D input) { mapIdAndVersion(input); }
-	@Override public void beforeMapping(@NonNull E input) { mapIdAndVersion(input); }
+	void beforeMapping(@NonNull D input) { mapIdAndVersion(input); }
+	void beforeMapping(@NonNull E input) { mapIdAndVersion(input); }
 }
