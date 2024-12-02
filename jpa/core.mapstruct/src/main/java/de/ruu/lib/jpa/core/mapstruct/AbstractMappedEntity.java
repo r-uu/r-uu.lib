@@ -22,7 +22,7 @@ public abstract class AbstractMappedEntity<D extends AbstractMappedDTO<?>>
 	 * @param input provides values for hidden fields returned by {@link AbstractDTO#id()} and {@link
 	 *              AbstractDTO#version()}.
 	 */
-	protected void beforeMapping(@NonNull Entity<Long> input) { mapIdAndVersion(input); }
+	public void beforeMapping(@NonNull Entity<Long> input) { mapIdAndVersion(input); }
 	@SuppressWarnings("unused")
 	protected void afterMapping (@NonNull Entity<Long> input) { };
 }

@@ -5,20 +5,21 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ParentTarget<C extends ChildTarget<? extends ParentTarget<C>, C>>
-		extends ParentAbstract<C>
-		implements BiMappedTarget<ParentSource<?>>
+public class ParentTarget
+		extends ParentAbstract<ParentTarget, ChildTarget>
+		implements BiMappedTarget<ParentSource>
 {
 	/** use this constructor to create regular person objects */
 	public ParentTarget(@NonNull String name) { super(name); }
 
-	void beforeMapping(@NonNull ParentSource<C> input)
+	void beforeMapping(@NonNull ParentSource input)
 	{
 		log.debug("before mapping starting");
 
-		for (C child : input.children())
+		for (ChildSource child : input.children())
 		{
-			children.add(child.toTarget());
+			log.debug("child type {}", child.getClass().getName());
+			children().add(child.toTarget());
 		}
 
 		log.debug("before mapping finished");
@@ -30,5 +31,5 @@ public class ParentTarget<C extends ChildTarget<? extends ParentTarget<C>, C>>
 		log.debug("after mapping finished");
 	}
 
-	@Override public @NonNull ParentSource toSource() { return Mapper.INSTANCE.map(this); }
+	@Override public @NonNull ParentSource toSource() { return Map_Parent.INSTANCE.map(this); }
 }

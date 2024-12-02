@@ -6,6 +6,7 @@ module mapstruct.explore
 	requires org.slf4j;
 	requires de.ruu.lib.mapstruct;
 	requires de.ruu.lib.util;
+	requires jakarta.annotation;
 
 //	opens de.ruu.lib.mapstruct.explore.objectfactory to org.junit.platform.commons
 //			                                              , org.mapstruct

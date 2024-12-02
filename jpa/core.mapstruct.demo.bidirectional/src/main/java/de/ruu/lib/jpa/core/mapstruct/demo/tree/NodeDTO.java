@@ -99,9 +99,8 @@ public class NodeDTO extends AbstractMappedDTO<NodeEntity> implements Node<NodeD
 		return MapperNodeEntityNodeDTO.INSTANCE.map(this);
 	}
 
-	protected void beforeMapping(@NonNull Entity<Long> input) { super.beforeMapping(input); }
-
-	protected void afterMapping(@NonNull NodeEntity input) { super.afterMapping(input); }
+	protected void beforeMapping(@NonNull NodeEntity input) { super.beforeMapping(input); }
+	protected void afterMapping (@NonNull NodeEntity input) { super.afterMapping (input); }
 
 	public void beforeMapping(@NonNull NodeSimple source) { mapIdAndVersion(source); }
 

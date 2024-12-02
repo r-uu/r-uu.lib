@@ -17,9 +17,11 @@ import java.util.Set;
                           // @Getter(AccessLevel.NONE}))
 @Accessors(fluent = true) // generate fluent accessors with lombok and java-bean-style-accessors in non-abstract classes
                           // with ide, fluent accessors will (usually / by default) be ignored by mapstruct
-abstract class ParentAbstract<
-		P extends ParentAbstract<P, C>,
-		C extends ChildAbstract <P, C>>
+abstract class ParentAbstract
+		<
+				P extends ParentAbstract<P, C>,
+				C extends ChildAbstract <P, C>
+		>
 		extends PersonAbstract
 	  implements Parent<P, C>
 {

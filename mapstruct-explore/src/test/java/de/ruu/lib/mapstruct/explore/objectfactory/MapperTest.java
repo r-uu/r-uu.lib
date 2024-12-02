@@ -3,7 +3,6 @@ package de.ruu.lib.mapstruct.explore.objectfactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import static de.ruu.lib.mapstruct.explore.objectfactory.Mapper.INSTANCE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -18,14 +17,14 @@ class MapperTest
 
 		// map
 		ParentSource parentSource = new ParentSource(name);
-		ParentTarget parentTarget = INSTANCE.map(parentSource);
+		ParentTarget parentTarget = Map_Parent.INSTANCE.map(parentSource);
 
 		assertThat(parentTarget       , is(not(nullValue())));
 		assertThat(parentTarget.name(), is(parentSource.name()));
 		assertThat(parentTarget.name(), is(name));
 
 		// remap
-		ParentSource remappedParentSource = INSTANCE.map(parentTarget);
+		ParentSource remappedParentSource = Map_Parent.INSTANCE.map(parentTarget);
 
 		assertThat(remappedParentSource       , is(not(nullValue())));
 		assertThat(remappedParentSource.name(), is(parentTarget.name()));
@@ -34,10 +33,7 @@ class MapperTest
 
 		// add children
 		int childCount = 3;
-		for (int i = 0; i < childCount; i++)
-		{
-			ChildSource child = new ChildSource(parentSource, "" + i);
-		}
+		for (int i = 0; i < childCount; i++) { new ChildSource(parentSource, "" + i); }
 
 		// map
 		parentTarget = parentSource.toTarget();
@@ -48,7 +44,7 @@ class MapperTest
 		assertThat(parentTarget.children().size(), is(childCount));
 
 		// remap
-		remappedParentSource = INSTANCE.map(parentTarget);
+		remappedParentSource = Map_Parent.INSTANCE.map(parentTarget);
 
 		assertThat(remappedParentSource                  , is(not(nullValue())));
 		assertThat(remappedParentSource.name()           , is(parentTarget.name()));

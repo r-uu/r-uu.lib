@@ -5,28 +5,29 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ChildTarget<P extends ParentTarget<C>,
-                         C extends ChildTarget<P, C>>
-		extends ChildAbstract<P, C>
-		implements BiMappedTarget<ChildSource<?, ?>>
+public class ChildTarget
+		extends ChildAbstract<ParentTarget, ChildTarget>
+		implements BiMappedTarget<ChildSource>
 {
-	ChildTarget(@NonNull P parent, @NonNull String name)
+	ChildTarget(@NonNull String name) { super(name); }
+
+	ChildTarget(@NonNull ParentTarget parent, @NonNull String name)
 	{
 		super(parent, name);
 		parent.children().add(this);
 	}
 
-	void beforeMapping(@NonNull ChildSource<?> target)
+	void beforeMapping(@NonNull ChildSource source)
 	{
 		log.debug("before mapping starting");
 		log.debug("before mapping finished");
 	}
 
-	void afterMapping(@NonNull ChildSource<?> target)
+	void afterMapping(@NonNull ChildSource source)
 	{
 		log.debug("after mapping starting");
 		log.debug("after mapping finished");
 	}
 
-	@Override public @NonNull ChildSource<?> toSource() { return Mapper.INSTANCE.map(this); }
+	@Override public @NonNull ChildSource toSource() { return Map_Child.INSTANCE.map(this); }
 }

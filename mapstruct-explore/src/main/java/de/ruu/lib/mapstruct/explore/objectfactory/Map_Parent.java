@@ -5,22 +5,21 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeforeMapping;
+import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ObjectFactory;
 import org.mapstruct.factory.Mappers;
 
 @Slf4j
-@org.mapstruct.Mapper
-abstract class Mapper
+@Mapper
+abstract class Map_Parent
 {
-	static Mapper INSTANCE = Mappers.getMapper(Mapper.class);
+	static Map_Parent INSTANCE = Mappers.getMapper(Map_Parent.class);
 
-	private static ReferenceCycleTracking CONTEXT  = new ReferenceCycleTracking();
+	private final static ReferenceCycleTracking CONTEXT  = new ReferenceCycleTracking();
 
 	abstract ParentTarget map(ParentSource source);
 	abstract ParentSource map(ParentTarget target);
-	abstract ChildTarget  map(ChildSource  source);
-	abstract ChildSource  map(ChildTarget  target);
 
 	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
 	@BeforeMapping void beforeMapping(ParentSource source, @MappingTarget ParentTarget target)
@@ -50,34 +49,6 @@ abstract class Mapper
 		target.afterMapping(source); // invoke callback for mapping
 	}
 
-	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
-	@BeforeMapping void beforeMapping(ChildSource source, @MappingTarget ChildTarget target)
-	{
-		log.debug("source {}, target  {}", source, target);
-		target.beforeMapping(source); // invoke callback for mapping
-	}
-
-	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
-	@BeforeMapping void beforeMapping(ChildTarget source, @MappingTarget ChildSource target)
-	{
-		log.debug("source {}, target  {}", source, target);
-		target.beforeMapping(source); // invoke callback for mapping
-	}
-
-	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
-	@AfterMapping void afterMapping(ChildSource source, @MappingTarget ChildTarget target)
-	{
-		log.debug("source {}, target  {}", source, target);
-		target.afterMapping(source); // invoke callback for mapping
-	}
-
-	/** annotating parameter {@code target} with {@link MappingTarget} is essential for this method being called */
-	@AfterMapping void afterMapping(ChildTarget source, @MappingTarget ChildSource target)
-	{
-		log.debug("source {}, target  {}", source, target);
-		target.afterMapping(source); // invoke callback for mapping
-	}
-
 	@ObjectFactory @NonNull ParentSource lookupOrCreate(@NonNull ParentTarget input)
 	{
 		ParentSource result = CONTEXT.get(input, ParentSource.class);
@@ -96,30 +67,6 @@ abstract class Mapper
 		if (result == null)
 		{
 			result = new ParentTarget(input.name());
-			CONTEXT.put(input, result);
-			CONTEXT.put(result, input);
-		}
-		return result;
-	}
-
-	@ObjectFactory @NonNull ChildSource lookupOrCreate(@NonNull ChildTarget input)
-	{
-		ChildSource result = CONTEXT.get(input, ChildSource.class);
-		if (result == null)
-		{
-			result = new ChildSource(input.parent(), input.name());
-			CONTEXT.put(input, result);
-			CONTEXT.put(result, input);
-		}
-		return result;
-	}
-
-	@ObjectFactory @NonNull ChildTarget lookupOrCreate(@NonNull ChildSource input)
-	{
-		ChildTarget result = CONTEXT.get(input, ChildTarget.class);
-		if (result == null)
-		{
-			result = new ChildTarget(input.parent(), input.name());
 			CONTEXT.put(input, result);
 			CONTEXT.put(result, input);
 		}
