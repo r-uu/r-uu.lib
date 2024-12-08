@@ -24,5 +24,5 @@ public abstract class AbstractMappedEntity<D extends AbstractMappedDTO<?>>
 	 */
 	public void beforeMapping(@NonNull Entity<Long> input) { mapIdAndVersion(input); }
 	@SuppressWarnings("unused")
-	protected void afterMapping (@NonNull Entity<Long> input) { };
+	public void afterMapping (@NonNull Entity<Long> input) { };
 }
