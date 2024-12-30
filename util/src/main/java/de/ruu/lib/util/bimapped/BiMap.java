@@ -47,15 +47,9 @@ public class BiMap
 	 * @param source
 	 * @param target
 	 * @throws NullPointerException if {@code source} or {@code target} are {@code null}
-	 * @throws IllegalArgumentException if {@code source} and {@code target} do not have the same type or
-	 *                                  one of them is already contained as key in {@link #map}.
 	 */
 	public void put(@NonNull Object source, @NonNull Object target)
 	{
-		if (source.getClass().equals(target.getClass()))
-				throw new IllegalArgumentException(
-						"source and target objects must not have the same type " + source.getClass().getName());
-
 		Object object = map.get(source);
 
 		if (object != null)
