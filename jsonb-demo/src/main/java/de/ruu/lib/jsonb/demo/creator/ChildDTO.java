@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * data class for Jsonb tests
  * <p>
- * data classes have to be top-level, {@code public} and equipped with a {@code public} no-args default constructor
+ * data classes have to be top-level, {@code public} and equipped with a no-args default constructor
  *
  * @author ruu
  */

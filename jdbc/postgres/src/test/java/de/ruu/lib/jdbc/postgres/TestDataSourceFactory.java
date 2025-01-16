@@ -14,33 +14,33 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 class TestDataSourceFactory
 {
-	@DisabledOnServerNotListening(propertyNameHost = "database_host", propertyNamePort = "database_port")
+	@DisabledOnServerNotListening(propertyNameHost = "database.host", propertyNamePort = "database.port")
 	@Test void testDataSourceFactory() throws SQLException
 	{
 		String databaseHost =
 				ConfigProvider
 						.getConfig()
-						.getOptionalValue("database_host", String .class)
+						.getOptionalValue("database.host", String .class)
 						.orElse("localhost");
 		int    databasePort =
 				ConfigProvider
 						.getConfig()
-						.getOptionalValue("database_port", Integer.class)
+						.getOptionalValue("database.port", Integer.class)
 						.orElse(5432);
 		String databaseName =
 				ConfigProvider
 						.getConfig()
-						.getOptionalValue("database_name", String.class)
+						.getOptionalValue("database.name", String.class)
 						.orElse("lib_test");
 		String databaseUser =
 				ConfigProvider
 						.getConfig()
-						.getOptionalValue("database_user", String.class)
+						.getOptionalValue("database.user", String.class)
 						.orElse("lib_test");
 		String databasePass =
 				ConfigProvider
 						.getConfig()
-						.getOptionalValue("database_pass", String.class)
+						.getOptionalValue("database.pass", String.class)
 						.orElse("lib_test");
 
 		JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);

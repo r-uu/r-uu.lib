@@ -57,7 +57,7 @@ class TestJsonBWithCreator
 
 			ParentDTO parentOut = optional.get();
 
-			// find each childIn in parentOut.children
+			// find and test each childIn in parentOut.children
 			for (ChildDTO childIn : parentIn.getChildren())
 			{
 				Optional<ChildDTO> optionalInner =

@@ -25,9 +25,9 @@ public abstract class AbstractJDBCProperties
 	{
 		Properties result = new Properties();
 
-		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_DRIVER,   driver);
-		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_URL,      url);
-		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_USER,     user);
+		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_DRIVER  , driver);
+		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_URL     , url);
+		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_USER    , user);
 		result.put(PROPERTY_KEY_JAKARTA_PERSISTENCE_JDBC_PASSWORD, password);
 
 		return result;
