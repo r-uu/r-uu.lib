@@ -52,7 +52,7 @@ class TestJsonBWithCreator
 					parentsWithChildrenOut
 							.stream()
 							.filter(p -> p.equals(parentIn))
-							.findAny();
+							.findFirst();
 			assertThat(optional.isPresent(), is(true));
 
 			ParentDTO parentOut = optional.get();
@@ -65,7 +65,7 @@ class TestJsonBWithCreator
 								.getChildren()
 								.stream()
 								.filter(c -> c.equals(childIn))
-								.findAny();
+								.findFirst();
 				assertThat(optionalInner.isPresent(), is(true));
 			}
 		}
