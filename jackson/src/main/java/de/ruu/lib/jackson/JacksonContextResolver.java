@@ -29,7 +29,8 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 		MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		MAPPER.registerModule(new JavaTimeModule());
 		MAPPER.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-		log.debug("created jackson context resolver");
+		MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+		log.debug("created jackson object mapper");
 	}
 
 	@Override public ObjectMapper getContext(Class<?> type)
@@ -37,6 +38,7 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 		log.debug("providing jackson object mapper");
 		return MAPPER;
 	}
-	public ObjectMapper context() { return MAPPER; }
+
+	public ObjectMapper context() { return getContext(null); }
 	public ObjectMapper mapper () { return context(); }
 }

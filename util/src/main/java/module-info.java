@@ -13,8 +13,7 @@ module de.ruu.lib.util
 	requires org.slf4j;
 
 	requires java.compiler;
-	requires jakarta.json;
-	requires jakarta.json.bind;
+//	requires jakarta.json;
+//	requires jakarta.json.bind;
 	requires jakarta.ws.rs;
-	requires org.apache.poi.poi;
 }

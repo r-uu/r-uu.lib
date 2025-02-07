@@ -189,7 +189,7 @@ class de.ruu.lib.util.jsonb.Parent {
 + Set<Child> getChildren()
 + String toString()
 }
-class de.ruu.lib.util.rs.filter.logging.ContainerFilter {
+class de.ruu.lib.util.rs.filter.logging.ContainerLoggingFilter {
 + void filter(ContainerRequestContext,ContainerResponseContext)
 + void filter(ContainerRequestContext)
 }
@@ -512,7 +512,7 @@ class de.ruu.lib.util.jsonb.JsonbConfigurator {
 + {static} Jsonb context(JsonbConfig)
 + {static} JsonbConfig config()
 }
-class de.ruu.lib.util.rs.filter.logging.ClientRequestLoggingFilter {
+class de.ruu.lib.util.rs.filter.logging.ClientLoggingFilter {
 + void filter(ClientRequestContext)
 }
 class de.ruu.lib.util.jsonb.Child {
@@ -565,8 +565,8 @@ de.ruu.lib.util.tree.NodeAbstract <|-- de.ruu.lib.util.tree.Node$NodeSimple
 de.ruu.lib.util.dto.DTO <|.. de.ruu.lib.util.dto.simple.SampleDTO
 de.ruu.lib.util.dto.DTO <|.. de.ruu.lib.util.dto.bidirectional.OneDTO
 de.ruu.lib.util.rs.RuntimeException <|-- de.ruu.lib.util.rs.RestClientCallException
-jakarta.ws.rs.container.ContainerRequestFilter <|.. de.ruu.lib.util.rs.filter.logging.ContainerFilter
-jakarta.ws.rs.container.ContainerResponseFilter <|.. de.ruu.lib.util.rs.filter.logging.ContainerFilter
+jakarta.ws.rs.container.ContainerRequestFilter <|.. de.ruu.lib.util.rs.filter.logging.ContainerLoggingFilter
+jakarta.ws.rs.container.ContainerResponseFilter <|.. de.ruu.lib.util.rs.filter.logging.ContainerLoggingFilter
 de.ruu.lib.util.classpath.ResourceContainerBase <|-- de.ruu.lib.util.classpath.ResourceContainerJarFile
 java.io.Serializable <|-- de.ruu.lib.util.dto.DTO
 de.ruu.lib.util.dto.DTOProvider <|.. de.ruu.lib.util.dto.bidirectional.ManyEntity
@@ -604,7 +604,7 @@ de.ruu.lib.util.dto.DTOProvider <|.. de.ruu.lib.util.dto.jpa.ParentEntity
 de.ruu.lib.util.dto.jpa.AbstractEntity <|-- de.ruu.lib.util.dto.jpa.ParentEntity
 de.ruu.lib.util.classpath.ClasspathResource <|-- de.ruu.lib.util.classpath.ClasspathResourceZipEntry
 jakarta.ws.rs.ext.ContextResolver <|.. de.ruu.lib.util.jsonb.JsonbConfigurator
-jakarta.ws.rs.client.ClientRequestFilter <|.. de.ruu.lib.util.rs.filter.logging.ClientRequestLoggingFilter
+jakarta.ws.rs.client.ClientRequestFilter <|.. de.ruu.lib.util.rs.filter.logging.ClientLoggingFilter
 jakarta.json.bind.config.PropertyVisibilityStrategy <|.. de.ruu.lib.util.jsonb.PrivateElementsVisibleStrategy
 de.ruu.lib.util.tree.Node <|-- de.ruu.lib.util.tree.Leaf
 de.ruu.lib.util.tree.Leaf +.. de.ruu.lib.util.tree.Leaf$LeafAbstract

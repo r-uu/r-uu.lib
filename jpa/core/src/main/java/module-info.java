@@ -6,10 +6,12 @@ module de.ruu.lib.jpa.core
 
 	opens   de.ruu.lib.jpa.core;
 
-	requires jakarta.persistence;
-	requires jakarta.annotation;
-	requires java.sql;
-	requires static lombok;
 	requires de.ruu.lib.util;
+
+	requires jakarta.annotation;
 	requires jakarta.json.bind;
+	requires jakarta.persistence;
+	requires java.sql;
+
+	requires static lombok;
 }

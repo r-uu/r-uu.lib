@@ -1,4 +1,4 @@
-package de.ruu.lib.util.excel;
+package de.ruu.lib.excel;
 
 import java.io.File;
 import java.io.IOException;

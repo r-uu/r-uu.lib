@@ -19,18 +19,19 @@
     <modules>
         <module>archunit</module>
         <module>cdi</module>
+        <module>excel</module>
         <module>fx</module>
         <module>gen</module>
         <module>jackson</module>
         <module>jdbc</module>
         <module>jpa</module>
-        <module>junit</module>
-        <module>mapstruct</module>
-        <module>util</module>
-        <module>mapstruct-explore</module>
         <module>jsonb</module>
         <module>jsonb-demo</module>
+        <module>junit</module>
+        <module>mapstruct</module>
+        <module>mapstruct-explore</module>
         <module>tree</module>
+        <module>util</module>
     </modules>
 
 </project>

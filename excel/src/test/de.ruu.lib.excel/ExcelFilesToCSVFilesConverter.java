@@ -1,4 +1,4 @@
-package de.ruu.lib.util.jira.excel;
+package de.ruu.lib.excel;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,12 +21,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 
-import de.ruu.lib.util.excel.ExcelDirectoryProcessor;
-import de.ruu.lib.util.excel.ExcelDirectoryProcessor.ExcelDirectoryProcessorSimple;
-import de.ruu.lib.util.excel.ExcelFileProcessor;
-import de.ruu.lib.util.excel.ExcelFileProcessor.ExcelFileProcessorSimple;
-import de.ruu.lib.util.excel.RowProcessor.RowProcessorSimple;
-import de.ruu.lib.util.excel.SheetProcessor.SheetProcessorSimple;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

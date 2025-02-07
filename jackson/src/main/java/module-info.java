@@ -1,6 +1,7 @@
 module de.ruu.lib.jackson
 {
 	exports de.ruu.lib.jackson;
+	opens   de.ruu.lib.jackson to com.fasterxml.jackson.databind;
 
 	requires jakarta.ws.rs;
 
