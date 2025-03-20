@@ -19,7 +19,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
  */
 @Provider
 @Produces(APPLICATION_JSON) // TODO find out if this is necessary
-@Slf4j
 public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 {
 	private final static ObjectMapper MAPPER = new ObjectMapper();
@@ -35,14 +34,9 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 //				.getDefaultVisibilityChecker()
 //				.withFieldVisibility(ANY)
 //				.withGetterVisibility(NONE);
-		log.debug("created jackson object mapper");
 	}
 
-	@Override public ObjectMapper getContext(Class<?> type)
-	{
-		log.debug("-".repeat(10) + " providing jackson object mapper " + "-".repeat(10));
-		return MAPPER;
-	}
+	@Override public ObjectMapper getContext(Class<?> type) { return MAPPER; }
 
 	public ObjectMapper context() { return getContext(null); }
 	public ObjectMapper mapper () { return context(); }

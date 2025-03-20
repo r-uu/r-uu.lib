@@ -4,6 +4,7 @@ import de.ruu.lib.fx.FXUtil;
 import de.ruu.lib.fx.control.autocomplete.AutoCompleteCellFactory;
 import de.ruu.lib.fx.control.autocomplete.AutoCompleteStringConverter;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -142,6 +143,9 @@ public class AutoCompleteTextField<T> extends HBox
 	}
 
 	public List<T> getItems() { return items; }
+
+	public ReadOnlyObjectProperty<T> selectedItemInListProperty()
+			{ return listView.getSelectionModel().selectedItemProperty(); }
 
 	public StringProperty textProperty() { return textField.textProperty(); }
 
