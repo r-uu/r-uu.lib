@@ -1,6 +1,5 @@
 package de.ruu.lib.jackson;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -15,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="jsonId", scope = TaskGroup.class)
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode
@@ -27,13 +27,17 @@ public class TaskGroup
 	@NonNull private String name;
 
 	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	// important: _both_ jackson annotations are necessary
-	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="jsonId", scope = Task.class)
+	@ToString         .Exclude
 	@JsonManagedReference("taskGroup-task")
-	@Nullable private Set<Task> tasks = new HashSet<>();
+	@Nullable private Set<Task> tasks;
 
 	private TaskGroup() {} // with this no-args constructor jackson does not need a @JsonCreator annotated method
 
-	TaskGroup(@NonNull String name) { this.name = name; }
+	public TaskGroup(@NonNull String name) { this.name = name; }
+
+	public boolean addTask(@NonNull Task task)
+	{
+		if (tasks == null) tasks = new HashSet<>();
+		return tasks.add(task);
+	}
 }

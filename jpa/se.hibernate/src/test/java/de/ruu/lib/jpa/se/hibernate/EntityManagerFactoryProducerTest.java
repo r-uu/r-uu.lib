@@ -22,7 +22,7 @@ import static org.hamcrest.core.Is.is;
 class EntityManagerFactoryProducerTest
 {
 	@DisabledOnServerNotListening(propertyNameHost = "database.host", propertyNamePort = "database.port")
-	@Test void testEntityManagerFactoryProducer() throws SQLException
+	@Test void entityManagerFactoryProducer() throws SQLException
 	{
 		String databaseHost =
 				ConfigProvider
@@ -52,9 +52,9 @@ class EntityManagerFactoryProducerTest
 
 		String persistenceUnitName = "lib_test";
 
-		de.ruu.lib.jdbc.postgres.JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);
+		JDBCURL jdbcURL = new JDBCURL(databaseHost, databasePort, databaseName);
 
-		log.debug("jdbc url: {}", jdbcURL);
+		log.debug("jdbc url  : {}", jdbcURL);
 
 		DataSource dataSource = new DataSourceFactory(jdbcURL, databaseUser, databasePass).create();
 

@@ -1,31 +1,39 @@
 package de.ruu.lib.util.rs.filter.logging;
 
-import java.io.IOException;
-
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static de.ruu.lib.util.BooleanFunctions.not;
 import static de.ruu.lib.util.StringBuilders.sb;
+import static java.util.Objects.isNull;
 
-@Provider
+// comment / uncomment @Provider ro deactivate / activate logging filter
+//@Provider
 @Slf4j
 public class ContainerLoggingFilter implements ContainerRequestFilter, ContainerResponseFilter
 {
 	@Override public void filter(ContainerRequestContext requestContext) throws IOException
 	{
 		StringBuilder result =
-				sb("\nrequest uriInfo.absolutePath=" + requestContext.getUriInfo().getAbsolutePath().toString());
+				sb("request uriInfo.absolutePath=" + requestContext.getUriInfo().getAbsolutePath().toString());
 
 		MultivaluedMap<String, String> headers = requestContext.getHeaders();
-		for (String key : headers.keySet())
+		if (not(headers.isEmpty())) result.append("\n").append(Util.toString(headers));
+
+		if (requestContext.hasEntity())
 		{
-			result.append("\nheaders - key: " + key+ ", value: " + headers.get(key));
+			InputStream stream = requestContext.getEntityStream();
+			String json = new String(stream.readAllBytes());                           // read string payload from stream
+			result.append("\nrequest entity payload as string\n").append(json);
+			requestContext.setEntityStream(new ByteArrayInputStream(json.getBytes())); // restore stream
 		}
 
 		log.debug(result.toString());
@@ -37,9 +45,10 @@ public class ContainerLoggingFilter implements ContainerRequestFilter, Container
 		StringBuilder result = sb("\nresponse");
 
 		MultivaluedMap<String, Object> headers = responseContext.getHeaders();
-		if (not(headers.isEmpty()))     result.append("\n" + Util.toString(headers));
+		if (not(headers.isEmpty())) result.append("\n").append(Util.toString(headers));
 
-//		if (requestContext.hasEntity()) result.append("entity=" + responseContext.getEntity().toString());
+		Object entity = responseContext.getEntity();
+		if (not(isNull(entity))) result.append("\nresponse entity payload as string\n").append(entity.toString());
 
 		log.debug(result.toString());
 	}

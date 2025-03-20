@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
+import lombok.NonNull;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -67,7 +68,7 @@ public abstract class AbstractRepository<T extends Entity<I>, I extends Serializ
 
 	@SuppressWarnings(value = "unchecked")
 	@Override
-	public Optional<T> find(I id) { return Optional.ofNullable((T) entityManager().find(clazz, id)); }
+	public Optional<T> find(@NonNull I id) { return Optional.ofNullable((T) entityManager().find(clazz, id)); }
 
 	@SuppressWarnings(value = "unchecked")
 	@Override

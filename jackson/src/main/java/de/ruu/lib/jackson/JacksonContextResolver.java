@@ -1,6 +1,5 @@
 package de.ruu.lib.jackson;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,6 +9,7 @@ import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
@@ -18,7 +18,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
  * needs to be provided. The implementation instantiates and customises a new {@link ObjectMapper}.
  */
 @Provider
-@Produces(APPLICATION_JSON)
+@Produces(APPLICATION_JSON) // TODO find out if this is necessary
 @Slf4j
 public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 {
@@ -28,14 +28,19 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper>
 	{
 		MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		MAPPER.registerModule(new JavaTimeModule());
-		MAPPER.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+		MAPPER.setVisibility(PropertyAccessor.FIELD, ANY);
 		MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+//		MAPPER
+//				.getSerializationConfig()
+//				.getDefaultVisibilityChecker()
+//				.withFieldVisibility(ANY)
+//				.withGetterVisibility(NONE);
 		log.debug("created jackson object mapper");
 	}
 
 	@Override public ObjectMapper getContext(Class<?> type)
 	{
-		log.debug("providing jackson object mapper");
+		log.debug("-".repeat(10) + " providing jackson object mapper " + "-".repeat(10));
 		return MAPPER;
 	}
 
