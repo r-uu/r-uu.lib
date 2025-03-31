@@ -28,7 +28,7 @@ import static java.util.Objects.isNull;
  *       be found in the same package as <code>XAppView</code>. Analogously a <code>XAppView.css</code> file from the
  *       same package (if present) is used to apply custom css definitions.
  *       <p>
- *       Note: Above mentioned naming conventions can be overridden in {@link DefaultFXCView#getFXLMResourceName()}
+ *       Note: Above mentioned naming conventions can be overridden in {@link DefaultFXCView#getFXMLResourceName()}
  *             and {@link DefaultFXCView#getCSSResourceName()}.
  *   </li>
  *   <li>For a {@link FXCApp} named <code>XApp</code> you can define a {@link FXCViewController} class

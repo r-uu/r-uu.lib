@@ -48,7 +48,7 @@ public abstract class DefaultFXCView implements FXCView
 	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the
 	 * file by leveraging the <code>FXVComp</code> default naming conventions (see
 	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link
-	 * #getFXLMResourceName()}
+	 * #getFXMLResourceName()}
 	 */
 	@Override public Parent getLocalRoot()
 	{
@@ -104,13 +104,13 @@ public abstract class DefaultFXCView implements FXCView
 
 		// configure fxmlLoader
 		//   find and set location
-		final String fxmlResourceName = getFXLMResourceName();
+		final String fxmlResourceName = getFXMLResourceName();
 		final URL    fxmlLocation     = getClass().getResource(fxmlResourceName);
 
 		if (fxmlLocation == null)
 		{
 			log.error(
-					"no resource exists for {} at location {}, does module {} open package {}?",
+					"no resource exists for {} at location {}, does module {} export _and_ open package {}?",
 					getClass().getName(),
 					fxmlResourceName,
 					getClass().getModule().getName(),
@@ -163,7 +163,7 @@ public abstract class DefaultFXCView implements FXCView
 	}
 
 	/** @return <code>.fxml</code> resource file name based on default naming convention */
-	protected String getFXLMResourceName()
+	protected String getFXMLResourceName()
 	{
 		if (null == fxmlResourceName) { fxmlResourceName = getClass().getSimpleName() + ".fxml"; }
 		return fxmlResourceName;

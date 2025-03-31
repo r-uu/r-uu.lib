@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -103,6 +104,7 @@ public class AutoCompleteTextField<T> extends HBox
 
 		textField = new TextField();
 		textField.setPromptText(promptText);
+		textField.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); }");
 		textField.setOnKeyReleased(e -> onKeyReleased(e));
 		textField.textProperty().addListener((obs, old, newValue) -> onTextFieldTextChanged(old, newValue));
 
@@ -113,8 +115,9 @@ public class AutoCompleteTextField<T> extends HBox
 		popup    .focusedProperty().addListener((obs, old, newValue) -> onPopupFocusChanged    (old, newValue));
 
 		HBox.setHgrow(textField, Priority.ALWAYS);
-
 		getChildren().add(textField);
+
+		setAlignment(Pos.CENTER_LEFT);
 	}
 
 	public T getValue() { return value.get(); }

@@ -67,4 +67,6 @@ public class BiMap
 		map.put(source, target);
 		map.put(target, source);
 	}
+
+	public void clear() { map.clear(); }
 }
