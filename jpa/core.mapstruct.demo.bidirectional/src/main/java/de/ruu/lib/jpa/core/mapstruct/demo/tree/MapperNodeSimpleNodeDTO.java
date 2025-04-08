@@ -13,7 +13,7 @@ abstract class MapperNodeSimpleNodeDTO
 {
 	static MapperNodeSimpleNodeDTO INSTANCE = Mappers.getMapper(MapperNodeSimpleNodeDTO.class);
 
-	private static ReferenceCycleTracking CONTEXT  = new ReferenceCycleTracking();
+	private final static ReferenceCycleTracking CONTEXT  = new ReferenceCycleTracking();
 
 	abstract NodeDTO    map(NodeSimple input);
 	abstract NodeSimple map(NodeDTO    input);

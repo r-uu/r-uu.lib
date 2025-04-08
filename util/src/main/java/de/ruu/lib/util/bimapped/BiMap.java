@@ -68,5 +68,5 @@ public class BiMap
 		map.put(target, source);
 	}
 
-	public void clear() { map.clear(); }
+//	public void clear() { map.clear(); }
 }

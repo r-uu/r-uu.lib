@@ -2,7 +2,9 @@ package de.ruu.lib.util.lang.model;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.*;
+import javax.lang.model.util.SimpleElementVisitor14;
 import javax.lang.model.util.SimpleElementVisitor7;
+import javax.lang.model.util.SimpleTypeVisitor14;
 import javax.lang.model.util.SimpleTypeVisitor7;
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,7 +21,7 @@ public abstract class JavaLangMetaModel
 	 * {@link TypeMirror#accept(TypeVisitor, Object)}. Provided instances are <code>null</code> if accepting <code>
 	 * TypeMirror</code> objects do not have {@link TypeKind#DECLARED}.
 	 */
-	private static class DeclaredTypeProviderVisitor extends SimpleTypeVisitor7<DeclaredType, Void>
+	private static class DeclaredTypeProviderVisitor extends SimpleTypeVisitor14<DeclaredType, Void>
 	{
 		@Override public DeclaredType visitDeclared(DeclaredType declaredType, Void parameter)
 		{
@@ -27,7 +29,7 @@ public abstract class JavaLangMetaModel
 		}
 	}
 
-	private static class ArrayTypeProviderVisitor extends SimpleTypeVisitor7<ArrayType, Void>
+	private static class ArrayTypeProviderVisitor extends SimpleTypeVisitor14<ArrayType, Void>
 	{
 		/**
 		 * @see javax.lang.model.util.SimpleTypeVisitor6#visitArray(ArrayType, Object)
@@ -46,7 +48,7 @@ public abstract class JavaLangMetaModel
 	 * TODO find out why string list and integer objects are not visited as types
 	 *      in SimpleElementVisitor6
 	 */
-	private static class TypeElementProviderVisitor extends SimpleElementVisitor7<TypeElement, Void>
+	private static class TypeElementProviderVisitor extends SimpleElementVisitor14<TypeElement, Void>
 	{
 		@Override public TypeElement visitType(TypeElement typeElement, Void parameter)
 		{
@@ -54,7 +56,7 @@ public abstract class JavaLangMetaModel
 		}
 	}
 
-	private static class ExecutableElementProviderVisitor extends SimpleElementVisitor7<ExecutableElement, Void>
+	private static class ExecutableElementProviderVisitor extends SimpleElementVisitor14<ExecutableElement, Void>
 	{
 		@Override public ExecutableElement visitExecutable(ExecutableElement executableElement, Void parameter)
 		{
@@ -62,7 +64,7 @@ public abstract class JavaLangMetaModel
 		}
 	}
 
-	private static class PackageElementProviderVisitor extends SimpleElementVisitor7<PackageElement, Void>
+	private static class PackageElementProviderVisitor extends SimpleElementVisitor14<PackageElement, Void>
 	{
 		@Override public PackageElement visitPackage(PackageElement packageElement, Void parameter)
 		{
@@ -70,7 +72,7 @@ public abstract class JavaLangMetaModel
 		}
 	}
 
-	private static class VariableElementProviderVisitor extends SimpleElementVisitor7<VariableElement, Void>
+	private static class VariableElementProviderVisitor extends SimpleElementVisitor14<VariableElement, Void>
 	{
 		@Override public VariableElement visitVariable(VariableElement variableElement, Void parameter)
 		{
