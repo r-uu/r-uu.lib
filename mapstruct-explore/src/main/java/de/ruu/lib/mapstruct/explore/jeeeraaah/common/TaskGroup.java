@@ -6,7 +6,7 @@ import lombok.NonNull;
 import java.util.Optional;
 import java.util.Set;
 
-public interface TaskGroup<T extends Task<?>>
+public interface TaskGroup<T extends Task<?, ?>>
 {
 	@NonNull String           name();
 	@NonNull TaskGroup<T>     name(@NonNull String name);

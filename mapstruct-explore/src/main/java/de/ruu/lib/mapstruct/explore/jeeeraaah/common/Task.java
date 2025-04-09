@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-public interface Task<TG extends TaskGroup<?>>
+public interface Task<TG extends TaskGroup<? extends Task<TG, ?>>, SELF extends Task<TG, SELF>>
 {
 	@NonNull TG      taskGroup();
 	@NonNull String  name     ();
@@ -16,24 +16,23 @@ public interface Task<TG extends TaskGroup<?>>
 	Optional<LocalDate> start      ();
 	Optional<LocalDate> end        ();
 
-	@NonNull Task<TG> description(String    description    );
-	@NonNull Task<TG> start      (LocalDate startEstimated );
-	@NonNull Task<TG> end        (LocalDate finishEstimated);
-	@NonNull Task<TG> closed     (Boolean   closed         );
+	@NonNull SELF description(String    description    );
+	@NonNull SELF start      (LocalDate startEstimated );
+	@NonNull SELF end        (LocalDate finishEstimated);
+	@NonNull SELF closed     (Boolean   closed         );
 
-	Optional<? extends Task<TG>> superTask();
-//	Optional<Task<TG>> superTask();
-	@NonNull <T extends Task<TG>> T superTask(T superTask);
+	Optional<SELF> superTask();
+	@NonNull SELF superTask(SELF superTask);
 
-	Optional<Set<? extends Task<TG>>> subTasks     ();
-	boolean                 addSubTask   (@NonNull Task<TG> task);
-	boolean                 removeSubTask(@NonNull Task<TG> task);
+	Optional<Set<SELF>> subTasks     ();
+	boolean             addSubTask   (@NonNull SELF task);
+	boolean             removeSubTask(@NonNull SELF task);
 
-	Optional<Set<Task<TG>>> predecessors     ();
-	boolean                 addPredecessor   (@NonNull Task<TG> task);
-	boolean                 removePredecessor(@NonNull Task<TG> task);
+	Optional<Set<SELF>> predecessors     ();
+	boolean             addPredecessor   (@NonNull SELF task);
+	boolean             removePredecessor(@NonNull SELF task);
 
-	Optional<Set<Task<TG>>> successors     ();
-	boolean                 addSuccessor   (@NonNull Task<TG> task);
-	boolean                 removeSuccessor(@NonNull Task<TG> task);
+	Optional<Set<SELF>> successors     ();
+	boolean             addSuccessor   (@NonNull SELF task);
+	boolean             removeSuccessor(@NonNull SELF task);
 }
