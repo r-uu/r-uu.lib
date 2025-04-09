@@ -1,15 +1,13 @@
 module mapstruct.explore
 {
-	requires static lombok;
 
-	requires org.mapstruct;
+    requires org.mapstruct;
 	requires org.slf4j;
 	requires de.ruu.lib.mapstruct;
-	requires de.ruu.lib.util;
-	requires org.jetbrains.annotations;
-	requires jakarta.annotation;
+    requires org.jetbrains.annotations;
+    requires de.ruu.lib.jpa.core;
+    requires static lombok;
+    requires jakarta.annotation;
 
-//	opens de.ruu.lib.mapstruct.explore.objectfactory to org.junit.platform.commons
-//			                                              , org.mapstruct
-	opens de.ruu.lib.mapstruct.explore.objectfactory to org.mapstruct;
+    opens de.ruu.lib.mapstruct.explore.objectfactory to org.mapstruct;
 }

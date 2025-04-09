@@ -48,6 +48,10 @@
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>r-uu</groupId>
+            <artifactId>r-uu.lib-jpa-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
