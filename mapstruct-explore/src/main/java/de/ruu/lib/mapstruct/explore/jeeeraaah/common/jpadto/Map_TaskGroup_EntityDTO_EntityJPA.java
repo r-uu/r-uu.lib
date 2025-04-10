@@ -37,9 +37,6 @@ import org.mapstruct.factory.Mappers;
 
 	@Override default @NonNull TaskGroupEntityJPA create(TaskGroupEntityDTO in) { return new TaskGroupEntityJPA(in.name()); }
 
-	/** object factory will be called by mapstruct during generated
-	 * {@link #map(TaskGroupEntityDTO, ReferenceCycleTracking)} implementation
-	 */
 	@ObjectFactory
 	@Override default @NonNull TaskGroupEntityJPA lookupOrCreate(
 			@NonNull TaskGroupEntityDTO taskGroupEntityDTO, @NonNull ReferenceCycleTracking context)
