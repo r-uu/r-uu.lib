@@ -1,4 +1,4 @@
-package de.ruu.lib.mapstruct.explore.jeeeraaah.common;
+package de.ruu.lib.mapstruct.explore.common;
 
 import jakarta.annotation.Nullable;
 import lombok.NonNull;

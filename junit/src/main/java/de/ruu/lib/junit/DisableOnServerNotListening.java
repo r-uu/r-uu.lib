@@ -27,7 +27,7 @@ public class DisableOnServerNotListening implements ExecutionCondition
 
 			Optional<DisabledOnServerNotListening> optionalDisabledOnServerNotListening =
 					AnnotationSupport.findAnnotation(annotatedElement, DisabledOnServerNotListening.class);
- treff
+
 			if (optionalDisabledOnServerNotListening.isPresent())
 			{
 				DisabledOnServerNotListening disabledOnServerNotListening = optionalDisabledOnServerNotListening.get();

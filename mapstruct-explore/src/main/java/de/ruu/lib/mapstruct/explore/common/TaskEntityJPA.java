@@ -1,6 +1,5 @@
-package de.ruu.lib.mapstruct.explore.jeeeraaah.common.jpadto;
+package de.ruu.lib.mapstruct.explore.common;
 
-import de.ruu.lib.mapstruct.explore.jeeeraaah.common.Task;
 import lombok.NonNull;
 
 import java.time.LocalDate;

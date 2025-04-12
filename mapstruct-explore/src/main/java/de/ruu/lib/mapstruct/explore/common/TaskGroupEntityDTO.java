@@ -1,22 +1,21 @@
-package de.ruu.lib.mapstruct.explore.jeeeraaah.common.jpadto;
+package de.ruu.lib.mapstruct.explore.common;
 
 import de.ruu.lib.jpa.core.Entity;
 import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
-import de.ruu.lib.mapstruct.explore.jeeeraaah.common.TaskGroup;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
-class TaskGroupEntityDTO
+public class TaskGroupEntityDTO
 		implements
-				TaskGroup<TaskEntityDTO>,
-				Entity<Long>,
-				MappableCyclic<TaskGroupEntityDTO, TaskGroupEntityJPA>
+		TaskGroup<TaskEntityDTO>,
+		Entity<Long>,
+		MappableCyclic<TaskGroupEntityDTO, TaskGroupEntityJPA>
 {
 	private @NonNull String name;
 
@@ -38,8 +37,7 @@ class TaskGroupEntityDTO
 
 	@Override public void beforeMapping(
 			@NonNull TaskGroupEntityDTO taskGroupEntityDTO,
-			@NonNull TaskGroupEntityJPA taskGroupEntityJPA,
-			@NonNull ReferenceCycleTracking context)
+			@NonNull TaskGroupEntityJPA taskGroupEntityJPA, @NonNull ReferenceCycleTracking context)
 	{
 	}
 

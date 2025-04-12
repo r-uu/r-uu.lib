@@ -1,22 +1,21 @@
-package de.ruu.lib.mapstruct.explore.jeeeraaah.common.jpadto;
+package de.ruu.lib.mapstruct.explore.common;
 
 import de.ruu.lib.jpa.core.Entity;
 import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
-import de.ruu.lib.mapstruct.explore.jeeeraaah.common.TaskGroup;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
-class TaskGroupEntityJPA
+public class TaskGroupEntityJPA
 		implements
-				TaskGroup<TaskEntityJPA>,
-				Entity<Long>,
-				MappableCyclic<TaskGroupEntityJPA, TaskGroupEntityDTO>
+		TaskGroup<TaskEntityJPA>,
+		Entity<Long>,
+		MappableCyclic<TaskGroupEntityJPA, TaskGroupEntityDTO>
 {
 	private @NonNull String name;
 
