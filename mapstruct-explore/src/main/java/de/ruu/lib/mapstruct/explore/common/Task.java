@@ -6,7 +6,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-public interface Task<TG extends TaskGroup<? extends Task<TG, ?>>, SELF extends Task<TG, SELF>>
+public interface Task<TG   extends TaskGroup<? extends Task<TG, ?>>,
+                      SELF extends Task<TG, SELF>>
 {
 	@NonNull TG      taskGroup();
 	@NonNull String  name     ();

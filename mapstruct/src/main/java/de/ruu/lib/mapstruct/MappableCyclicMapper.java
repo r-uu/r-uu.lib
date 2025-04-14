@@ -1,15 +1,11 @@
 package de.ruu.lib.mapstruct;
 
 import lombok.NonNull;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.BeforeMapping;
-import org.mapstruct.Context;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ObjectFactory;
+import org.mapstruct.*;
 
-public interface MappableCyclicMapper<IN extends MappableCyclic<IN, OUT>, OUT extends MappableCyclic<OUT, IN>>
+public interface MappableCyclicMapper<IN extends MappableCyclic<OUT, IN>, OUT extends MappableCyclic<IN, OUT>>
 {
-	public abstract @NonNull OUT map(@NonNull IN in, @NonNull @Context ReferenceCycleTracking context);
+	@NonNull OUT map(@NonNull IN in, @NonNull @Context ReferenceCycleTracking context);
 
 	/**
 	 * annotating parameter {@code out} with {@link MappingTarget} is essential for this method being called as well as
@@ -21,7 +17,7 @@ public interface MappableCyclicMapper<IN extends MappableCyclic<IN, OUT>, OUT ex
 			@NonNull @MappingTarget OUT                    out,
 			@NonNull @Context       ReferenceCycleTracking context)
 	{
-		out.beforeMapping(out, in, context);
+		out.beforeMapping(in, context);
 	}
 
 	/**
@@ -30,15 +26,15 @@ public interface MappableCyclicMapper<IN extends MappableCyclic<IN, OUT>, OUT ex
 	 */
 	@AfterMapping
 	default void afterMapping(
-			@NonNull                IN               in,
-			@NonNull @MappingTarget OUT              out,
-			@NonNull @Context ReferenceCycleTracking context)
+			@NonNull                IN                     in,
+			@NonNull @MappingTarget OUT                    out,
+			@NonNull @Context       ReferenceCycleTracking context)
 	{
-		out.afterMapping(out, in, context);
+		out.afterMapping(in, context);
 	}
 
 	@NonNull Class<OUT> outType();
-	@NonNull OUT        create(IN in);
+	@NonNull OUT        create(@NonNull IN in, @NonNull ReferenceCycleTracking context);
 
 	/**
 	 * object factory will be called by mapstruct during generated {@link #map(MappableCyclic, ReferenceCycleTracking)}
@@ -50,8 +46,8 @@ public interface MappableCyclicMapper<IN extends MappableCyclic<IN, OUT>, OUT ex
 		OUT out = context.get(in, outType());
 		if (out == null)
 		{
-			out = create(in);
-			context.put(in, out);
+			out = create(in, context);
+//			context.put(in, out); // mapstruct will put in and out into context directly after this method returns
 		}
 		return out;
 	}

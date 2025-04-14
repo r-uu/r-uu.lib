@@ -1,14 +1,26 @@
 package de.ruu.lib.mapstruct.explore.common;
 
+import de.ruu.lib.jpa.core.Entity;
+import de.ruu.lib.mapstruct.MappableCyclic;
+import de.ruu.lib.mapstruct.ReferenceCycleTracking;
+import de.ruu.lib.mapstruct.explore.interfaces.Map_Task_EntityDTO_EntityJPA;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
-class TaskEntityDTO implements Task<TaskGroupEntityDTO, TaskEntityDTO>
+@AllArgsConstructor
+public class TaskEntityDTO
+		implements
+				Task<TaskGroupEntityDTO, TaskEntityDTO>,
+				Entity<Long>,
+				MappableCyclic<TaskEntityJPA, TaskEntityDTO>
 {
 	private TaskGroupEntityDTO taskGroup;
+	private String             name;
 
 	@Override public @NonNull TaskGroupEntityDTO taskGroup() { return taskGroup; }
 
@@ -39,4 +51,15 @@ class TaskEntityDTO implements Task<TaskGroupEntityDTO, TaskEntityDTO>
 	@Override public boolean addSuccessor(@NonNull TaskEntityDTO task) { return false; }
 
 	@Override public boolean removeSuccessor(@NonNull TaskEntityDTO task) { return false; }
+
+	@Override public @Nullable Long  id     () { return 0L; }
+	@Override public @Nullable Short version() { return 0;  }
+
+	@Override public void beforeMapping(@NonNull TaskEntityJPA in, @NonNull ReferenceCycleTracking context) { }
+	@Override public void  afterMapping(@NonNull TaskEntityJPA in, @NonNull ReferenceCycleTracking context) { }
+
+	public TaskEntityJPA toEntity(ReferenceCycleTracking context)
+	{
+		return Map_Task_EntityDTO_EntityJPA.INSTANCE.lookupOrCreate(this, context);
+	}
 }

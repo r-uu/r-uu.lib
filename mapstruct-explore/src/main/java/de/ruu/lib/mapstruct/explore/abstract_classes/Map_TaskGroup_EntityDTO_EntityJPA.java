@@ -1,6 +1,5 @@
 package de.ruu.lib.mapstruct.explore.abstract_classes;
 
-import de.ruu.lib.mapstruct.MappableCyclicMapper;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupEntityDTO;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupEntityJPA;
@@ -11,7 +10,7 @@ import org.mapstruct.ObjectFactory;
 import org.mapstruct.factory.Mappers;
 
 /** {@link TaskGroupEntityDTO} -> {@link TaskGroupEntityJPA} */
-@Mapper abstract class Map_TaskGroup_EntityDTO_EntityJPA implements MappableCyclicMapper<TaskGroupEntityDTO, TaskGroupEntityJPA>
+@Mapper abstract class Map_TaskGroup_EntityDTO_EntityJPA extends MappableCyclicMapper<TaskGroupEntityDTO, TaskGroupEntityJPA>
 {
 	Map_TaskGroup_EntityDTO_EntityJPA INSTANCE = Mappers.getMapper(Map_TaskGroup_EntityDTO_EntityJPA.class);
 
@@ -46,7 +45,7 @@ import org.mapstruct.factory.Mappers;
 	@Override public @NonNull TaskGroupEntityJPA lookupOrCreate(
 			@NonNull TaskGroupEntityDTO taskGroupEntityDTO, @NonNull @Context ReferenceCycleTracking context)
 	{
-		return MappableCyclicMapper.super.lookupOrCreate(taskGroupEntityDTO, context);
+		return super.lookupOrCreate(taskGroupEntityDTO, context);
 	}
 
 	//	/** object factory will be called by mapstruct */
