@@ -10,8 +10,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /** {@link TaskGroupEntityDTO} -> {@link TaskGroupEntityJPA} */
-@Mapper
-public interface Map_Task_EntityDTO_EntityJPA extends MappableCyclicMapper<TaskEntityDTO, TaskEntityJPA>
+@Mapper public interface Map_Task_EntityDTO_EntityJPA extends MappableCyclicMapper<TaskEntityDTO, TaskEntityJPA>
 {
 	Map_Task_EntityDTO_EntityJPA INSTANCE = Mappers.getMapper(Map_Task_EntityDTO_EntityJPA.class);
 

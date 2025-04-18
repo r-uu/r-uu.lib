@@ -24,7 +24,7 @@ public class TaskEntityDTO
 
 	@Override public @NonNull TaskGroupEntityDTO taskGroup() { return taskGroup; }
 
-	@Override public @NonNull String     name       () { return ""; }
+	@Override public @NonNull String     name       () { return name; }
 	@Override public @NonNull Boolean    closed     () { return false; }
 	@Override public Optional<String>    description() { return Optional.empty();}
 	@Override public Optional<LocalDate> start      () { return Optional.empty(); }

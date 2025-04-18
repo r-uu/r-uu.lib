@@ -2,16 +2,24 @@ package de.ruu.lib.mapstruct.explore.interfaces;
 
 import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
+import de.ruu.lib.mapstruct.explore.common.TaskGroupBean;
+import de.ruu.lib.mapstruct.explore.common.TaskGroupDTO;
+import de.ruu.lib.mapstruct.explore.common.TaskGroupEntityDTO;
 import lombok.NonNull;
-import org.mapstruct.*;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.BeforeMapping;
+import org.mapstruct.Context;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ObjectFactory;
 
 /**
  * this class should be identical to {@link de.ruu.lib.mapstruct.MappableCyclicMapper} and exists to test without
  * dependency to code in production.
  */
-public interface MappableCyclicMapper<IN extends MappableCyclic<OUT, IN>, OUT extends MappableCyclic<IN, OUT>>
+@Mapper public interface MappableCyclicMapper_TaskGroup_DTO_Bean
 {
-	@NonNull OUT map(@NonNull IN in, @NonNull @Context ReferenceCycleTracking context);
+	@NonNull TaskGroupDTO map(@NonNull TaskGroupDTO in, @NonNull @Context ReferenceCycleTracking context);
 
 	/**
 	 * annotating parameter {@code out} with {@link MappingTarget} is essential for this method being called as well as
@@ -19,8 +27,8 @@ public interface MappableCyclicMapper<IN extends MappableCyclic<OUT, IN>, OUT ex
 	 */
 	@BeforeMapping
 	default void beforeMapping(
-			@NonNull                IN                     in,
-			@NonNull @MappingTarget OUT                    out,
+			@NonNull                TaskGroupDTO           in,
+			@NonNull @MappingTarget TaskGroupBean          out,
 			@NonNull @Context       ReferenceCycleTracking context)
 	{
 		out.beforeMapping(in, context);
@@ -32,22 +40,22 @@ public interface MappableCyclicMapper<IN extends MappableCyclic<OUT, IN>, OUT ex
 	 */
 	@AfterMapping
 	default void afterMapping(
-			@NonNull                IN                     in,
-			@NonNull @MappingTarget OUT                    out,
+			@NonNull                TaskGroupDTO           in,
+			@NonNull @MappingTarget TaskGroupBean          out,
 			@NonNull @Context       ReferenceCycleTracking context)
 	{
 		out.afterMapping(in, context);
 	}
 
-	@NonNull Class<OUT> outType();
-	@NonNull OUT        create(@NonNull IN in, @NonNull ReferenceCycleTracking context);
+	@NonNull Class<TaskGroupBean> outType();
+	@NonNull TaskGroupBean        create(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context);
 
 	/**
 	 * object factory will be called by mapstruct during generated {@link #map(MappableCyclic, ReferenceCycleTracking)}
 	 * implementation
 	 */
 	@ObjectFactory
-	default @NonNull OUT lookupOrCreate(@NonNull IN in, @NonNull @Context ReferenceCycleTracking context)
+	default @NonNull OUT lookupOrCreate(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context)
 	{
 		OUT out = context.get(in, outType());
 		if (out == null)

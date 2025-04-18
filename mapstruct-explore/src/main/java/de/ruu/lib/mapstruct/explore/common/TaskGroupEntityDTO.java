@@ -4,6 +4,7 @@ import de.ruu.lib.jpa.core.Entity;
 import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
 import de.ruu.lib.mapstruct.explore.interfaces.Map_TaskGroup_EntityDTO_EntityJPA;
+import de.ruu.lib.mapstruct.explore.interfaces.MappableCyclic_TaskGroup_DTO_EntityDTO;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -16,7 +17,8 @@ public class TaskGroupEntityDTO
 		implements
 				TaskGroup<TaskEntityDTO>,
 				Entity<Long>,
-				MappableCyclic<TaskGroupEntityJPA, TaskGroupEntityDTO>
+				MappableCyclic<TaskGroupEntityJPA, TaskGroupEntityDTO>,
+				MappableCyclic_TaskGroup_DTO_EntityDTO
 {
 	private @NonNull String name;
 
@@ -38,6 +40,9 @@ public class TaskGroupEntityDTO
 
 	@Override public void beforeMapping(@NonNull TaskGroupEntityJPA in, @NonNull ReferenceCycleTracking context) { }
 	@Override public void  afterMapping(@NonNull TaskGroupEntityJPA in, @NonNull ReferenceCycleTracking context) { }
+
+	@Override public void beforeMapping(@NonNull TaskGroupDTO in, @NonNull ReferenceCycleTracking context) { }
+	@Override public void  afterMapping(@NonNull TaskGroupDTO in, @NonNull ReferenceCycleTracking context) { }
 
 	public TaskGroupEntityJPA toEntity(@NonNull ReferenceCycleTracking context)
 	{
