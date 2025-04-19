@@ -1,6 +1,5 @@
 package de.ruu.lib.mapstruct.explore.interfaces;
 
-import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupBean;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupDTO;
@@ -47,17 +46,17 @@ import org.mapstruct.ObjectFactory;
 		out.afterMapping(in, context);
 	}
 
-	@NonNull Class<TaskGroupBean> outType();
+	default @NonNull Class<TaskGroupBean> outType() { return TaskGroupBean.class; };
 	@NonNull TaskGroupBean        create(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context);
 
 	/**
-	 * object factory will be called by mapstruct during generated {@link #map(MappableCyclic, ReferenceCycleTracking)}
+	 * object factory will be called by mapstruct during generated {@link #map(TaskGroupDTO, ReferenceCycleTracking)}
 	 * implementation
 	 */
 	@ObjectFactory
-	default @NonNull OUT lookupOrCreate(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context)
+	default @NonNull TaskGroupBean lookupOrCreate(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context)
 	{
-		OUT out = context.get(in, outType());
+		TaskGroupBean out = context.get(in, outType());
 		if (out == null)
 		{
 			out = create(in, context);

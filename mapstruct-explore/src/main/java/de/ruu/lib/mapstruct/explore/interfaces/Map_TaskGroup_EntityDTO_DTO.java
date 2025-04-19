@@ -1,6 +1,5 @@
 package de.ruu.lib.mapstruct.explore.interfaces;
 
-import de.ruu.lib.mapstruct.MappableCyclic;
 import de.ruu.lib.mapstruct.ReferenceCycleTracking;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupDTO;
 import de.ruu.lib.mapstruct.explore.common.TaskGroupEntityDTO;
@@ -16,7 +15,7 @@ import org.mapstruct.ObjectFactory;
  * this class should be identical to {@link de.ruu.lib.mapstruct.MappableCyclicMapper} and exists to test without
  * dependency to code in production.
  */
-@Mapper public interface Map_TaskGroup_EntityDTO_DTO extends MappableCyclicMapper<TaskGroupEntityDTO, TaskGroupDTO>
+@Mapper public interface Map_TaskGroup_EntityDTO_DTO
 {
 	@NonNull TaskGroupDTO map(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context);
 
@@ -46,17 +45,17 @@ import org.mapstruct.ObjectFactory;
 		out.afterMapping(in, context);
 	}
 
-	@NonNull Class<OUT> outType();
-	@NonNull OUT        create(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context);
+	default @NonNull Class<TaskGroupDTO> outType() { return TaskGroupDTO.class; };
+	@NonNull TaskGroupDTO        create(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context);
 
 	/**
-	 * object factory will be called by mapstruct during generated {@link #map(MappableCyclic, ReferenceCycleTracking)}
+	 * object factory will be called by mapstruct during generated {@link #map(TaskGroupEntityDTO, ReferenceCycleTracking)}
 	 * implementation
 	 */
 	@ObjectFactory
-	default @NonNull OUT lookupOrCreate(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context)
+	default @NonNull TaskGroupDTO lookupOrCreate(@NonNull TaskGroupEntityDTO in, @NonNull @Context ReferenceCycleTracking context)
 	{
-		OUT out = context.get(in, outType());
+		TaskGroupDTO out = context.get(in, outType());
 		if (out == null)
 		{
 			out = create(in, context);
