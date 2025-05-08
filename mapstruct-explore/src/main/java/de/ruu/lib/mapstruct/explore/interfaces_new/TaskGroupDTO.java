@@ -4,10 +4,11 @@ import de.ruu.lib.mapstruct.ReferenceCycleTracking;
 import lombok.NonNull;
 
 public class TaskGroupDTO
-		implements MappableFromCyclicTaskGroupEntityDTO, MappableFromCyclicTaskGroupBean
+//		implements MappableBidirectionalFromTaskGroupEntity, MappableFromTaskGroupBean
 {
-	@Override public void beforeMapping(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context) { }
-	@Override	public void  afterMapping(@NonNull TaskGroupEntityDTO in, @NonNull ReferenceCycleTracking context) { }
-	@Override public void beforeMapping(@NonNull TaskGroupBean      in, @NonNull ReferenceCycleTracking context) { }
-	@Override public void  afterMapping(@NonNull TaskGroupBean      in, @NonNull ReferenceCycleTracking context) { }
+	private String name;
+//	@Override public void beforeMapping(@NonNull TaskGroupEntity in, @NonNull ReferenceCycleTracking context) { }
+//	@Override	public void  afterMapping(@NonNull TaskGroupEntity in, @NonNull ReferenceCycleTracking context) { }
+//	@Override public void beforeMapping(@NonNull TaskGroupBean in, @NonNull ReferenceCycleTracking context) { }
+//	@Override public void  afterMapping(@NonNull TaskGroupBean in, @NonNull ReferenceCycleTracking context) { }
 }

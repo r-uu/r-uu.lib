@@ -2,7 +2,6 @@ package de.ruu.lib.jpa.se.hibernate.postgres.demo;
 
 import de.ruu.lib.cdi.common.CDIExtension;
 import de.ruu.lib.cdi.se.CDIContainer;
-import de.ruu.lib.jpa.se.TransactionalInterceptorCDI;
 import de.ruu.lib.junit.DisabledOnServerNotListening;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.persistence.EntityTransaction;

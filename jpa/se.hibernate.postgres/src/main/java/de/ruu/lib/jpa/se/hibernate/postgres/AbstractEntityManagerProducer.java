@@ -17,6 +17,10 @@ import java.util.List;
 import static de.ruu.lib.jpa.se.hibernate.PersistenceUnitProperties.HBM2DLLAuto.CREATE;
 import static java.util.Objects.isNull;
 
+/**
+ * {@link #produce()} returns an instance of a hibernate {@link EntityManager}. Call this method from method annotated
+ * with {@link jakarta.enterprise.inject.Produces} in subclasses.
+ */
 @Slf4j
 public abstract class AbstractEntityManagerProducer
 {

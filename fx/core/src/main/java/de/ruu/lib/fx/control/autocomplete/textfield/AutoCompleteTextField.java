@@ -54,12 +54,13 @@ public class AutoCompleteTextField<T> extends HBox
 
 	private ObservableList   <T        > items;
 	private final BiPredicate<T, String> suggestionFilter;
+	private final BiPredicate<T, String> converterTest;
 	private final Function   <T, Node  > graphicsProvider;
 	private final Function   <T, String> textProvider;
 	private final Function   <T, String> toolTipProvider;
 	private final Position               position;
 
-	private final AutoCompleteStringConverter<T> converter;
+	private       AutoCompleteStringConverter<T> converter;
 
 	/**
 	 * @param suggestionFilter returns <code>true</code> if an item is a valid suggestion for the value of the combo box,
@@ -85,19 +86,18 @@ public class AutoCompleteTextField<T> extends HBox
 		if (suggestionFilter == null) throw new IllegalArgumentException("suggestion filter must not be null");
 		if (converterTest    == null) throw new IllegalArgumentException("converter test must not be null");
 		if (graphicsProvider == null) graphicsProvider = item -> null;
-		if (textProvider     == null) textProvider     = item -> item.toString();
+		if (textProvider     == null) textProvider     = item -> isNull(item) ? "" : item.toString();
 		if (toolTipProvider  == null) toolTipProvider  = item -> null;
 		if (promptText       == null) promptText       = "";
 		if (position         == null) position         = Position.BELOW;
 
 		this.items            = FXCollections.observableArrayList(items);
 		this.suggestionFilter = suggestionFilter;
+		this.converterTest    = converterTest;
 		this.graphicsProvider = graphicsProvider;
 		this.textProvider     = textProvider;
 		this.toolTipProvider  = toolTipProvider;
 		this.position         = position;
-
-		converter = new AutoCompleteStringConverter<>(items, converterTest, textProvider);
 
 		value = new SimpleObjectProperty<>();
 		value.addListener((obs, old, newValue) -> onValueChanged(old, newValue));
@@ -105,10 +105,11 @@ public class AutoCompleteTextField<T> extends HBox
 		textField = new TextField();
 		textField.setPromptText(promptText);
 		textField.setStyle("-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); }");
-		textField.setOnKeyReleased(e -> onKeyReleased(e));
+		textField.setOnKeyReleased(e -> onKeyReleasedTextField(e));
 		textField.textProperty().addListener((obs, old, newValue) -> onTextFieldTextChanged(old, newValue));
 
-		initPopup();
+//		initPopup();
+		setItems(items);
 
 		// focus change events
 		textField.focusedProperty().addListener((obs, old, newValue) -> onTextFieldFocusChanged(old, newValue));
@@ -143,6 +144,14 @@ public class AutoCompleteTextField<T> extends HBox
 	{
 		this.items = FXCollections.observableArrayList(items);
 		initPopup();
+		converter = new AutoCompleteStringConverter<>(items, converterTest, textProvider);
+
+		if (items.size() == 1)
+		{
+			listView.getSelectionModel().selectFirst();
+			commitListViewSelection();
+//			commitTextField();
+		}
 	}
 
 	public List<T> getItems() { return items; }
@@ -163,8 +172,8 @@ public class AutoCompleteTextField<T> extends HBox
 		listView.setCellFactory   (autoCompleteCellFactory);
 		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		listView.getSelectionModel().selectFirst();
-		listView.setOnMouseClicked(e -> onListViewMouseClicked(e));
-//		listView.setOnKeyReleased (e -> onListViewKeyReleased (e));
+		listView.setOnMouseClicked(e -> onMouseClickedListView(e));
+		listView.setOnKeyReleased (e -> onKeyReleasedListView (e));
 
 		popup = new Popup();
 		popup.getContent().add(listView);
@@ -172,9 +181,9 @@ public class AutoCompleteTextField<T> extends HBox
 
 	private void onValueChanged(final T old, final T newValue) { textField.setText(converter.toString(newValue)); }
 
-	private void onKeyReleased(final KeyEvent e)
+	private void onKeyReleasedTextField(final KeyEvent e)
 	{
-		log.debug("code of released key: " + e.getCode());
+		log.debug("code of released key {}", e.getCode());
 		if      (e.getCode() == KeyCode.ENTER ) commit();
 		else if (e.getCode() == KeyCode.DOWN  ) showPopup();
 		else if (e.getCode() == KeyCode.ESCAPE) popup.hide();
@@ -222,12 +231,19 @@ public class AutoCompleteTextField<T> extends HBox
 
 	private void onPopupFocusChanged(final Boolean old, final Boolean newValue) { if (not(newValue)) popup.hide(); }
 
-	private void onListViewMouseClicked(final MouseEvent e) { if (e.getClickCount() == 2) commitListViewSelection(); }
+	private void onMouseClickedListView(final MouseEvent e) { if (e.getClickCount() == 2) commitListViewSelection(); }
+
+	private void onKeyReleasedListView(KeyEvent e)
+	{
+		log.debug("code of released key {}", e.getCode());
+		if (e.getCode() == KeyCode.ENTER ) commitListViewSelection();
+	}
 
 	private void commit()
 	{
-		if (popup.isShowing()) commitListViewSelection();
-		else commitTextField();
+//		if (popup.isShowing()) commitListViewSelection();
+//		else commitTextField();
+		commitTextField();
 	}
 
 	private void commitTextField()

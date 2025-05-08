@@ -9,6 +9,11 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
+/**
+ * {@link #produce(String, String)} method returns an {@link EntityManagerFactory} that is configured with the given
+ * {@link PersistenceUnitInfo} and {@link PersistenceUnitProperties}. The returned {@link EntityManagerFactory} is
+ * prepared to produce instances of {@link jakarta.persistence.EntityManager} based on hibernate.
+ */
 @RequiredArgsConstructor
 public class EntityManagerFactoryProducer
 {
@@ -23,13 +28,7 @@ public class EntityManagerFactoryProducer
 		properties.put(JAKARTA_JDBC_PASSWORD, password);
 
 		return
-//				new HibernatePersistenceProvider()
-//						.createContainerEntityManagerFactory(persistenceUnitInfo, persistenceUnitProperties.properties());
 				new HibernatePersistenceProvider()
 						.createContainerEntityManagerFactory(persistenceUnitInfo, properties);
-//				new HibernatePersistenceProvider()
-//						.createEntityManagerFactory(persistenceUnitInfo.getPersistenceUnitName(), properties);
-//				Persistence
-//						.createEntityManagerFactory(persistenceUnitInfo.getPersistenceUnitName(), properties);
 	}
 }

@@ -6,6 +6,29 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Abstract super class for transactional interceptors. Extend this class to provide a suitable {@link #entityManager()}
+ * implementation.
+ *
+ * IMPORTANT
+ * <br>
+ * DO NOT FORGET TO MENTION THIS <code>@Interceptor</code> TYPE IN <code>beans.xml</code>!!!
+ * <br>
+ * OR TO INITIALISE SeContainer LIKE THIS:
+ * <pre>
+ * {@code
+ * SeContainer container =
+ *     SeContainerInitializer
+ *         .newInstance()
+ *         .addBeanClasses    (<ExtensionOf>TransactionalInterceptorCDI.class)
+ *         .enableInterceptors(<ExtensionOf>TransactionalInterceptorCDI.class)
+ *         .selectAlternatives(MockGenerator.class)
+ *         .initialize();
+ * }
+ * </pre>
+ *
+ * @author r-uu
+ */
 @Slf4j
 public abstract class AbstractTransactionalInterceptor
 {
@@ -14,17 +37,13 @@ public abstract class AbstractTransactionalInterceptor
 	@AroundInvoke
 	public Object transaction(InvocationContext context) throws Exception
 	{
-		Object result;
-
-		String methodName =
+		Object            result;
+		boolean           startedTransaction = false;
+		EntityTransaction transaction        = entityManager().getTransaction();
+		String            methodName         =
 				context.getMethod().getDeclaringClass().getName() + "." + context.getMethod().getName();
 
-		EntityTransaction transaction = entityManager().getTransaction();
-
-		log.trace(
-				"\nentity manager {}, transaction {}", entityManager().hashCode(), transaction.hashCode());
-
-		boolean startedTransaction = false;
+		log.trace("\nentity manager {}, transaction {}", entityManager().hashCode(), transaction.hashCode());
 
 		try
 		{

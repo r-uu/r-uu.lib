@@ -1,8 +1,9 @@
 package de.ruu.lib.jpa.se.hibernate.postgres.demo;
 
 import de.ruu.lib.cdi.common.CDIExtension;
-import de.ruu.lib.jpa.se.TransactionalInterceptorCDI;
+import de.ruu.lib.jpa.se.hibernate.postgres.demo.EntityManagerProducer.TransactionalInterceptorCDI;
 import de.ruu.lib.junit.DisabledOnServerNotListening;
+import de.ruu.lib.util.BooleanFunctions;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,8 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @DisabledOnServerNotListening(propertyNameHost = "database.host", propertyNamePort = "database.port")
-@Slf4j class TestSimpleTypeService
+@Slf4j
+class TestSimpleTypeService
 {
 	private static SeContainer seContainer; // initialisation and closure handled in before/after all methods
 
@@ -40,7 +42,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 		{
 			log.error("failure initialising seContainer", e);
 		}
-		log.debug("cdi container initialisation {}", seContainer == null ? "unsuccessful" : "successful");
+		log.debug("cdi container initialisation successful: {}", BooleanFunctions.not(seContainer == null));
 	}
 
 	@AfterAll static void afterAll()

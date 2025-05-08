@@ -6,6 +6,7 @@ import org.mapstruct.BeforeMapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.TargetType;
 
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 public class ReferenceCycleTracking
 {
 	private final Map<Object, Object> map = new IdentityHashMap<>();
+//	private final Map<Object, Object> map = new HashMap<>();
 
 	/**
 	 * @param source may be {@code null}
