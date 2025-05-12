@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class ReferenceCycleTracking
 {
-	private final Map<Object, Object> map = new IdentityHashMap<>();
-//	private final Map<Object, Object> map = new HashMap<>();
+//	private final Map<Object, Object> map = new IdentityHashMap<>();
+	private final Map<Object, Object> map = new HashMap<>();
 
 	/**
 	 * @param source may be {@code null}
@@ -25,8 +25,7 @@ public class ReferenceCycleTracking
 	 * @return
 	 * @param <T>
 	 */
-	@BeforeMapping
-	public <T> T get(Object source, @TargetType @NonNull Class<T> targetType)
+	@BeforeMapping public <T> T get(Object source, @TargetType @NonNull Class<T> targetType)
 	{
 		return targetType.cast(map.get(source));
 	}
@@ -38,9 +37,11 @@ public class ReferenceCycleTracking
 	 * @param source
 	 * @param target
 	 */
-	@BeforeMapping
-	public void put(@NonNull Object source, @MappingTarget @NonNull Object target)
+	@BeforeMapping public void put(@NonNull Object source, @MappingTarget @NonNull Object target)
 	{
 		map.put(source, target);
 	}
+
+	/** @return immutable map based on {@link #map} */
+	public Map<Object, Object> getMap() { return Map.copyOf(map); }
 }
