@@ -4,6 +4,7 @@ module de.ruu.lib.fx.core
 	exports de.ruu.lib.fx.control;
 	exports de.ruu.lib.fx.control.autocomplete;
 	exports de.ruu.lib.fx.control.autocomplete.textfield;
+	exports de.ruu.lib.fx.control.autocomplete.textfield.v2;
 	exports de.ruu.lib.fx.control.dialog;
 	exports de.ruu.lib.fx.control.textfield.number;
 	exports de.ruu.lib.fx.css;
