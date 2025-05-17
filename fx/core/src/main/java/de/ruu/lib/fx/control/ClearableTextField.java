@@ -30,13 +30,13 @@ public class ClearableTextField extends StackPane
         clearButton.visibleProperty().bind(Bindings.isNotEmpty(textField.textProperty()));
 
         // Layout
-        this.getChildren().addAll(textField, clearButton);
+        getChildren().addAll(textField, clearButton);
         StackPane.setAlignment(clearButton, Pos.CENTER_RIGHT);
         StackPane.setMargin(clearButton, new Insets(0, 5, 0, 0));
     }
 
-    public TextField getTextField() { return textField; }
-    public String getText() { return textField.getText(); }
-    public void setText(String text) { textField.setText(text); }
-    public void setPromptText(String prompt) { textField.setPromptText(prompt); }
+    public TextField textField()           { return textField;                       }
+    public String    text()                { return textField.getText();             }
+    public void      text  (String text)   {        textField.setText(text);         }
+    public void      prompt(String prompt) {        textField.setPromptText(prompt); }
 }

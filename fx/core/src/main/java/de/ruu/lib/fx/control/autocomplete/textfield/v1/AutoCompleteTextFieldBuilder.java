@@ -1,5 +1,6 @@
-package de.ruu.lib.fx.control.autocomplete.textfield;
+package de.ruu.lib.fx.control.autocomplete.textfield.v1;
 
+import de.ruu.lib.fx.control.autocomplete.textfield.v1.AutoCompleteTextField.Position;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -20,7 +21,8 @@ public class AutoCompleteTextFieldBuilder<T>
 	private final Function      <T, Node   > DEFAULT_GRAPHICS_PROVIDER = t -> null;
 	private final Function      <T, String > DEFAULT_TEXT_PROVIDER     = t -> t.toString();
 	private final Function      <T, Tooltip> DEFAULT_TOOLTIP_PROVIDER  = t -> new Tooltip(t.toString());
-	private final String                    DEFAULT_PROMPT            = "";
+	private final String                     DEFAULT_PROMPT            = "";
+	private final Position                   DEFAULT_POSITION          = Position.BELOW;
 
 	private ObservableList<T         > items;
 	private BiPredicate   <T, String > suggestionFilter;
@@ -29,6 +31,7 @@ public class AutoCompleteTextFieldBuilder<T>
 	private Function      <T, String > textProvider;
 	private Function      <T, Tooltip> toolTipProvider;
 	private String                     prompt;
+	private Position                   position;
 
 	public AutoCompleteTextFieldBuilder()
 	{
@@ -39,6 +42,7 @@ public class AutoCompleteTextFieldBuilder<T>
 		textProvider     = DEFAULT_TEXT_PROVIDER;
 		toolTipProvider  = DEFAULT_TOOLTIP_PROVIDER;
 		prompt           = DEFAULT_PROMPT;
+		position         = DEFAULT_POSITION;
 	}
 
 	public static <T> AutoCompleteTextFieldBuilder<T> create() { return new AutoCompleteTextFieldBuilder<>(); }
@@ -92,6 +96,13 @@ public class AutoCompleteTextFieldBuilder<T>
 		return this;
 	}
 
+	public AutoCompleteTextFieldBuilder<T> position(final Position position)
+	{
+		if (isNull(position))        this.position          = DEFAULT_POSITION;
+		else                         this.position          = position;
+		return this;
+	}
+
 	public AutoCompleteTextField<T> build()
 	{
 		return
@@ -103,7 +114,8 @@ public class AutoCompleteTextFieldBuilder<T>
 						graphicsProvider,
 						textProvider,
 						toolTipProvider,
-						prompt
+						prompt,
+						position
 				);
 	}
 }

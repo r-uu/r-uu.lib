@@ -10,7 +10,7 @@ public class ClearableTextFieldDemo extends Application
     @Override public void start(Stage primaryStage)
     {
         ClearableTextField clearableTextField = new ClearableTextField();
-        clearableTextField.setPromptText("Suchtext...");
+        clearableTextField.prompt("Suchtext...");
 
         VBox root = new VBox(10, clearableTextField);
         root.setStyle("-fx-padding: 20;");

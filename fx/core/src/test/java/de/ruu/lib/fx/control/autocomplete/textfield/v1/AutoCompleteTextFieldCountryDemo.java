@@ -1,6 +1,15 @@
-package de.ruu.lib.fx.control.autocomplete.textfield;
+package de.ruu.lib.fx.control.autocomplete.textfield.v1;
+
+import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountryConverter.BIPREDICATE_COUNTRY_CONVERTER;
+import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountrySuggestion.BIPREDICATE_COUNTRY_SUGGESTION;
+import static de.ruu.lib.fx.control.autocomplete.FunctionCountryGraphicsProvider.FUNCTION_COUNTRY_GRAPHICS_PROVIDER;
+import static de.ruu.lib.fx.control.autocomplete.FunctionCountryTextProvider.FUNCTION_COUNTRY_TEXT_PROVIDER;
+import static de.ruu.lib.fx.control.autocomplete.FunctionCountryToolTipProvider.FUNCTION_TOOL_TIP_PROVIDER;
+
+import java.util.Optional;
 
 import de.ruu.lib.fx.control.autocomplete.Country;
+import de.ruu.lib.fx.control.autocomplete.textfield.v1.AutoCompleteTextField.Position;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,13 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-
-import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountryConverter.BIPREDICATE_COUNTRY_CONVERTER;
-import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountrySuggestion.BIPREDICATE_COUNTRY_SUGGESTION;
-import static de.ruu.lib.fx.control.autocomplete.FunctionCountryGraphicsProvider.FUNCTION_COUNTRY_GRAPHICS_PROVIDER;
-import static de.ruu.lib.fx.control.autocomplete.FunctionCountryTextProvider.FUNCTION_COUNTRY_TEXT_PROVIDER;
-import static de.ruu.lib.fx.control.autocomplete.FunctionCountryToolTipProvider.FUNCTION_TOOL_TIP_PROVIDER;
-import static java.util.Objects.isNull;
 
 public class AutoCompleteTextFieldCountryDemo extends Application
 {
@@ -29,7 +31,18 @@ public class AutoCompleteTextFieldCountryDemo extends Application
 						.textProvider    (FUNCTION_COUNTRY_TEXT_PROVIDER)
 						.toolTipProvider (FUNCTION_TOOL_TIP_PROVIDER)
 						.prompt          ("select country")
+						.position        (Position.BELOW)
 						.build();
+//		AutoCompleteTextField<Country> textField =
+//				new AutoCompleteTextField<>(
+//						Country.countries(),
+//						BIPREDICATE_COUNTRY_SUGGESTION,
+//						BIPREDICATE_COUNTRY_CONVERTER,
+//						FUNCTION_COUNTRY_GRAPHICS_PROVIDER,
+//						FUNCTION_COUNTRY_TEXT_PROVIDER,
+//						FUNCTION_TOOL_TIP_PROVIDER,
+//						"select country",
+//						AutoCompleteTextField.Position.BELOW);
 
 		Button button = new Button("show text field value");
 		button.setPrefWidth(300);
@@ -83,15 +96,16 @@ public class AutoCompleteTextFieldCountryDemo extends Application
 
 	private void buttonOnAction(AutoCompleteTextField<Country> textField, Label label)
 	{
-		Country country = textField.valueProperty().get();
-		if (isNull(country))
+		Optional<Country> optional = textField.getOptionalValue();
+		if (optional.isPresent())
 		{
-			label.setText("null");
-			return;
+			Country country = optional.get();
+			String name = country.getName();
+			label.setText(name);
 		}
 		else
 		{
-			label.setText(country.getName());
+			label.setText("null");
 		}
 	}
 }

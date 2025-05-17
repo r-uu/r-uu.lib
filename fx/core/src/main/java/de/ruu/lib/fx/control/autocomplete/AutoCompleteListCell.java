@@ -10,12 +10,12 @@ import static java.util.Objects.isNull;
 
 public class AutoCompleteListCell<T> extends ListCell<T>
 {
-	private Function<T, Node  > graphicsProvider;
-	private Function<T, String> textProvider;
-	private Function<T, String> toolTipProvider;
+	private Function<T, Node   > graphicsProvider;
+	private Function<T, String > textProvider;
+	private Function<T, Tooltip> toolTipProvider;
 
 	public AutoCompleteListCell
-			(Function<T, Node> graphicsProvider, Function<T, String> textProvider, Function<T, String> toolTipProvider)
+			(Function<T, Node> graphicsProvider, Function<T, String> textProvider, Function<T, Tooltip> toolTipProvider)
 	{
 		if (isNull(graphicsProvider)) graphicsProvider = t -> null;
 		if (isNull(    textProvider))     textProvider = t -> null;
@@ -28,7 +28,7 @@ public class AutoCompleteListCell<T> extends ListCell<T>
 
 	public AutoCompleteListCell(final Function<T, String> textProvider) { this(null, textProvider, null); }
 
-	public AutoCompleteListCell(final Function<T, String> textProvider, final Function<T, String> toolTipProvider)
+	public AutoCompleteListCell(final Function<T, String> textProvider, final Function<T, Tooltip> toolTipProvider)
 	{
 		this(null, textProvider, toolTipProvider);
 	}
@@ -44,9 +44,9 @@ public class AutoCompleteListCell<T> extends ListCell<T>
 		}
 		else
 		{
-			setGraphic(            graphicsProvider.apply(item));
-			setText   (            textProvider    .apply(item));
-			setTooltip(new Tooltip(toolTipProvider .apply(item)));
+			setGraphic(graphicsProvider.apply(item));
+			setText   (textProvider    .apply(item));
+			setTooltip(toolTipProvider .apply(item));
 		}
 	}
 }

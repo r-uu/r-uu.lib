@@ -1,4 +1,4 @@
-package de.ruu.lib.fx.control.autocomplete.textfield;
+package de.ruu.lib.fx.control.autocomplete.textfield.v2;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +20,7 @@ public class AutoCompleteTextFieldBuilder<T>
 	private final Function      <T, Node   > DEFAULT_GRAPHICS_PROVIDER = t -> null;
 	private final Function      <T, String > DEFAULT_TEXT_PROVIDER     = t -> t.toString();
 	private final Function      <T, Tooltip> DEFAULT_TOOLTIP_PROVIDER  = t -> new Tooltip(t.toString());
-	private final String                    DEFAULT_PROMPT            = "";
+	private final String                     DEFAULT_PROMPT            = "";
 
 	private ObservableList<T         > items;
 	private BiPredicate   <T, String > suggestionFilter;
