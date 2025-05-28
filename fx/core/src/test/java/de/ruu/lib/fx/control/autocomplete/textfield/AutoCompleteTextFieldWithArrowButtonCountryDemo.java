@@ -11,22 +11,21 @@ import javafx.stage.Stage;
 
 import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountryConverter.BIPREDICATE_COUNTRY_CONVERTER;
 import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountrySuggestion.BIPREDICATE_COUNTRY_SUGGESTION;
-import static de.ruu.lib.fx.control.autocomplete.ComparatorCountry.COMPARATOR_COUNTRY;
 import static de.ruu.lib.fx.control.autocomplete.FunctionCountryGraphicsProvider.FUNCTION_COUNTRY_GRAPHICS_PROVIDER;
 import static de.ruu.lib.fx.control.autocomplete.FunctionCountryTextProvider.FUNCTION_COUNTRY_TEXT_PROVIDER;
 import static de.ruu.lib.fx.control.autocomplete.FunctionCountryToolTipProvider.FUNCTION_TOOL_TIP_PROVIDER;
 import static java.util.Objects.isNull;
 import static javafx.scene.layout.Priority.ALWAYS;
 
-public class AutoCompleteTextFieldCountryDemo extends Application
+public class AutoCompleteTextFieldWithArrowButtonCountryDemo extends Application
 {
 	@Override	public void start(Stage stage)
 	{
-		AutoCompleteTextField<Country> textField =
-				AutoCompleteTextFieldBuilder.<Country>create()
+		AutoCompleteTextFieldWithArrowButton<Country> textField =
+				(AutoCompleteTextFieldWithArrowButton<Country>) AutoCompleteTextFieldWithArrowButtonBuilder.<Country>create()
 						.items           (Country.countries())
 						.suggestionFilter(BIPREDICATE_COUNTRY_SUGGESTION)
-						.comparator      (COMPARATOR_COUNTRY)
+						.comparator 		 (Country::compareTo)
 //						.converterTest   (BIPREDICATE_COUNTRY_CONVERTER)
 						.graphicsProvider(FUNCTION_COUNTRY_GRAPHICS_PROVIDER)
 						.textProvider    (FUNCTION_COUNTRY_TEXT_PROVIDER)

@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -16,25 +17,28 @@ public class AutoCompleteTextFieldBuilder<T>
 {
 	private final ObservableList<T         > DEFAULT_ITEMS             = FXCollections.observableArrayList(new ArrayList<>());
 	private final BiPredicate   <T, String > DEFAULT_SUGGESTION_FILTER = (t, string) -> t.toString().equals(string);
-	private final BiPredicate   <T, String > DEFAULT_CONVERTER_TEST    = (t, string) -> t.toString().equals(string);
+	private final Comparator    <T         > DEFAULT_COMPARATOR        = (t1, t2) -> t1.toString().compareTo(t2.toString());
+//	private final BiPredicate   <T, String > DEFAULT_CONVERTER_TEST    = (t, string) -> t.toString().equals(string);
 	private final Function      <T, Node   > DEFAULT_GRAPHICS_PROVIDER = t -> null;
 	private final Function      <T, String > DEFAULT_TEXT_PROVIDER     = t -> t.toString();
 	private final Function      <T, Tooltip> DEFAULT_TOOLTIP_PROVIDER  = t -> new Tooltip(t.toString());
-	private final String                    DEFAULT_PROMPT            = "";
+	private final String                     DEFAULT_PROMPT            = "";
 
-	private ObservableList<T         > items;
-	private BiPredicate   <T, String > suggestionFilter;
-	private BiPredicate   <T, String > converterTest;
-	private Function      <T, Node   > graphicsProvider;
-	private Function      <T, String > textProvider;
-	private Function      <T, Tooltip> toolTipProvider;
-	private String                     prompt;
+	protected ObservableList<T         > items;
+	protected BiPredicate   <T, String > suggestionFilter;
+	protected Comparator    <T         > comparator;
+	protected BiPredicate   <T, String > converterTest;
+	protected Function      <T, Node   > graphicsProvider;
+	protected Function      <T, String > textProvider;
+	protected Function      <T, Tooltip> toolTipProvider;
+	protected String                     prompt;
 
 	public AutoCompleteTextFieldBuilder()
 	{
 		items            = DEFAULT_ITEMS;
 		suggestionFilter = DEFAULT_SUGGESTION_FILTER;
-		converterTest    = DEFAULT_CONVERTER_TEST;
+		comparator       = DEFAULT_COMPARATOR;
+//		converterTest    = DEFAULT_CONVERTER_TEST;
 		graphicsProvider = DEFAULT_GRAPHICS_PROVIDER;
 		textProvider     = DEFAULT_TEXT_PROVIDER;
 		toolTipProvider  = DEFAULT_TOOLTIP_PROVIDER;
@@ -57,10 +61,17 @@ public class AutoCompleteTextFieldBuilder<T>
 		return this;
 	}
 
-	public AutoCompleteTextFieldBuilder<T> converterTest   (final BiPredicate<T, String> converterTest)
+//	public AutoCompleteTextFieldBuilder<T> converterTest   (final BiPredicate<T, String> converterTest)
+//	{
+//		if (isNull(converterTest))    this.converterTest    = DEFAULT_CONVERTER_TEST;
+//		else                          this.converterTest    = converterTest;
+//		return this;
+//	}
+
+	public AutoCompleteTextFieldBuilder<T> comparator      (final Comparator<T    > comparator)
 	{
-		if (isNull(converterTest))    this.converterTest    = DEFAULT_CONVERTER_TEST;
-		else                          this.converterTest    = converterTest;
+		if (isNull(comparator))       this.comparator       = DEFAULT_COMPARATOR;
+		else                          this.comparator       = comparator;
 		return this;
 	}
 
@@ -99,7 +110,8 @@ public class AutoCompleteTextFieldBuilder<T>
 				(
 						items,
 						suggestionFilter,
-						converterTest,
+						comparator,
+//						converterTest,
 						graphicsProvider,
 						textProvider,
 						toolTipProvider,

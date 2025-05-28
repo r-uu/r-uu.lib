@@ -17,11 +17,12 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static de.ruu.lib.util.BooleanFunctions.not;
 import static java.util.Objects.isNull;
@@ -30,15 +31,15 @@ import static java.util.Objects.nonNull;
 @Slf4j
 public class AutoCompleteTextField<T> extends ClearableTextField
 {
-	private final ListView<T> listView = new ListView<>();
-	private final Popup       popup    = new Popup();
+	protected final ListView<T> listView = new ListView<>();
+	private   final Popup       popup    = new Popup();
 
 	/** stores the current value of an instance at all time, accessible for clients via {@link #valueProperty()} */
 	private final ObjectProperty<T> value = new SimpleObjectProperty<>();
 
 	private final ObservableList<T         > items;
 	private final BiPredicate   <T, String > suggestionFilter;
-	private final BiPredicate   <T, String > converterTest;
+	private final Comparator    <T         > comparator;
 	private final Function      <T, Node   > graphicsProvider;
 	private final Function      <T, String > textProvider;
 	private final Function      <T, Tooltip> toolTipProvider;
@@ -46,22 +47,24 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 	/**
 	 * @param suggestionFilter returns <code>true</code> if an item is a valid suggestion for the value of the combo box,
 	 *        <code>false</code> otherwise
-	 * @param converterTest returns <code>true</code> if an item corresponds to the text, <code>false</code> otherwise
-	 * @param graphicsProvider
-	 * @param textProvider
-	 * @param toolTipProvider
-	 * @param promptText
+	 * @param graphicsProvider returns a <code>Node</code> to be used as graphic for the item in the list view
+	 * @param textProvider     returns a <code>String</code> to be used as text for the item in the list view
+	 * @param toolTipProvider  returns a <code>Tooltip</code> to be used for the item in the list view
+	 * @param promptText       the text to be shown in the text field when it is empty
 	 */
-	public AutoCompleteTextField(
+	public AutoCompleteTextField
+	(
 			List                <T         > items,
 			@NonNull BiPredicate<T, String > suggestionFilter,
-			@NonNull BiPredicate<T, String > converterTest,
+			Comparator          <T         > comparator,
 			Function            <T, Node   > graphicsProvider,
 			Function            <T, String > textProvider,
 			Function            <T, Tooltip> toolTipProvider,
-			String                           promptText)
+			String                           promptText
+	)
 	{
 		if (isNull(items           )) items            = new ArrayList<>();
+		if (isNull(comparator      )) comparator       = (t1, t2) -> 0; // default comparator that does nothing
 		if (isNull(graphicsProvider)) graphicsProvider = item -> null;
 		if (isNull(textProvider    )) textProvider     = item -> isNull(item) ? "" : item.toString();
 		if (isNull(toolTipProvider )) toolTipProvider  = item -> null;
@@ -69,7 +72,7 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 
 		this.items            = FXCollections.observableArrayList(items);
 		this.suggestionFilter = suggestionFilter;
-		this.converterTest    = converterTest;
+		this.comparator       = comparator;
 		this.graphicsProvider = graphicsProvider;
 		this.textProvider     = textProvider;
 		this.toolTipProvider  = toolTipProvider;
@@ -101,11 +104,13 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 	{
 		listView.setMaxHeight(150);
 		listView.setPrefWidth(200);
+//		listView.prefWidthProperty().bind(Bindings.createDoubleBinding(() -> textField().getPrefWidth()));
+//		listView.prefWidthProperty().bind(textField().prefWidthProperty());
 		listView.setFocusTraversable(false);
 		listView.setCellFactory(new AutoCompleteCellFactory<>(graphicsProvider, textProvider, toolTipProvider));
 
-		popup.setAutoHide(true);
-		popup.setAutoFix(true);
+		popup.setAutoHide    (true);
+		popup.setAutoFix     (true);
 		popup.setHideOnEscape(true);
 		popup.getContent().add(listView);
 	}
@@ -124,6 +129,18 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 						{
 							listView.requestFocus();
 							listView.getSelectionModel().selectFirst();
+							event.consume();
+						}
+					}
+					else
+					{
+//						log.debug("text field key pressed when popup is hidden: {}", event.getCode());
+						if (event.getCode() == KeyCode.DOWN)
+						{
+							populatePopup();
+							showPopup();
+//							listView.requestFocus();
+//							listView.getSelectionModel().selectFirst();
 							event.consume();
 						}
 					}
@@ -168,28 +185,16 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 			return;
 		}
 
-		if (not(popup.isShowing()))
-		{
-			populatePopup(); // there is some text in the text field
-			showPopup();
-//			popup.show(textField(), textField().getLayoutX(), textField().getLayoutY() + textField().getHeight());
-		}
-		else
-			popup.hide();
+		// there is some text in the text field
+		populatePopup();
+		showPopup();
 	}
 
 	private Set<T> populatePopup()
 	{
-		Set<T> filteredItems = new HashSet<>();
-
-		for (T item : items)
-		{
-			if (suggestionFilter.test(item, textField().getText()))
-					filteredItems.add(item);
-		}
-
-		listView.getItems().setAll(filteredItems);
-
+		Set<T> filteredItems =
+				items.stream().filter(item -> suggestionFilter.test(item, textField().getText())).collect(Collectors.toSet());
+		listView.getItems().setAll(filteredItems.stream().sorted(comparator).toList());
 		return filteredItems;
 	}
 
@@ -206,7 +211,7 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 		}
 	}
 
-	private void showPopup()
+	protected void showPopup()
 	{
 		// Preselect first item
 		Platform.runLater

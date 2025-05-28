@@ -3,7 +3,9 @@ package de.ruu.lib.fx.control.autocomplete;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Country
+import static java.util.Objects.isNull;
+
+public class Country implements Comparable<Country>
 {
 	private String name;
 
@@ -216,5 +218,11 @@ public class Country
 		countries.add(new Country("Zimbabwe"));
 
 		return countries;
+	}
+
+	@Override public int compareTo(Country o)
+	{
+		if (isNull(o)) return 1;
+		return this.name.compareToIgnoreCase(o.name);
 	}
 }
