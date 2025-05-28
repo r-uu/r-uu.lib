@@ -1,7 +1,6 @@
 package de.ruu.lib.fx.control.autocomplete;
 
 import java.util.Comparator;
-import java.util.function.BiPredicate;
 
 public abstract class ComparatorCountry
 {

@@ -190,12 +190,11 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 		showPopup();
 	}
 
-	private Set<T> populatePopup()
+	private void populatePopup()
 	{
 		Set<T> filteredItems =
 				items.stream().filter(item -> suggestionFilter.test(item, textField().getText())).collect(Collectors.toSet());
 		listView.getItems().setAll(filteredItems.stream().sorted(comparator).toList());
-		return filteredItems;
 	}
 
 	private void applySelection()

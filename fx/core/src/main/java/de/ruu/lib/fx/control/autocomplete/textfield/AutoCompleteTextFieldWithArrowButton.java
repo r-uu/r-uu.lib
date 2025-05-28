@@ -1,7 +1,6 @@
 package de.ruu.lib.fx.control.autocomplete.textfield;
 
 import javafx.beans.binding.Bindings;
-import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -19,14 +18,11 @@ import static de.ruu.lib.util.BooleanFunctions.not;
 
 public class AutoCompleteTextFieldWithArrowButton<T> extends AutoCompleteTextField<T>
 {
-	private final Button arrowButton = new Button();
-
 	public AutoCompleteTextFieldWithArrowButton
 	(
 			List                <T         > items,
 			@NonNull BiPredicate<T, String > suggestionFilter,
 			Comparator          <T         > comparator,
-//			@NonNull BiPredicate<T, String > converterTest,
 			Function            <T, Node   > graphicsProvider,
 			Function            <T, String > textProvider,
 			Function            <T, Tooltip> toolTipProvider,
@@ -41,6 +37,7 @@ public class AutoCompleteTextFieldWithArrowButton<T> extends AutoCompleteTextFie
 		StackPane arrowPane = new StackPane(arrow);
 		arrowPane.setPrefSize(15, 10);
 
+		Button arrowButton = new Button();
 		arrowButton.setGraphic(arrowPane);
 		arrowButton.setFocusTraversable(false);
 		arrowButton.setMinSize(30, 30);
@@ -49,10 +46,10 @@ public class AutoCompleteTextFieldWithArrowButton<T> extends AutoCompleteTextFie
 		arrowButton
 				.visibleProperty()
 				.bind(Bindings.createBooleanBinding(() -> not(listView.itemsProperty().get().isEmpty())));
-		arrowButton.setOnAction(e -> onArrowButtonClicked(e));
+		arrowButton.setOnAction(e -> onArrowButtonClicked());
 
 		getChildren().add(arrowPane);
 	}
 
-	private void onArrowButtonClicked(ActionEvent e) { showPopup(); }
+	private void onArrowButtonClicked() { showPopup(); }
 }

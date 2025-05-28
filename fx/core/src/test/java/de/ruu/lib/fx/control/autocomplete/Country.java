@@ -7,7 +7,7 @@ import static java.util.Objects.isNull;
 
 public class Country implements Comparable<Country>
 {
-	private String name;
+	private final String name;
 
 	public Country(String name) { this.name = name; }
 
@@ -223,6 +223,6 @@ public class Country implements Comparable<Country>
 	@Override public int compareTo(Country o)
 	{
 		if (isNull(o)) return 1;
-		return this.name.compareToIgnoreCase(o.name);
+		return name.compareToIgnoreCase(o.name);
 	}
 }

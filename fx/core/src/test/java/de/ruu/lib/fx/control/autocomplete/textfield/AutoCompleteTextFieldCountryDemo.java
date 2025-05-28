@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountryConverter.BIPREDICATE_COUNTRY_CONVERTER;
 import static de.ruu.lib.fx.control.autocomplete.BiPredicateCountrySuggestion.BIPREDICATE_COUNTRY_SUGGESTION;
 import static de.ruu.lib.fx.control.autocomplete.ComparatorCountry.COMPARATOR_COUNTRY;
 import static de.ruu.lib.fx.control.autocomplete.FunctionCountryGraphicsProvider.FUNCTION_COUNTRY_GRAPHICS_PROVIDER;
@@ -27,7 +26,6 @@ public class AutoCompleteTextFieldCountryDemo extends Application
 						.items           (Country.countries())
 						.suggestionFilter(BIPREDICATE_COUNTRY_SUGGESTION)
 						.comparator      (COMPARATOR_COUNTRY)
-//						.converterTest   (BIPREDICATE_COUNTRY_CONVERTER)
 						.graphicsProvider(FUNCTION_COUNTRY_GRAPHICS_PROVIDER)
 						.textProvider    (FUNCTION_COUNTRY_TEXT_PROVIDER)
 						.toolTipProvider (FUNCTION_TOOL_TIP_PROVIDER)
