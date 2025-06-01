@@ -21,4 +21,5 @@ module de.ruu.lib.fx.core
 	requires org.slf4j;
 
 	requires de.ruu.lib.util;
+	requires org.apache.logging.log4j;
 }

@@ -9,9 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +32,12 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Slf4j
-public class AutoCompleteTextField<T> extends ClearableTextField
+//public class AutoCompleteTextField<T> extends ClearableTextField
+public class AutoCompleteTextField<T> extends HBox
 {
-	protected final ListView<T> listView = new ListView<>();
-	private   final Popup       popup    = new Popup();
+	private   final ClearableTextField clearableTextField = new ClearableTextField();
+	protected final ListView<T>        listView           = new ListView<>();
+	private   final Popup              popup              = new Popup();
 
 	/** stores the current value of an instance at all time, accessible for clients via {@link #valueProperty()} */
 	private final ObjectProperty<T> value = new SimpleObjectProperty<>();
@@ -43,6 +48,9 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 	private final Function      <T, Node   > graphicsProvider;
 	private final Function      <T, String > textProvider;
 	private final Function      <T, Tooltip> toolTipProvider;
+
+	// convenience reference (shortcut) to the text field of the clearable text field
+	private final TextField textField = clearableTextField.textField();
 
 	/**
 	 * @param suggestionFilter returns <code>true</code> if an item is a valid suggestion for the value of the combo box,
@@ -79,10 +87,12 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 
 		value.addListener((obs, old, cur) -> onValueChanged(cur));
 
-		textField().setPromptText(promptText);
+		textField.setPromptText(promptText);
 
 		setupPopup();
 		setupListeners();
+
+		getChildren().add(clearableTextField);
 	}
 
 	public void value(final T value)
@@ -97,8 +107,10 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 
 	public T selectedItem() { return listView.getSelectionModel().getSelectedItem(); }
 
-//	private void onValueChanged(final T newValue) { textField().setText(converter.toString(newValue)); }
-	private void onValueChanged(final T newValue) { textField().setText(textProvider.apply(newValue)); }
+	public TextField textField() { return textField; }
+
+	//	private void onValueChanged(final T newValue) { textField().setText(converter.toString(newValue)); }
+	private void onValueChanged(final T newValue) { clearableTextField.textField().setText(textProvider.apply(newValue)); }
 
 	private void setupPopup()
 	{
@@ -117,9 +129,9 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 
 	private void setupListeners()
 	{
-		textField().textProperty().addListener((obs, old, act) -> textFieldListener(act));
+		textField.textProperty().addListener((obs, old, act) -> textFieldListener(act));
 
-		textField().setOnKeyPressed
+		textField.setOnKeyPressed
 		(
 				event ->
 				{
@@ -193,7 +205,7 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 	private void populatePopup()
 	{
 		Set<T> filteredItems =
-				items.stream().filter(item -> suggestionFilter.test(item, textField().getText())).collect(Collectors.toSet());
+				items.stream().filter(item -> suggestionFilter.test(item, textField.getText())).collect(Collectors.toSet());
 		listView.getItems().setAll(filteredItems.stream().sorted(comparator).toList());
 	}
 
@@ -203,8 +215,8 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 		if (nonNull(selected))
 		{
 			String value = textProvider.apply(selected);
-			textField().setText(value);
-			textField().positionCaret(value.length());
+			textField.setText(value);
+			textField.positionCaret(value.length());
 			popup.hide();
 			value(selected);
 		}
@@ -222,7 +234,7 @@ public class AutoCompleteTextField<T> extends ClearableTextField
 					listView.requestFocus();
 				}
 		);
-		Bounds bounds = textField().localToScreen(textField().getBoundsInLocal());
-		popup.show(textField(), bounds.getMinX(), bounds.getMaxY());
+		Bounds bounds = textField.localToScreen(textField.getBoundsInLocal());
+		popup.show(textField, bounds.getMinX(), bounds.getMaxY());
 	}
 }
