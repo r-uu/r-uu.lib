@@ -92,6 +92,7 @@ public abstract class FXCApp extends Application
 
 			final Scene scene = view.getScene();
 			primaryStage.setScene(scene);
+			primaryStage.sizeToScene();
 			primaryStage.show();
 
 			onApplicationStarted(view);

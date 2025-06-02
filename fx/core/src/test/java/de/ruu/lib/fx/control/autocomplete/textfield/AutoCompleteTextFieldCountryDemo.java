@@ -32,7 +32,7 @@ public class AutoCompleteTextFieldCountryDemo extends Application
 						.prompt          ("select country")
 						.build();
 
-		textField.setMaxWidth (Double.MAX_VALUE);
+		textField.setMaxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(textField, ALWAYS);
 
 		Button button = new Button("show text field value");

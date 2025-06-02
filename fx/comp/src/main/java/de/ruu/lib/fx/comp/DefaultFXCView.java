@@ -46,7 +46,7 @@ public abstract class DefaultFXCView implements FXCView
 
 	/**
 	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the
-	 * file by leveraging the <code>FXVComp</code> default naming conventions (see
+	 * file by leveraging the <code>FXCView</code> default naming conventions (see
 	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link
 	 * #getFXMLResourceName()}
 	 */
