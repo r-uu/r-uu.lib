@@ -14,4 +14,5 @@ module de.ruu.lib.jpa.core
 	requires java.sql;
 
 	requires static lombok;
+	requires com.fasterxml.jackson.annotation;
 }

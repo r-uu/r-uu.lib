@@ -1,10 +1,13 @@
 package de.ruu.lib.jpa.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import lombok.NonNull;
 
 import java.io.Serializable;
 import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Defines common features primary key ({@link #getId()}) and version {@link #getVersion()} for JPA entities and their
@@ -36,12 +39,16 @@ public interface Entity<I extends Serializable> extends Serializable
 	/** @return optional version,     {@link Optional#empty()} indicates that entity was not (yet) persisted. */
 	default public @NonNull Optional<Short> optionalVersion() { return Optional.ofNullable(version()); }
 
-	public static class EntityInfo<I extends Serializable> implements Entity<I>
+	default EntityInfo entityInfo() { return new EntityInfo<>(this); }
+	@JsonIgnore
+	default boolean isPersisted() { return nonNull(id()) && nonNull(version()); }
+
+	class EntityInfo<I extends Serializable> implements Entity<I>
 	{
 		@Nullable private I     id;
 		@Nullable private Short version;
 
-		public EntityInfo(@Nullable I id, @Nullable Short version)
+		private EntityInfo(@Nullable I id, @Nullable Short version)
 		{
 			this.id      = id;
 			this.version = version;

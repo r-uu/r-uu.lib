@@ -9,18 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FXCAppStartedEvent extends AbstractEvent<FXCApp, DefaultFXCView>
 {
-	/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
-	static
-	{
-		Module addReadsReceiver   = FXCAppStartedEvent.class.getModule();
-		Module moduleToBeReceived = FXCAppStartedEvent.class.getClassLoader().getUnnamedModule();
-		
-		log.debug("setting add-reads vm option for module {} to {}", addReadsReceiver.getName(), moduleToBeReceived.getName());
-		addReadsReceiver.addReads(moduleToBeReceived);
-		log.debug("set     add-reads vm option for module {} to {}", addReadsReceiver.getName(), moduleToBeReceived.getName());
-	}
-
-	public FXCAppStartedEvent(final FXCApp source, final DefaultFXCView data) { super(source, data); }
-
 	@ApplicationScoped public static class FXCAppStartedEventDispatcher extends EventDispatcher<FXCAppStartedEvent> { }
+	public FXCAppStartedEvent(final FXCApp source, final DefaultFXCView data) { super(source, data); }
+	/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
+	public static void addReadsUnnamedModule()
+	{
+		FXCAppStartedEvent
+				.class
+				.getModule()
+				.addReads(FXCAppStartedEvent.class.getClassLoader().getUnnamedModule());
+	}
 }
