@@ -157,16 +157,23 @@ public abstract class AbstractRepository<T extends Entity<I>, I extends Serializ
 		}
 	}
 
-	@Override public void delete(final I id)
+	@Override public boolean delete(final I id)
 	{
-		// unchecked access to optional is acceptable here because null handling (throw IllegalArgumentException) will be
-		// done in called delete(T) method
-		delete(find(id).get());
+		Optional<T> optional = find(id);
+
+		if (optional.isPresent())
+		{
+			delete(optional.get());
+			return true;
+		}
+
+		return false;
 	}
 
-	@Override public void delete(T entity)
+	@Override public boolean delete(T entity)
 	{
 		entityManager().remove(entity);
+		return true;
 	}
 
 	@Override public void refresh(final T entity)

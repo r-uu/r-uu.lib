@@ -106,20 +106,18 @@ public interface Repository<T extends Entity<I>, I extends Serializable>
 	void save(T... entities);
 
 	/**
-	 * TODO find out if it would be better to return boolean
 	 * Remove an entity by given id.
 	 *
 	 * @param id entity's pk
 	 */
-	void delete(I id);
+	boolean delete(I id);
 
 	/**
-	 * TODO find out if it would be better to return boolean
 	 * Remove an entity.
 	 *
 	 * @param entity
 	 */
-	void delete(T entity);
+	boolean delete(T entity);
 
 	/**
 	 * Refresh an entity that may have changed in another thread/transaction.
