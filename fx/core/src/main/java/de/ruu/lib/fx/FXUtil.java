@@ -13,15 +13,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -149,6 +153,26 @@ public abstract class FXUtil
 				setChildrenInTreeEditable((Parent) node, editable);
 			}
 		}
+	}
+
+	/**
+	 * moves children of sourcePane into targetPane and returns targetPane
+	 *
+	 * @param sourcePane pane the children will be moved from
+	 * @param targetPane pane the children will be moved to
+	 * @param <SOURCE_PANE> the type of the source pane
+	 * @param <TARGET_PANE> the type of the target pane
+	 * @return targetPane, which is the wrapping pane that now contains the children of sourcePane
+	 */
+	public static <SOURCE_PANE extends Pane, TARGET_PANE extends Pane> TARGET_PANE moveChildrenOfSourceIntoTarget(
+			@NonNull SOURCE_PANE sourcePane, @NonNull TARGET_PANE targetPane)
+	{
+		// make sure that children are copied into a new array list, because the source pane will be cleared
+		List<Node> children = new ArrayList<>(sourcePane.getChildren()); // store              children of   source pane
+		sourcePane.getChildren().clear();                                // remove             children from source pane
+		targetPane.getChildren().addAll(children);                       // restore removed    children in   target pane
+		sourcePane.getChildren().add   (targetPane);                     // add target pane to children of   source pane
+		return targetPane;                                               // return target pane, which is now the wrapping pane
 	}
 
 	// TODO also check suggestions made here:
