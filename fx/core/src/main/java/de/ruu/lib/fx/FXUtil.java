@@ -7,14 +7,14 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Popup;
@@ -153,6 +153,48 @@ public abstract class FXUtil
 				setChildrenInTreeEditable((Parent) node, editable);
 			}
 		}
+	}
+
+	public static HBox moveIntoTitledHBox(String title, Region region)
+	{
+		Label label = new Label(title);
+
+		HBox box = new HBox();
+		box.setPadding(new Insets(10));
+		box.setSpacing(5);
+		box.getChildren().addAll(label, region);
+
+		// Rahmen setzen
+		box.setBorder(
+				new Border(
+						new BorderStroke(
+								Color.GRAY,
+								BorderStrokeStyle.SOLID,
+								new CornerRadii(4),
+								new BorderWidths(1))));
+
+		return box;
+	}
+
+	public static VBox moveIntoTitledVBox(String title, Region region)
+	{
+		Label label = new Label(title);
+
+		VBox box = new VBox();
+		box.setPadding(new Insets(10));
+		box.setSpacing(5);
+		box.getChildren().addAll(label, region);
+
+		// Rahmen setzen
+		box.setBorder(
+				new Border(
+						new BorderStroke(
+								Color.GRAY,
+								BorderStrokeStyle.SOLID,
+								new CornerRadii(4),
+								new BorderWidths(1))));
+
+		return box;
 	}
 
 	/**
