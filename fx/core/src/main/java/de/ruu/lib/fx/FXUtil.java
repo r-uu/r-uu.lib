@@ -199,6 +199,61 @@ public abstract class FXUtil
 	}
 
 	/**
+	 * Aktualisiert nur den BorderStrokeStyle einer Region,
+	 * alle anderen Border-Eigenschaften bleiben erhalten.
+	 *
+	 * @param region Die JavaFX-Region (z. B. Pane, StackPane, VBox, ...)
+	 * @param newStyle Der gewünschte neue BorderStrokeStyle (z. B. DASHED, DOTTED, etc.)
+	 */
+	public static void updateBorderStrokeStyle(Region region, BorderStrokeStyle newStyle)
+	{
+		Border currentBorder = region.getBorder();
+
+		if (currentBorder == null || currentBorder.getStrokes().isEmpty()) { return; }  // Nichts zu ändern
+
+		BorderStroke oldStroke = currentBorder.getStrokes().get(0);
+
+		// Neuer Stroke mit gleichem Setup, aber geändertem Stil
+		BorderStroke newStroke =
+				new BorderStroke(
+						oldStroke.getTopStroke(),
+						newStyle,
+						oldStroke.getRadii(),
+						oldStroke.getWidths(),
+						oldStroke.getInsets());
+
+		region.setBorder(new Border(newStroke));
+	}
+
+	/**
+	 * Aktualisiert nur den BorderStrokeWidth einer Region, alle anderen Border-Eigenschaften bleiben erhalten.
+	 *
+	 * @param region Die JavaFX-Region (z. B. Pane, StackPane, VBox, ...)
+	 * @param newBorderWidth Der gewünschte neue BorderWidths (z. B. new BorderWidths(2))
+	 */
+	public static void updateBorderWidth(Region region, double newBorderWidth)
+	{
+		Border currentBorder = region.getBorder();
+
+		if (currentBorder == null || currentBorder.getStrokes().isEmpty()) { return; }  // Nichts zu ändern
+
+		BorderStroke      oldBorderStroke      = currentBorder.getStrokes().get(0);
+		BorderStrokeStyle oldBorderStrokeStyle =
+				oldBorderStroke.isStrokeUniform() ? oldBorderStroke.getTopStyle() : BorderStrokeStyle.SOLID;
+
+		// Neuer Stroke mit gleichem Setup, aber geändertem BorderWidth
+		BorderStroke newStroke =
+				new BorderStroke(
+						oldBorderStroke.getTopStroke(),
+						oldBorderStrokeStyle,
+						oldBorderStroke.getRadii(),
+						new BorderWidths(newBorderWidth),
+						oldBorderStroke.getInsets());
+
+		region.setBorder(new Border(newStroke));
+	}
+
+	/**
 	 * moves children of sourcePane into targetPane and returns targetPane
 	 *
 	 * @param sourcePane pane the children will be moved from
