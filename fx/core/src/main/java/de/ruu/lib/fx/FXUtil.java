@@ -8,15 +8,28 @@ import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -155,46 +168,34 @@ public abstract class FXUtil
 		}
 	}
 
-	public static HBox moveIntoTitledHBox(String title, Region region)
+	public static StackPane createTitledBorder(String title, Region content)
 	{
-		Label label = new Label(title);
-
-		HBox box = new HBox();
-		box.setPadding(new Insets(10));
-		box.setSpacing(5);
-		box.getChildren().addAll(label, region);
-
-		// Rahmen setzen
-		box.setBorder(
+		// set a border on the content region
+		content.setBorder(
 				new Border(
-						new BorderStroke(
-								Color.GRAY,
-								BorderStrokeStyle.SOLID,
-								new CornerRadii(4),
-								new BorderWidths(1))));
+						new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, new CornerRadii(4), new BorderWidths(1))));
+		content.setPadding(new Insets(10, 5, 5, 5));
 
-		return box;
-	}
+		// label as the title
+		Label label = new Label(" " + title + " ");
 
-	public static VBox moveIntoTitledVBox(String title, Region region)
-	{
-		Label label = new Label(title);
+		label.setBackground(
+				new Background(
+						new BackgroundFill(Color.web("#f4f4f4"), CornerRadii.EMPTY, Insets.EMPTY)));
+		label.setFont(Font.font("System", FontWeight.NORMAL, 12));
+		label.setTranslateY(-8); // exakt wie in CSS
+		label.setTranslateX( 8);
 
-		VBox box = new VBox();
-		box.setPadding(new Insets(10));
-		box.setSpacing(5);
-		box.getChildren().addAll(label, region);
+//		label.setStyle("-fx-background-color: white; -fx-translate-y: -8; -fx-translate-x: 8;");
 
-		// Rahmen setzen
-		box.setBorder(
-				new Border(
-						new BorderStroke(
-								Color.GRAY,
-								BorderStrokeStyle.SOLID,
-								new CornerRadii(4),
-								new BorderWidths(1))));
+		// stack everything
+		StackPane wrapper = new StackPane();
+		wrapper.getChildren().addAll(content, label);
 
-		return box;
+		// proper positioning
+		StackPane.setAlignment(label, Pos.TOP_LEFT);
+
+		return wrapper;
 	}
 
 	/**
