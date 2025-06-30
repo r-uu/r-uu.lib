@@ -187,7 +187,7 @@ public abstract class FXCApp extends Application
 	private void onStageShowing()
 	{
 		log.debug(
-				"-".repeat(10) +
+				"\n" + "-".repeat(10) +
 						"firing fx stage showing event");
 		CDI.current().getBeanManager().getEvent().fire(new FXStageShowingEvent(this, primaryStage));
 	}
@@ -195,14 +195,16 @@ public abstract class FXCApp extends Application
 	private void onApplicationStarted(final DefaultFXCView view)
 	{
 		log.debug(
-				"-".repeat(10) +
+				"\n" + "-".repeat(10) +
 				"firing fx app started event");
 		CDI.current().getBeanManager().getEvent().fire(new FXCAppStartedEvent(this, view));
 	}
 
 	private void onApplicationStopped()
 	{
-		log.debug("firing " + FXCAppStoppedEvent.class.getName());
+		log.debug(
+				"\n" + "-".repeat(10) +
+				"firing app stopped event");
 		CDI.current().getBeanManager().getEvent().fire(new FXCAppStoppedEvent(this));
 	}
 }

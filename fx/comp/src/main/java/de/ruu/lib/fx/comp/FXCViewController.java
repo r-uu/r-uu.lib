@@ -1,6 +1,8 @@
 package de.ruu.lib.fx.comp;
 
+import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXML;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Defines the behavior of a <code>FXVComp</code> view (see {@link FXCView}).
@@ -10,15 +12,13 @@ import javafx.fxml.FXML;
 public interface FXCViewController
 {
 	/**  @author r-uu */
+	@Slf4j
 	abstract class DefaultFXCViewController implements FXCViewController
 	{
-		/**
-		 * Default implementation throws {@link ExceptionInInitializerError}, override this to define
-		 * an appropriate (if empty) behavior of <code>FXVComp</code> components.
-		 */
 		@FXML protected void initialize()
 		{
-			throw new ExceptionInInitializerError("interface default, you likely want to override this");
+			log.debug("\n" + "-".repeat(10) + "firing component ready event");
+			CDI.current().getBeanManager().getEvent().fire(new FXComponentReadyEvent(this, null));
 		}
 	}
 }
