@@ -5,6 +5,7 @@ import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -14,17 +15,20 @@ import static de.ruu.lib.util.BooleanFunctions.not;
 import static java.util.Objects.isNull;
 
 /**
- * Abstract base class for JavaFX visual components (<code>FXVComp</code> views).
+ * Abstract base class for JavaFX visual components (<code>FXComp</code> views).
  * <p>
- * Implementations of {@link DefaultFXCView}s can be run and tested as independent JavaFX
- * applications using {@link FXCApp} and {@link FXCAppRunner}.
+ * Implementations of {@link DefaultFXCView}s can be run and tested as independent JavaFX applications using {@link
+ * FXCApp} and {@link FXCAppRunner}.
  * <p>
- * To facilitate easy integration in large JavaFX applications {@link FXCView} provides:
+ * To facilitate easy integration in large JavaFX applications {@link DefaultFXCView} provides:
  * <ul>
  *   <li><code>protected</code> access to the controller that defines the behavior of the view and implements the
- *       services of the component.</li>
- *   <li><code>protected</code> access to various methods that allow to override default
- *       naming conventions if they do not fit the actual needs for a component.</li>
+ *       services of the component (see {@link FXCView#getService()}).</li>
+ *   <li><code>protected</code> access to various methods that allow to override default naming conventions if they do
+ *       not fit the actual needs for a component.</li>
+ *   <li>CDI support. This means that custom extensions of this class can be injected into other extensions of it.</li>
+ *   <li>During bootstrapping {@link DefaultFXCView} instances will notify listeners to {@link FXComponentReadyEvent}s
+ *       as soon as bootstrapping reaches its last step.</li>
  * </ul>
  *
  * @author r-uu
@@ -32,17 +36,12 @@ import static java.util.Objects.isNull;
 @Slf4j
 public abstract class DefaultFXCView implements FXCView
 {
-	private Parent localRoot;
-
-	private FXCViewService service;
-
+	private Parent                                localRoot;
+	private FXCViewService                        service;
 	private Optional<? extends FXCViewController> controllerOptional;
-
-	private Scene scene;
-
-	private String fxmlResourceName;
-
-	private String cssResourceName;
+	private Scene                                 scene;
+	private String                                fxmlResourceName;
+	private String                                cssResourceName;
 
 	/**
 	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the
@@ -50,28 +49,44 @@ public abstract class DefaultFXCView implements FXCView
 	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link
 	 * #getFXMLResourceName()}
 	 */
-	@Override public Parent getLocalRoot()
+	@Override public @NonNull Parent getLocalRoot()
 	{
 		if (not(isNull(localRoot))) return localRoot;
 
 		final FXMLLoader fxmlLoader = createFXMLLoader();
-
-		localRoot = FXUtil.loadFrom(fxmlLoader);
+		localRoot                   = FXUtil.loadFrom(fxmlLoader);
 
 		return localRoot;
 	}
 
+	/**
+	 * Returns the service of this component. The service is usually a controller that implements the {@link
+	 * FXCViewService} interface.
+	 * <p>
+	 * If no service is set yet, it will be created by calling {@link #getServiceClass()} and using CDI to instantiate the
+	 * service.
+	 *
+	 * @return the service of this component
+	 */
 	@Override public FXCViewService getService()
 	{
 		if (not(isNull(service))) return service;
 
 		final Class<? extends FXCViewService> serviceClass = getServiceClass();
-
-		service = CDI.current().select(serviceClass).get();
+		service                                            = CDI.current().select(serviceClass).get();
 
 		return service;
 	}
 
+	/**
+	 * Returns the controller of this component. The controller is usually a class that implements the {@link
+	 * FXCViewController} interface.
+	 * <p>
+	 * If no controller is set yet, it will be created by calling {@link #getControllerClass()} and using CDI to
+	 * instantiate the controller.
+	 *
+	 * @return the controller of this component
+	 */
 	protected Optional<? extends FXCViewController> getController()
 	{
 		if (not(isNull(controllerOptional))) return controllerOptional;
@@ -88,7 +103,16 @@ public abstract class DefaultFXCView implements FXCView
 
 			controllerOptional = Optional.of(fxcViewController);
 
-			log.debug("using " + controllerOptional.get().getClass().getName() + " controller");
+			log.debug(
+					"-".repeat(10) +
+					"bootstrapped and stored {} controller, firing fx component ready event",
+					controllerOptional.get().getClass().getName());
+
+			CDI
+					.current()
+					.getBeanManager()
+					.getEvent()
+					.fire(new FXComponentReadyEvent(this, service));
 		}
 		else
 		{
@@ -96,46 +120,6 @@ public abstract class DefaultFXCView implements FXCView
 		}
 
 		return controllerOptional;
-	}
-
-	private FXMLLoader createFXMLLoader()
-	{
-		final FXMLLoader fxmlLoader = new FXMLLoader();
-
-		// configure fxmlLoader
-		//   find and set location
-		final String fxmlResourceName = getFXMLResourceName();
-		final URL    fxmlLocation     = getClass().getResource(fxmlResourceName);
-
-		if (fxmlLocation == null)
-		{
-			log.error(
-					"no resource exists for {} at location {}, does module {} export _and_ open package {}?",
-					getClass().getName(),
-					fxmlResourceName,
-					getClass().getModule().getName(),
-					getClass().getPackage().getName());
-		}
-		else
-		{
-			log.debug(
-					"configured {} to load fxml from {}",
-					FXMLLoader.class.getName(),
-					fxmlLocation.toExternalForm());
-			fxmlLoader.setLocation(fxmlLocation);
-		}
-
-		final Object controllerFromFXML = fxmlLoader.getController();
-
-		if (controllerFromFXML != null)
-		{
-			log.warn("found {} controller, controller might be replaced", controllerFromFXML.getClass().getName());
-		}
-
-		//   set controller
-		getController().ifPresent(controller -> fxmlLoader.setController(controller));
-
-		return fxmlLoader;
 	}
 
 	protected Scene getScene()
@@ -234,4 +218,52 @@ public abstract class DefaultFXCView implements FXCView
 	 *         class plus a trailing "App". This complies to the naming conventions.
 	 */
 	protected String getClassNameApp() { return getClass().getName() + "App"; }
+
+	/**
+	 * Creates a new {@link FXMLLoader} instance that is configured to load the component's <code>.fxml</code> file.
+	 * <p>
+	 * The <code>.fxml</code> file is looked up by leveraging the <code>FXCView</code> default naming conventions (see
+	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link #getFXMLResourceName()}.
+	 *
+	 * @return a new {@link FXMLLoader} instance
+	 */
+	private FXMLLoader createFXMLLoader()
+	{
+		final FXMLLoader fxmlLoader = new FXMLLoader();
+
+		// configure fxmlLoader
+		//   find and set location
+		final String fxmlResourceName = getFXMLResourceName();
+		final URL    fxmlLocation     = getClass().getResource(fxmlResourceName);
+
+		if (fxmlLocation == null)
+		{
+			log.error(
+					"no resource exists for {} at location {}, does module {} export _and_ open package {}?",
+					getClass().getName(),
+					fxmlResourceName,
+					getClass().getModule().getName(),
+					getClass().getPackage().getName());
+		}
+		else
+		{
+			log.debug(
+					"configured {} to load fxml from {}",
+					FXMLLoader.class.getName(),
+					fxmlLocation.toExternalForm());
+			fxmlLoader.setLocation(fxmlLocation);
+		}
+
+		final Object controllerFromFXML = fxmlLoader.getController();
+
+		if (controllerFromFXML != null)
+		{
+			log.warn("found {} controller, controller might be replaced", controllerFromFXML.getClass().getName());
+		}
+
+		//   set controller
+		getController().ifPresent(controller -> fxmlLoader.setController(controller));
+
+		return fxmlLoader;
+	}
 }

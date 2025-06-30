@@ -25,7 +25,7 @@ Same as the view class definition the controller definition is also (nearly) emp
 ```
 package de.ruu.lib.fx.comp.demo.empty;
 
-import de.ruu.lib.fx.comp.DefaultFXCViewController;
+import de.ruu.lib.fx.comp.FXCViewController.DefaultFXCViewController;
 import javafx.fxml.FXML;
 
 class EmptyController extends DefaultFXCViewController
@@ -66,7 +66,7 @@ Note the elegance of how Java FX controller classes can make use of two differen
 ```
 package de.ruu.lib.fx.comp.demo.hierarchy;
 
-import de.ruu.lib.fx.comp.DefaultFXCViewController;
+import de.ruu.lib.fx.comp.FXCViewController.DefaultFXCViewController;
 import de.ruu.lib.fx.comp.demo.hierarchy.sub1.HierarchyDemoSub1;
 import de.ruu.lib.fx.comp.demo.hierarchy.sub2.HierarchyDemoSub2;
 import jakarta.inject.Inject;

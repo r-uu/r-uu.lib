@@ -39,15 +39,14 @@ package de.ruu.lib.fx.comp;
 import javafx.scene.Parent;
 
 /**
- * Interface for JavaFX visual components (<code>FXVComp</code> views) that are designed to
- * be used as building blocks for bigger JavaFX components.
+ * Interface for JavaFX visual components (<code>FXComp</code> views) that are designed to be used as building blocks
+ * for bigger JavaFX visual components.
  * <p>
  * To facilitate easy integration in large JavaFX applications {@link FXCView} provides:
  * <ul>
- *   <li>Access to a node graph that defines the visual appearance of a view via {@link
- *       #getLocalRoot()}. The visual appearance is usually defined in a <code>.fxml</code>
- *       file that contains a declarative description of the JavaFX components of the {@link
- *       FXCView} (buttons, textfields, labels, ...) and their layout.</li>
+ *   <li>Access to a node graph that defines the visual appearance of a view via {@link #getLocalRoot()}. The visual
+ *       appearance is usually defined in a <code>.fxml</code> file that contains a declarative description of the
+ *       JavaFX components of the {@link FXCView} (buttons, textfields, labels, ...) and their layout.</li>
  *   <li>Access to the (by default empty) services of the component.</li>
  * </ul>
  *
@@ -55,9 +54,9 @@ import javafx.scene.Parent;
  */
 public interface FXCView
 {
-	/*
-	 * @return {@link Parent} representing the root of the component's tree of nodes. The tree
-	 *         of nodes defines the visual appearance of the component.
+	/**
+	 * @return {@link Parent} representing the root of the component's tree of nodes. The tree of nodes defines the visual
+	 *         appearance of the component.
 	 */
 	Parent getLocalRoot();
 

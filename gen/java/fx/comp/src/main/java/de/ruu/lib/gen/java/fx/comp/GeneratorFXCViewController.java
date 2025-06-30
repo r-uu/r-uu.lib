@@ -1,6 +1,6 @@
 package de.ruu.lib.gen.java.fx.comp;
 
-import de.ruu.lib.fx.comp.DefaultFXCViewController;
+import de.ruu.lib.fx.comp.FXCViewController;
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.CompilationUnitFileWriter;
 import de.ruu.lib.gen.java.context.CompilationUnitContext;
@@ -50,7 +50,7 @@ public class GeneratorFXCViewController
 				.extendsClause
 				(
 						extendsClause(context)
-								.extendsClause(DefaultFXCViewController.class)
+								.extendsClause(FXCViewController.DefaultFXCViewController.class)
 				)
 				.childNodesSeparator(LS)
 				.codeBlock

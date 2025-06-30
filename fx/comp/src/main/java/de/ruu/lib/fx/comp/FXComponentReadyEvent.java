@@ -7,18 +7,18 @@ import lombok.extern.slf4j.Slf4j;
 
 /** Event that can be thrown to indicate that a {@link FXCApp} has started successfully. */
 @Slf4j
-public class FXCAppStartedEvent extends AbstractEvent<FXCApp, FXCView>
+public class FXComponentReadyEvent extends AbstractEvent<FXCView, FXCViewService>
 {
-	@ApplicationScoped public static class FXCAppStartedEventDispatcher extends EventDispatcher<FXCAppStartedEvent> { }
+	@ApplicationScoped public static class FXComponentReadyEventDispatcher extends EventDispatcher<FXComponentReadyEvent> { }
 
-	public FXCAppStartedEvent(final FXCApp source, final FXCView data) { super(source, data); }
+	public FXComponentReadyEvent(final FXCView source, final FXCViewService data) { super(source, data); }
 
 	/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
 	public static void addReadsUnnamedModule()
 	{
-		FXCAppStartedEvent
+		FXComponentReadyEvent
 				.class
 				.getModule()
-				.addReads(FXCAppStartedEvent.class.getClassLoader().getUnnamedModule());
+				.addReads(FXComponentReadyEvent.class.getClassLoader().getUnnamedModule());
 	}
 }

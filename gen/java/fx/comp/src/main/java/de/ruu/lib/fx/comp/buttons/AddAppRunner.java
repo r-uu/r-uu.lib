@@ -1,16 +1,15 @@
 package de.ruu.lib.fx.comp.buttons;
 
 import de.ruu.lib.fx.FXUtil;
-import de.ruu.lib.fx.comp.DefaultFXCView;
 import de.ruu.lib.fx.comp.FXCAppRunner;
 import de.ruu.lib.fx.comp.FXCAppStartedEvent;
-import de.ruu.lib.fx.comp.buttons.AddService.AddServiceReadyEvent;
-import de.ruu.lib.fx.comp.buttons.AddService.AddServiceReadyEvent.AddServiceReadyEventDispatcher;
+import de.ruu.lib.fx.comp.FXCView;
+import de.ruu.lib.fx.comp.buttons.AddService.AddComponentReadyEvent;
+import de.ruu.lib.fx.comp.buttons.AddService.AddComponentReadyEvent.AddComponentReadyEventDispatcher;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.scene.control.Button;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -25,20 +24,16 @@ import java.util.function.Consumer;
 		log.debug("starting AddAppRunner.class.getName()");
 
 		// register the AddServiceReadyEvent and FXCAppStartedEvent to read from the unnamed module
-		AddServiceReadyEvent.addReadsUnnamedModule();
-		FXCAppStartedEvent  .addReadsUnnamedModule();
+		AddComponentReadyEvent.addReadsUnnamedModule();
+		FXCAppStartedEvent    .addReadsUnnamedModule();
 
 		Runnable runBeforeAppLaunch =
 				() ->
 				{
 					log.debug("starting runBeforeAppLaunch");
-					// register the FXCAppStartedEvent and AddServiceReadyEvent consumers to their respective dispatchers
-					FXCAppStartedEvent.FXCAppStartedEventDispatcher appStartedEventDispatcher =
-							CDI.current().select(FXCAppStartedEvent.FXCAppStartedEventDispatcher.class).get();
-					appStartedEventDispatcher.add(new FXCAppStartedEventEventConsumer());
-					AddServiceReadyEventDispatcher serviceReadyEventDispatcher =
-							CDI.current().select(AddServiceReadyEventDispatcher.class).get();
-					serviceReadyEventDispatcher.add(new AddServiceReadyEventConsumer());
+					AddComponentReadyEventDispatcher componentReadyEventDispatcher =
+							CDI.current().select(AddComponentReadyEventDispatcher.class).get();
+					componentReadyEventDispatcher.add(new AddComponentReadyEventConsumer());
 					log.debug("finished runBeforeAppLaunch");
 				};
 		FXCAppRunner.run(AddApp.class, args, runBeforeAppLaunch);
@@ -46,51 +41,29 @@ import java.util.function.Consumer;
 		log.debug("finished AddAppRunner.class.getName()");
 	}
 
-	private static class AddServiceReadyEventConsumer implements Consumer<AddServiceReadyEvent>
+	private static class AddComponentReadyEventConsumer implements Consumer<AddComponentReadyEvent>
 	{
-		@Override public void accept(AddServiceReadyEvent e)
+		@Override public void accept(AddComponentReadyEvent e)
 		{
-			log.debug("received event {}", e);
-			AddService addService = e.getSource();
-			Button     button     = addService.button();
+			log.debug(
+					"-".repeat(10) +
+					"received add component ready event");
+			FXCView fxcView = e.getSource();
 			FXUtil
-					.getStage(button)
+					.getStage(fxcView.getLocalRoot())
 					.ifPresentOrElse
 					(
 							stage ->
 							{
 								stage.setTitle("demo for add button");
-								stage.sizeToScene();
+								stage.setHeight(200);
+								stage.setWidth (200);
+//								stage.sizeToScene();
 							},
-							() -> log.warn("no stage found for button {}", button)
+							() -> log.warn("no stage found for local root")
 					);
+			Button button = ((AddService) ((Add) fxcView).getService()).button();
 			button.setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent));
-		}
-	}
-
-	private static class FXCAppStartedEventEventConsumer implements Consumer<FXCAppStartedEvent>
-	{
-		@Override public void accept(FXCAppStartedEvent e)
-		{
-			log.debug("received event {}", e);
-			Optional<DefaultFXCView> optionalView = e.getData();
-			optionalView.ifPresent
-			(
-					v ->
-					{
-						FXUtil
-								.getStage(v.getLocalRoot())
-								.ifPresentOrElse
-								(
-										stage ->
-										{
-											stage.setTitle("demo for add button");
-											stage.sizeToScene();
-										},
-										() -> log.warn("no stage found for view {}", v.getLocalRoot())
-								);
-					}
-			);
 		}
 	}
 }

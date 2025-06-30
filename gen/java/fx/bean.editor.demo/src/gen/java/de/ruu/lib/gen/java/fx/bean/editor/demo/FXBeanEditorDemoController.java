@@ -1,6 +1,5 @@
 package de.ruu.lib.gen.java.fx.bean.editor.demo;
 
-import de.ruu.lib.fx.comp.DefaultFXCViewController;
 import javafx.fxml.FXML;
 
 /**

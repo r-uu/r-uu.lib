@@ -50,9 +50,9 @@ import static java.util.Objects.isNull;
 public abstract class FXCApp extends Application
 {
 	/** Event that will be fired as soon as the primary stage of this {@link FXCApp} was shown. */
-	public static class StageShowingEvent extends AbstractEvent<FXCApp, Stage>
+	public static class FXStageShowingEvent extends AbstractEvent<FXCApp, Stage>
 	{
-		public StageShowingEvent(final FXCApp source, final Stage data) { super(source, data); }
+		public FXStageShowingEvent(final FXCApp source, final Stage data) { super(source, data); }
 	}
 
 	private Stage                    primaryStage;
@@ -63,7 +63,7 @@ public abstract class FXCApp extends Application
 	 * and to pass the {@link Scene} object of that instance to the primary stage of this application. Finally the primary
 	 * stage will be displayed and events were being fired to signal the display and start of the application.
 	 * <p>
-	 * fires {@link StageShowingEvent}<p>
+	 * fires {@link FXStageShowingEvent}<p>
 	 * fires {@link FXCAppStartedEvent}
 	 *
 	 * @throws ExceptionInInitializerError if a {@link DefaultFXCView} instance can not be obtained successfully
@@ -186,13 +186,17 @@ public abstract class FXCApp extends Application
 
 	private void onStageShowing()
 	{
-		log.debug("firing " + StageShowingEvent.class.getName());
-		CDI.current().getBeanManager().getEvent().fire(new StageShowingEvent(this, primaryStage));
+		log.debug(
+				"-".repeat(10) +
+						"firing fx stage showing event");
+		CDI.current().getBeanManager().getEvent().fire(new FXStageShowingEvent(this, primaryStage));
 	}
 
 	private void onApplicationStarted(final DefaultFXCView view)
 	{
-		log.debug("firing " + FXCAppStartedEvent.class.getName());
+		log.debug(
+				"-".repeat(10) +
+				"firing fx app started event");
 		CDI.current().getBeanManager().getEvent().fire(new FXCAppStartedEvent(this, view));
 	}
 

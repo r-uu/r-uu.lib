@@ -15,21 +15,21 @@ public interface AddService extends FXCViewService
 {
 	Button button();
 
-	/** Event that is fired to indicate that a {@link AddService} has become available. */
-	public class AddServiceReadyEvent extends AbstractEvent<AddService, Object>
+	/** Event that is fired to indicate that a {@link Add} component has become available. */
+	public class AddComponentReadyEvent extends AbstractEvent<Add, AddService>
 	{
-		public AddServiceReadyEvent(final AddService source) { super(source); }
+		public AddComponentReadyEvent(final Add add, final AddService addService) { super(add, addService); }
 
 		@ApplicationScoped
-		public static class AddServiceReadyEventDispatcher extends EventDispatcher<AddServiceReadyEvent> { }
+		public static class AddComponentReadyEventDispatcher extends EventDispatcher<AddComponentReadyEvent> { }
 
 		/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
 		public static void addReadsUnnamedModule()
 		{
-			AddServiceReadyEvent
+			AddComponentReadyEvent
 					.class
 					.getModule()
-					.addReads(AddServiceReadyEvent.class.getClassLoader().getUnnamedModule());
+					.addReads(AddComponentReadyEvent.class.getClassLoader().getUnnamedModule());
 		}
 	}
 }
