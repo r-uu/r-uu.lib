@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author r-uu
  */
-public interface FXCViewController
+public interface FXCViewController<S extends FXCView>
 {
 	/**  @author r-uu */
 	@Slf4j

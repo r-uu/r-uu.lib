@@ -52,18 +52,14 @@ import javafx.scene.Parent;
  *
  * @author r-uu
  */
-public interface FXCView
+public interface FXCView<S extends FXCViewService>
 {
 	/**
-	 * @return {@link Parent} representing the root of the component's tree of nodes. The tree of nodes defines the visual
-	 *         appearance of the component.
+	 * @return {@link Parent} representing the root of the component's tree of nodes. The tree of nodes defines the
+	 *         visual appearance of the component.
 	 */
 	Parent getLocalRoot();
 
-	/**
-	 * Override this method to provide sub type instances of {@link FXCViewService}s
-	 *
-	 * @return default empty implementation of {@link FXCViewService}
-	 */
-	default FXCViewService getService() { return new FXCViewService() { }; }
+	/** @return implementation of {@link FXCViewService} */
+	S getService();
 }
