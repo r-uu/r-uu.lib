@@ -1,6 +1,6 @@
 package de.ruu.lib.gen.java.fx.comp;
 
-import de.ruu.lib.fx.comp.FXCViewService;
+import de.ruu.lib.fx.comp.FXCService;
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.CompilationUnitFileWriter;
 import de.ruu.lib.gen.java.GeneratorCodeBlock;
@@ -45,7 +45,7 @@ public class GeneratorFXCViewService
 				.modifiers(modifiers(context).visibility(PUBLIC))
 				.extendsClause(
 						GeneratorInterfaceExtends.create(context)
-								.add(context.importManager().useType(FXCViewService.class)))
+								.add(context.importManager().useType(FXCService.class)))
 				.codeBlock(GeneratorCodeBlock.codeBlokk(context))
 				;
 		CompilationUnitFileWriter writer =

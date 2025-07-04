@@ -23,7 +23,7 @@ import static java.util.Objects.isNull;
  * To facilitate easy integration in large JavaFX applications {@link DefaultFXCView} provides:
  * <ul>
  *   <li><code>protected</code> access to the controller that defines the behavior of the view and implements the
- *       services of the component (see {@link FXCView#getService()}).</li>
+ *       services of the component (see {@link FXCView#service()}).</li>
  *   <li><code>protected</code> access to various methods that allow to override default naming conventions if they do
  *       not fit the actual needs for a component.</li>
  *   <li>CDI support. This means that custom extensions of this class can be injected into other extensions of it.</li>
@@ -34,14 +34,20 @@ import static java.util.Objects.isNull;
  * @author r-uu
  */
 @Slf4j
-public abstract class DefaultFXCView implements FXCView
+public abstract class DefaultFXCView<
+		V extends FXCView<S>,
+		S extends FXCService,
+		C extends FXCController<V, S>> implements FXCView<S>
+//public abstract class DefaultFXCView<
+//		S extends FXCService> implements FXCView<S>
 {
-	private Parent                                localRoot;
-	private FXCViewService                        service;
-	private Optional<? extends FXCViewController> controllerOptional;
-	private Scene                                 scene;
-	private String                                fxmlResourceName;
-	private String                                cssResourceName;
+	private S service;
+	private C controller;
+
+	private Parent localRoot;
+	private Scene  scene;
+	private String fxmlResourceName;
+	private String cssResourceName;
 
 	/**
 	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the
@@ -49,7 +55,7 @@ public abstract class DefaultFXCView implements FXCView
 	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link
 	 * #getFXMLResourceName()}
 	 */
-	@Override public @NonNull Parent getLocalRoot()
+	@Override public @NonNull Parent localRoot()
 	{
 		if (not(isNull(localRoot))) return localRoot;
 
@@ -61,52 +67,48 @@ public abstract class DefaultFXCView implements FXCView
 
 	/**
 	 * Returns the service of this component. The service is usually a controller that implements the {@link
-	 * FXCViewService} interface.
+	 * FXCService} interface.
 	 * <p>
-	 * If no service is set yet, it will be created by calling {@link #getServiceClass()} and using CDI to instantiate the
+	 * If no service is set yet, it will be created by calling {@link #serviceClass()} and using CDI to instantiate the
 	 * service.
 	 *
 	 * @return the service of this component
 	 */
-	@Override public FXCViewService getService()
+	@Override public S service()
 	{
 		if (not(isNull(service))) return service;
 
-		final Class<? extends FXCViewService> serviceClass = getServiceClass();
-		service                                            = CDI.current().select(serviceClass).get();
+		final Class<S> serviceClass = serviceClass();
+		service = CDI.current().select(serviceClass).get();
 
 		return service;
 	}
 
 	/**
 	 * Returns the controller of this component. The controller is usually a class that implements the {@link
-	 * FXCViewController} interface.
+	 * FXCController} interface.
 	 * <p>
-	 * If no controller is set yet, it will be created by calling {@link #getControllerClass()} and using CDI to
+	 * If no controller is set yet, it will be created by calling {@link #controllerClass()} and using CDI to
 	 * instantiate the controller.
 	 *
 	 * @return the controller of this component
 	 */
-	protected Optional<? extends FXCViewController> getController()
+	protected Optional<C> controller()
 	{
-		if (not(isNull(controllerOptional))) return controllerOptional;
+		if (not(isNull(controller))) return Optional.of(controller);
 
-		final Optional<Class<? extends FXCViewController>> controllerClass = getControllerClass();
+		final Optional<Class<C>> controllerClass = controllerClass();
 
 		if (controllerClass.isPresent())
 		{
 			// use CDI to instantiate controller
-			FXCViewController fxcViewController = CDI.current().select(controllerClass.get()).get();
-
-			// if controller implements service interface set service to controller instance
-			if (fxcViewController instanceof FXCViewService) service = (FXCViewService) fxcViewController;
-
-			controllerOptional = Optional.of(fxcViewController);
+			controller = CDI.current().select(controllerClass.get()).get();
+			controller.view(this);
 
 			log.debug(
 					"-".repeat(10) +
 					"bootstrapped and stored {} controller, firing fx component ready event",
-					controllerOptional.get().getClass().getName());
+					controller.getClass().getName());
 
 			CDI
 					.current()
@@ -116,16 +118,16 @@ public abstract class DefaultFXCView implements FXCView
 		}
 		else
 		{
-			controllerOptional = Optional.empty();
+			log.warn("no controller class found for {}, cannot instantiate controller", controllerClass);
 		}
 
-		return controllerOptional;
+		return Optional.ofNullable(controller);
 	}
 
 	protected Scene getScene()
 	{
 		if (scene != null) { return scene; }
-		scene = new Scene(getLocalRoot());
+		scene = new Scene(localRoot());
 		addStylesheet(scene);
 		return scene;
 	}
@@ -161,17 +163,17 @@ public abstract class DefaultFXCView implements FXCView
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Class<? extends FXCViewService> getServiceClass()
+	protected Class<S> serviceClass()
 	{
-		Class<? extends FXCViewService> klass = null;
-		final String serviceClassName = getServiceClassName();
+		Class<S>     klass            = null;
+		final String serviceClassName = serviceClassName();
 
 		try
 		{
-			klass = (Class< ? extends FXCViewService>) Class.forName(serviceClassName);
-			if (not(FXCViewService.class.isAssignableFrom(klass)))
+			klass = (Class<S>) Class.forName(serviceClassName);
+			if (not(FXCService.class.isAssignableFrom(klass)))
 			{
-				throw new UnsupportedOperationException(klass.getName() + " is not a " + FXCViewService.class.getName());
+				throw new UnsupportedOperationException(klass.getName() + " is not a " + FXCService.class.getName());
 			}
 		}
 		catch (final ClassNotFoundException e)
@@ -183,14 +185,14 @@ public abstract class DefaultFXCView implements FXCView
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Optional<Class<? extends FXCViewController>> getControllerClass()
+	protected Optional<Class<C>> controllerClass()
 	{
-		Class<?> klass = null;
-		final String controllerClassName = getControllerClassName();
+		Class<C> klass = null;
+		final String controllerClassName = controllerClassName();
 
 		try
 		{
-			klass = Class.forName(controllerClassName);
+			klass = (Class<C>) Class.forName(controllerClassName);
 		}
 		catch (final ClassNotFoundException e)
 		{
@@ -198,26 +200,26 @@ public abstract class DefaultFXCView implements FXCView
 			return Optional.empty();
 		}
 
-		return Optional.of((Class<? extends FXCViewController>) klass);
+		return Optional.of((Class<C>) klass);
 	}
 
 	/**
-	 * @return {@link FXCViewService} class name that by default is the same as to the name of the current
+	 * @return {@link FXCService} class name that by default is the same as to the name of the current
 	 *         class plus a trailing "Service". This complies to the naming conventions.
 	 */
-	protected String getServiceClassName() { return getClass().getName() + "Service"; }
+	protected String serviceClassName() { return getClass().getName() + "Service"; }
 
 	/**
-	 * @return {@link FXCViewController} class name that by default is the same as to the name of the current
+	 * @return {@link FXCController} class name that by default is the same as to the name of the current
 	 *         class plus a trailing "Controller". This complies to the naming conventions.
 	 */
-	protected String getControllerClassName() { return getClass().getName() + "Controller"; }
+	protected String controllerClassName() { return getClass().getName() + "Controller"; }
 
 	/**
 	 * @return {@link FXCApp} class name that by default is the same as to the name of the current
 	 *         class plus a trailing "App". This complies to the naming conventions.
 	 */
-	protected String getClassNameApp() { return getClass().getName() + "App"; }
+//	protected String classNameApp() { return getClass().getName() + "App"; }
 
 	/**
 	 * Creates a new {@link FXMLLoader} instance that is configured to load the component's <code>.fxml</code> file.
@@ -262,7 +264,7 @@ public abstract class DefaultFXCView implements FXCView
 		}
 
 		//   set controller
-		getController().ifPresent(controller -> fxmlLoader.setController(controller));
+		controller().ifPresent(controller -> fxmlLoader.setController(controller));
 
 		return fxmlLoader;
 	}

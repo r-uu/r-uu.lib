@@ -5,4 +5,4 @@ package de.ruu.lib.fx.comp;
  *
  * @author ruu
  */
-public interface FXCViewService { }
+public interface FXCService { }

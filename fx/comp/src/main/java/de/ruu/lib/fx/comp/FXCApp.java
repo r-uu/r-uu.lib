@@ -31,17 +31,17 @@ import static java.util.Objects.isNull;
  *       Note: Above mentioned naming conventions can be overridden in {@link DefaultFXCView#getFXMLResourceName()}
  *             and {@link DefaultFXCView#getCSSResourceName()}.
  *   </li>
- *   <li>For a {@link FXCApp} named <code>XApp</code> you can define a {@link FXCViewController} class
+ *   <li>For a {@link FXCApp} named <code>XApp</code> you can define a {@link FXCController} class
  *       named <code>XAppController</code> that will (if present) automatically be used to obtain a controller object
  *       for the {@link DefaultFXCView}.
  *       <p>
  *       Note: Above mentioned naming conventions can be overridden in {@link
- *             DefaultFXCView#getControllerClassName()} and / or {@link DefaultFXCView#getControllerClass()}.
+ *             DefaultFXCView#controllerClassName()} and / or {@link DefaultFXCView#controllerClass()}.
  *   </li>
  * </ul>
  *
  * While {@link FXCApp} instances itself are not CDI managed, the above mentioned {@link DefaultFXCView} and
- * its {@link FXCViewController} objects are CDI managed. This makes CDI available for JavaFX applications while
+ * its {@link FXCController} objects are CDI managed. This makes CDI available for JavaFX applications while
  * preserving benefits from JavaFX injection via <code>@FXML</code> annotations.
  *
  * @author r-uu

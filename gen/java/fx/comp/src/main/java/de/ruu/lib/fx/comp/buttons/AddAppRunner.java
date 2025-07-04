@@ -50,7 +50,7 @@ import java.util.function.Consumer;
 					"received add component ready event");
 			FXCView fxcView = e.getSource();
 			FXUtil
-					.getStage(fxcView.getLocalRoot())
+					.getStage(fxcView.localRoot())
 					.ifPresentOrElse
 					(
 							stage ->
@@ -62,7 +62,7 @@ import java.util.function.Consumer;
 							},
 							() -> log.warn("no stage found for local root")
 					);
-			Button button = ((AddService) ((Add) fxcView).getService()).button();
+			Button button = ((AddService) ((Add) fxcView).service()).button();
 			button.setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent));
 		}
 	}

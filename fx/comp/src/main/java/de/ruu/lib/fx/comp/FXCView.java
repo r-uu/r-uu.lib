@@ -21,8 +21,8 @@
  * <code>FXComp</code> provides the following base classes for the afore mentioned artifacts:
  * <ul>
  *   <li>component base class: {@link de.ruu.lib.fx.comp.DefaultFXCView}</li>
- *   <li>component controller base class: {@link de.ruu.lib.fx.comp.FXCViewController}</li>
- *   <li>component service interface name: {@link de.ruu.lib.fx.comp.FXCViewService}</li>
+ *   <li>component controller base class: {@link de.ruu.lib.fx.comp.FXCController}</li>
+ *   <li>component service interface name: {@link de.ruu.lib.fx.comp.FXCService}</li>
  *   <li>application base class: {@link de.ruu.lib.fx.comp.FXCApp}</li>
  *   <li>application runner base class: {@link de.ruu.lib.fx.comp.DefaultFXCView}</li>
  * </ul>
@@ -37,6 +37,7 @@
 package de.ruu.lib.fx.comp;
 
 import javafx.scene.Parent;
+import lombok.NonNull;
 
 /**
  * Interface for JavaFX visual components (<code>FXComp</code> views) that are designed to be used as building blocks
@@ -44,22 +45,22 @@ import javafx.scene.Parent;
  * <p>
  * To facilitate easy integration in large JavaFX applications {@link FXCView} provides:
  * <ul>
- *   <li>Access to a node graph that defines the visual appearance of a view via {@link #getLocalRoot()}. The visual
+ *   <li>Access to a node graph that defines the visual appearance of a view via {@link #localRoot()}. The visual
  *       appearance is usually defined in a <code>.fxml</code> file that contains a declarative description of the
  *       JavaFX components of the {@link FXCView} (buttons, textfields, labels, ...) and their layout.</li>
- *   <li>Access to the (by default empty) services of the component.</li>
+ *   <li>Access to the services of the component.</li>
  * </ul>
  *
  * @author r-uu
  */
-public interface FXCView<S extends FXCViewService>
+public interface FXCView<S extends FXCService>
 {
 	/**
 	 * @return {@link Parent} representing the root of the component's tree of nodes. The tree of nodes defines the
 	 *         visual appearance of the component.
 	 */
-	Parent getLocalRoot();
+	@NonNull Parent localRoot();
 
-	/** @return implementation of {@link FXCViewService} */
-	S getService();
+	/** @return implementation of {@link FXCService} */
+	@NonNull S service();
 }
