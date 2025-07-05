@@ -1,6 +1,8 @@
 package de.ruu.lib.fx.comp;
 
+import de.ruu.lib.cdi.se.EventDispatcher;
 import de.ruu.lib.util.AbstractEvent;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -52,11 +54,13 @@ public abstract class FXCApp extends Application
 	/** Event that will be fired as soon as the primary stage of this {@link FXCApp} was shown. */
 	public static class FXStageShowingEvent extends AbstractEvent<FXCApp, Stage>
 	{
+		@ApplicationScoped public static class FXStageShowingEventDispatcher extends EventDispatcher<FXStageShowingEvent> { }
+
 		public FXStageShowingEvent(final FXCApp source, final Stage data) { super(source, data); }
 	}
 
-	private Stage                    primaryStage;
-	private Optional<DefaultFXCView> primaryViewOptional;
+	private Stage                           primaryStage;
+	private Optional<DefaultFXCView<?,?,?>> primaryViewOptional;
 
 	/**
 	 * Starts a {@link FXCApp}. The main purpose of this method is to obtain a {@link DefaultFXCView} instance
@@ -84,11 +88,11 @@ public abstract class FXCApp extends Application
 //	TODO property add listener style does not work - why???
 //		primaryStage.onShowingProperty().addListener((obs, old, newValue) -> onStageShowing());
 
-		final Optional<DefaultFXCView> optionalView = optionalPrimaryView();
+		final Optional<DefaultFXCView<?,?,?>> optionalView = optionalPrimaryView();
 
 		if (optionalView.isPresent())
 		{
-			final DefaultFXCView view = optionalView.get();
+			final DefaultFXCView<?,?,?> view = optionalView.get();
 
 			final Scene scene = view.getScene();
 			primaryStage.setScene(scene);
@@ -115,11 +119,11 @@ public abstract class FXCApp extends Application
 	 *         Optional</code> contains a <code>null</code> value.
 	 * @see    FXCApp#optionalViewClass() for a description of the best effort approach
 	 */
-	protected Optional<DefaultFXCView> optionalPrimaryView()
+	protected Optional<DefaultFXCView<?,?,?>> optionalPrimaryView()
 	{
 		if (not(isNull(primaryViewOptional))) return primaryViewOptional;
 
-		final Optional<Class<? extends DefaultFXCView>> viewClassOptional = optionalViewClass();
+		final Optional<Class<? extends DefaultFXCView<?,?,?>>> viewClassOptional = optionalViewClass();
 
 		if (viewClassOptional.isEmpty())
 		{
@@ -141,7 +145,7 @@ public abstract class FXCApp extends Application
 	 * @see    FXCApp#getClassNameView() for a description of the best effort approach
 	 */
 	@SuppressWarnings("unchecked")
-	protected Optional<Class<? extends DefaultFXCView>> optionalViewClass()
+	protected Optional<Class<? extends DefaultFXCView<?,?,?>>> optionalViewClass()
 	{
 		Class<?> klass = null;
 		final String viewClassName = getClassNameView();
@@ -162,7 +166,7 @@ public abstract class FXCApp extends Application
 			return Optional.empty();
 		}
 
-		return Optional.of((Class<? extends DefaultFXCView>) klass);
+		return Optional.of((Class<? extends DefaultFXCView<?,?,?>>) klass);
 	}
 
 	/**
@@ -192,7 +196,7 @@ public abstract class FXCApp extends Application
 		CDI.current().getBeanManager().getEvent().fire(new FXStageShowingEvent(this, primaryStage));
 	}
 
-	private void onApplicationStarted(final DefaultFXCView view)
+	private void onApplicationStarted(final DefaultFXCView<?,?,?> view)
 	{
 		log.debug(
 				"\n" + "-".repeat(10) +

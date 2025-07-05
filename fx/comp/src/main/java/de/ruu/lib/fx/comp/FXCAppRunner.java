@@ -1,13 +1,13 @@
 package de.ruu.lib.fx.comp;
 
-import static jakarta.enterprise.inject.se.SeContainerInitializer.newInstance;
-
 import de.ruu.lib.cdi.common.CDIExtension;
 import de.ruu.lib.util.classpath.ClasspathResource;
 import jakarta.enterprise.inject.se.SeContainer;
 import jakarta.enterprise.inject.se.SeContainerInitializer;
 import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
+
+import static jakarta.enterprise.inject.se.SeContainerInitializer.newInstance;
 
 /**
  * Abstract base class for classes that launch JavaFX {@link Application}s with CDI support ({@link FXCApp}s).
@@ -32,9 +32,9 @@ public abstract class FXCAppRunner
 		{
 			if (runBeforeAppLaunch != null)
 			{
-				log.debug("starting runnable before application launch");
+				log.debug("calling runBeforeAppLaunch");
 				runBeforeAppLaunch.run();
-				log.debug("finished runnable before application launch");
+				log.debug("returned from runBeforeAppLaunch");
 			}
 
 			log.debug("starting application class: " + appClass.getName());

@@ -1,15 +1,16 @@
-package de.ruu.lib.fx.comp.buttons;
+package de.ruu.lib.fx.control.buttons;
 
-import de.ruu.lib.fx.FXUtil;
+import de.ruu.lib.fx.comp.FXCApp.FXStageShowingEvent;
+import de.ruu.lib.fx.comp.FXCApp.FXStageShowingEvent.FXStageShowingEventDispatcher;
 import de.ruu.lib.fx.comp.FXCAppRunner;
 import de.ruu.lib.fx.comp.FXCAppStartedEvent;
-import de.ruu.lib.fx.comp.FXCView;
-import de.ruu.lib.fx.comp.buttons.AddService.AddComponentReadyEvent;
-import de.ruu.lib.fx.comp.buttons.AddService.AddComponentReadyEvent.AddComponentReadyEventDispatcher;
+import de.ruu.lib.fx.control.buttons.AddService.AddComponentReadyEvent;
+import de.ruu.lib.fx.control.buttons.AddService.AddComponentReadyEvent.AddComponentReadyEventDispatcher;
 import jakarta.enterprise.inject.spi.CDI;
-import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -31,9 +32,15 @@ import java.util.function.Consumer;
 				() ->
 				{
 					log.debug("starting runBeforeAppLaunch");
+					FXStageShowingEventDispatcher fxStageShowingEventDispatcher =
+							CDI.current().select(FXStageShowingEventDispatcher.class).get();
+					fxStageShowingEventDispatcher.add(new FXStageShowingEventConsumer());
 					AddComponentReadyEventDispatcher componentReadyEventDispatcher =
 							CDI.current().select(AddComponentReadyEventDispatcher.class).get();
 					componentReadyEventDispatcher.add(new AddComponentReadyEventConsumer());
+					log.debug(
+							"\n" + "-".repeat(10) +
+							"registered add component ready consumer");
 					log.debug("finished runBeforeAppLaunch");
 				};
 		FXCAppRunner.run(AddApp.class, args, runBeforeAppLaunch);
@@ -41,29 +48,39 @@ import java.util.function.Consumer;
 		log.debug("finished AddAppRunner.class.getName()");
 	}
 
+	private static class FXStageShowingEventConsumer implements Consumer<FXStageShowingEvent>
+	{
+		@Override public void accept(FXStageShowingEvent e)
+		{
+			log.debug(
+					"\n" + "-".repeat(10) +
+							"received stage showing event");
+			Optional<Stage> stageOptional = e.data();
+			stageOptional.ifPresent
+			(
+					stage ->
+					{
+						stage.setTitle("demo for add button");
+						stage.setHeight(200);
+						stage.setWidth (200);
+//						stage.sizeToScene();
+					}
+			);
+		}
+	}
+
 	private static class AddComponentReadyEventConsumer implements Consumer<AddComponentReadyEvent>
 	{
 		@Override public void accept(AddComponentReadyEvent e)
 		{
 			log.debug(
-					"-".repeat(10) +
+					"\n" + "-".repeat(10) +
 					"received add component ready event");
-			FXCView fxcView = e.getSource();
-			FXUtil
-					.getStage(fxcView.localRoot())
-					.ifPresentOrElse
-					(
-							stage ->
-							{
-								stage.setTitle("demo for add button");
-								stage.setHeight(200);
-								stage.setWidth (200);
-//								stage.sizeToScene();
-							},
-							() -> log.warn("no stage found for local root")
-					);
-			Button button = ((AddService) ((Add) fxcView).service()).button();
-			button.setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent));
+			e.data().ifPresent
+			(
+					addService ->
+							addService.button().setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent))
+			);
 		}
 	}
 }

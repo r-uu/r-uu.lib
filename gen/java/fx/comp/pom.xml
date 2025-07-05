@@ -23,10 +23,10 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>r-uu</groupId>
-			<artifactId>r-uu.lib-cdi-se</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>r-uu</groupId>-->
+<!--			<artifactId>r-uu.lib-cdi-se</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>r-uu</groupId>
 			<artifactId>r-uu.lib-gen-java-core</artifactId>

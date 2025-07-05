@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Base type for event classes. Makes sure {@link #getSource()} never returns {@code null}.
+ * Base type for event classes. Makes sure {@link #source()} never returns {@code null}.
  * @author ruu
  */
 public abstract class AbstractEvent<S, D>
@@ -26,6 +26,6 @@ public abstract class AbstractEvent<S, D>
 
 	protected AbstractEvent(S source) { this(source, null); }
 
-	public S getSource() { return source; }
-	public Optional<D> getData() { return Optional.ofNullable(data); }
+	public S source() { return source; }
+	public Optional<D> data() { return Optional.ofNullable(data); }
 }

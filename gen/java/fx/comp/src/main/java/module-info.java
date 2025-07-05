@@ -1,10 +1,8 @@
 module de.ruu.lib.gen.java.fx.comp
 {
-	exports de.ruu.lib.fx.comp.buttons;
 	exports de.ruu.lib.gen.java.fx.comp;
 	exports de.ruu.lib.gen.java.fx.comp.demo;
 
-	opens   de.ruu.lib.fx.comp.buttons;
 	opens   de.ruu.lib.gen.java.fx.comp.demo;
 
 	requires jakarta.cdi;
@@ -22,5 +20,4 @@ module de.ruu.lib.gen.java.fx.comp
 
 	requires static lombok;
 	requires de.ruu.lib.cdi.se;
-	requires de.ruu.lib.fx.core;
 }

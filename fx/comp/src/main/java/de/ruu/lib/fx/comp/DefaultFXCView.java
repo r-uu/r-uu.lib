@@ -1,6 +1,5 @@
 package de.ruu.lib.fx.comp;
 
-import de.ruu.lib.fx.FXUtil;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,17 +49,16 @@ public abstract class DefaultFXCView<
 	private String cssResourceName;
 
 	/**
-	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the
-	 * file by leveraging the <code>FXCView</code> default naming conventions (see
-	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link
-	 * #getFXMLResourceName()}
+	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the file by leveraging the <code>
+	 * FXCView</code> default naming conventions (see {@link de.ruu.lib.fx.comp}) or the overridden return value from
+	 * {@link #getFXMLResourceName()}
 	 */
 	@Override public @NonNull Parent localRoot()
 	{
 		if (not(isNull(localRoot))) return localRoot;
 
 		final FXMLLoader fxmlLoader = createFXMLLoader();
-		localRoot                   = FXUtil.loadFrom(fxmlLoader);
+		localRoot                   = FXMLUtil.loadFrom(fxmlLoader);
 
 		return localRoot;
 	}
@@ -74,7 +72,7 @@ public abstract class DefaultFXCView<
 	 *
 	 * @return the service of this component
 	 */
-	@Override public S service()
+	@Override public @NonNull S service()
 	{
 		if (not(isNull(service))) return service;
 
@@ -89,7 +87,8 @@ public abstract class DefaultFXCView<
 	 * FXCController} interface.
 	 * <p>
 	 * If no controller is set yet, it will be created by calling {@link #controllerClass()} and using CDI to
-	 * instantiate the controller.
+	 * instantiate the controller. Immediately after instantiation, this view is passed to the controller via
+	 * {@link FXCController#view(FXCView)}.
 	 *
 	 * @return the controller of this component
 	 */
@@ -103,18 +102,19 @@ public abstract class DefaultFXCView<
 		{
 			// use CDI to instantiate controller
 			controller = CDI.current().select(controllerClass.get()).get();
-			controller.view(this);
+			// pass this view to the controller
+			controller.view((V) this); // safe cast: by contract, this is V, f-bounded polymorphism (Curiously Recurring Template Pattern)
 
-			log.debug(
-					"-".repeat(10) +
-					"bootstrapped and stored {} controller, firing fx component ready event",
-					controller.getClass().getName());
-
-			CDI
-					.current()
-					.getBeanManager()
-					.getEvent()
-					.fire(new FXComponentReadyEvent(this, service));
+//			log.debug(
+//					"\n" + "-".repeat(10) +
+//					"bootstrapped and stored {} controller, firing fx component ready event",
+//					controller.getClass().getName());
+//
+//			CDI
+//					.current()
+//					.getBeanManager()
+//					.getEvent()
+//					.fire(new FXComponentReadyEvent(this, service));
 		}
 		else
 		{
@@ -226,6 +226,8 @@ public abstract class DefaultFXCView<
 	 * <p>
 	 * The <code>.fxml</code> file is looked up by leveraging the <code>FXCView</code> default naming conventions (see
 	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link #getFXMLResourceName()}.
+	 * <p>
+	 * In addition, the controller of the component is set on the {@link FXMLLoader} if it is available.
 	 *
 	 * @return a new {@link FXMLLoader} instance
 	 */

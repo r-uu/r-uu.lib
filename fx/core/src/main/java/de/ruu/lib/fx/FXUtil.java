@@ -128,31 +128,6 @@ public abstract class FXUtil
 		AnchorPane.setLeftAnchor  (childInAnchorPane, value);
 	}
 
-	public static Parent loadFrom(final FXMLLoader loader)
-	{
-		// load from fxmlLoader
-		try
-		{
-			final Object object = loader.load();
-			log.debug("loaded object from " + loader.getLocation().toExternalForm());
-
-			if (object instanceof Parent)
-			{
-				log.debug("loaded " + Parent.class.getName() + " object from " + loader.getLocation().toExternalForm());
-				return (Parent) object;
-			}
-			else
-			{
-				throw new IllegalStateException(
-						"unexpected " + object.getClass() + " loaded from " + loader.getLocation().toExternalForm());
-			}
-		}
-		catch (final IOException e)
-		{
-			throw new IllegalStateException("failure loading object from " + loader.getClass(), e);
-		}
-	}
-
 	public static void setChildrenInTreeEditable(final Parent root, final boolean editable)
 	{
 		for (final Node node : root.getChildrenUnmodifiable())

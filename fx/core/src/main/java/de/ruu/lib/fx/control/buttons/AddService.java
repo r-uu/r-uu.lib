@@ -1,4 +1,4 @@
-package de.ruu.lib.fx.comp.buttons;
+package de.ruu.lib.fx.control.buttons;
 
 import de.ruu.lib.cdi.se.EventDispatcher;
 import de.ruu.lib.fx.comp.FXCService;
