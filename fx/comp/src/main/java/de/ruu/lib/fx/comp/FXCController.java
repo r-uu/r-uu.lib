@@ -30,6 +30,7 @@ public interface FXCController<V extends FXCView<S>, S extends FXCService>
 		private V view;
 
 		/** make sure to call this as last method in the {@code initialize()} method of derived classes */
+		@SuppressWarnings("unchecked")
 		@FXML protected void initialize()
 		{
 			log.debug("\n" + "-".repeat(10) + "firing fx component ready event");
