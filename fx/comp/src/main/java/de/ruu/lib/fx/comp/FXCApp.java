@@ -94,8 +94,7 @@ public abstract class FXCApp extends Application
 		{
 			final DefaultFXCView<?,?,?> view = optionalView.get();
 
-			final Scene scene = view.getScene();
-			primaryStage.setScene(scene);
+			primaryStage.setScene(view.scene());
 			primaryStage.sizeToScene();
 			primaryStage.show();
 

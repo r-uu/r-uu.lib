@@ -49,9 +49,9 @@ public interface FXCController<V extends FXCView<S>, S extends FXCService>
 //					"view {} assigned for {}", view.getClass().getName(), getClass().getName());
 		}
 
-		@Override public @NonNull Parent localRoot() { return view.localRoot(); }
+		@Override public @NonNull Parent localRoot() throws ClassNotFoundException { return view.localRoot(); }
 
-		@Override public @NonNull S service() { return view.service(); }
+		@Override public @NonNull S service() throws ClassNotFoundException { return view.service(); }
 
 		protected @NonNull V view() { return view; }
 	}

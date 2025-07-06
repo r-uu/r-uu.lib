@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
-import java.util.Optional;
 
 import static de.ruu.lib.util.BooleanFunctions.not;
 import static java.util.Objects.isNull;
@@ -57,8 +56,18 @@ public abstract class DefaultFXCView<
 	{
 		if (not(isNull(localRoot))) return localRoot;
 
-		final FXMLLoader fxmlLoader = createFXMLLoader();
-		localRoot                   = FXMLUtil.loadFrom(fxmlLoader);
+		final FXMLLoader fxmlLoader;
+
+		try
+		{
+			fxmlLoader = createFXMLLoader();
+		}
+		catch (ClassNotFoundException e)
+		{
+			throw new ExceptionInInitializerError(e);
+		}
+
+		localRoot = FXMLUtil.loadFrom(fxmlLoader);
 
 		return localRoot;
 	}
@@ -67,6 +76,9 @@ public abstract class DefaultFXCView<
 	 * Returns the service of this component. The service is usually a controller that implements the {@link
 	 * FXCService} interface.
 	 * <p>
+	 * If no local root is set yet, it will be created by calling {@link #localRoot()}. #localRoot() will also initialize
+	 * the component's tree of nodes from an <code>.fxml</code> file
+	 * <p>
 	 * If no service is set yet, it will be created by calling {@link #serviceClass()} and using CDI to instantiate the
 	 * service.
 	 *
@@ -74,6 +86,7 @@ public abstract class DefaultFXCView<
 	 */
 	@Override public @NonNull S service()
 	{
+		if (isNull(localRoot)) localRoot();
 		if (not(isNull(service))) return service;
 
 		final Class<S> serviceClass = serviceClass();
@@ -86,45 +99,38 @@ public abstract class DefaultFXCView<
 	 * Returns the controller of this component. The controller is usually a class that implements the {@link
 	 * FXCController} interface.
 	 * <p>
+	 * If no local root is set yet, it will be created by calling {@link #localRoot()}. #localRoot() will also initialize
+	 * the component's tree of nodes from an <code>.fxml</code> file
+	 * <p>
 	 * If no controller is set yet, it will be created by calling {@link #controllerClass()} and using CDI to
 	 * instantiate the controller. Immediately after instantiation, this view is passed to the controller via
 	 * {@link FXCController#view(FXCView)}.
 	 *
 	 * @return the controller of this component
 	 */
-	protected Optional<C> controller()
+	protected C controller()
 	{
-		if (not(isNull(controller))) return Optional.of(controller);
+		if (isNull(localRoot)) localRoot();
+		if (not(isNull(controller))) return controller;
 
-		final Optional<Class<C>> controllerClass = controllerClass();
+		final Class<C> controllerClass = controllerClass();
 
-		if (controllerClass.isPresent())
+		if (not(isNull(controllerClass)))
 		{
 			// use CDI to instantiate controller
-			controller = CDI.current().select(controllerClass.get()).get();
+			controller = CDI.current().select(controllerClass).get();
 			// pass this view to the controller
 			controller.view((V) this); // safe cast: by contract, this is V, f-bounded polymorphism (Curiously Recurring Template Pattern)
-
-//			log.debug(
-//					"\n" + "-".repeat(10) +
-//					"bootstrapped and stored {} controller, firing fx component ready event",
-//					controller.getClass().getName());
-//
-//			CDI
-//					.current()
-//					.getBeanManager()
-//					.getEvent()
-//					.fire(new FXComponentReadyEvent(this, service));
 		}
 		else
 		{
-			log.warn("no controller class found for {}, cannot instantiate controller", controllerClass);
+			throw new ExceptionInInitializerError("failure creating controller for " + getClass().getName());
 		}
 
-		return Optional.ofNullable(controller);
+		return controller;
 	}
 
-	protected Scene getScene()
+	protected Scene scene()
 	{
 		if (scene != null) { return scene; }
 		scene = new Scene(localRoot());
@@ -185,7 +191,7 @@ public abstract class DefaultFXCView<
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Optional<Class<C>> controllerClass()
+	protected Class<C> controllerClass()
 	{
 		Class<C> klass = null;
 		final String controllerClassName = controllerClassName();
@@ -196,11 +202,10 @@ public abstract class DefaultFXCView<
 		}
 		catch (final ClassNotFoundException e)
 		{
-			log.error("could not find class " + controllerClassName, e);
-			return Optional.empty();
+			throw new IllegalStateException("could not find class " + controllerClassName, e);
 		}
 
-		return Optional.of((Class<C>) klass);
+		return klass;
 	}
 
 	/**
@@ -231,8 +236,7 @@ public abstract class DefaultFXCView<
 	 *
 	 * @return a new {@link FXMLLoader} instance
 	 */
-	private FXMLLoader createFXMLLoader()
-	{
+	private FXMLLoader createFXMLLoader() throws ClassNotFoundException {
 		final FXMLLoader fxmlLoader = new FXMLLoader();
 
 		// configure fxmlLoader
@@ -266,7 +270,7 @@ public abstract class DefaultFXCView<
 		}
 
 		//   set controller
-		controller().ifPresent(controller -> fxmlLoader.setController(controller));
+		fxmlLoader.setController(controller());
 
 		return fxmlLoader;
 	}
