@@ -56,16 +56,7 @@ public abstract class DefaultFXCView<
 	{
 		if (not(isNull(localRoot))) return localRoot;
 
-		final FXMLLoader fxmlLoader;
-
-		try
-		{
-			fxmlLoader = createFXMLLoader();
-		}
-		catch (ClassNotFoundException e)
-		{
-			throw new ExceptionInInitializerError(e);
-		}
+		final FXMLLoader fxmlLoader = createAndConfigureFXMLLoader();
 
 		localRoot = FXMLUtil.loadFrom(fxmlLoader);
 
@@ -132,7 +123,7 @@ public abstract class DefaultFXCView<
 
 	protected Scene scene()
 	{
-		if (scene != null) { return scene; }
+		if (not(isNull(scene))) { return scene; }
 		scene = new Scene(localRoot());
 		addStylesheet(scene);
 		return scene;
@@ -236,7 +227,8 @@ public abstract class DefaultFXCView<
 	 *
 	 * @return a new {@link FXMLLoader} instance
 	 */
-	private FXMLLoader createFXMLLoader() throws ClassNotFoundException {
+	private FXMLLoader createAndConfigureFXMLLoader()
+	{
 		final FXMLLoader fxmlLoader = new FXMLLoader();
 
 		// configure fxmlLoader
