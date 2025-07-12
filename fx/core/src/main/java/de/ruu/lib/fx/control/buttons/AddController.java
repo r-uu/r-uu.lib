@@ -2,7 +2,6 @@ package de.ruu.lib.fx.control.buttons;
 
 import de.ruu.lib.fx.comp.FXCController.DefaultFXCController;
 import de.ruu.lib.fx.comp.FXComponentReadyEvent;
-import de.ruu.lib.fx.comp.FXComponentReadyEvent.FXComponentReadyEventDispatcher;
 import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,19 +20,9 @@ class AddController extends DefaultFXCController<Add, AddService> implements Add
 {
 	@FXML private Button btnAdd;
 
-	@Override @FXML protected void initialize()
-	{
-		// Initialize the controller and register the FXComponentReadyEvent consumer.
-		// This will ensure that the AddComponentReadyEvent is fired by the consumer when the AddView component is ready.
-		// This is the last step in the initialization process of the AddView component.
-		CDI.current().select(FXComponentReadyEventDispatcher.class).get().add(new FXComponentReadyEventConsumer(this));
-		log.debug(
-				"\n" + "-".repeat(10) +
-				"registered fx component ready consumer");
-		super.initialize();
-	}
-
 	@Override public Button button() { return btnAdd; }
+
+	@Override protected void initialize() { }
 
 	@Slf4j
 	private static class FXComponentReadyEventConsumer implements Consumer<FXComponentReadyEvent>

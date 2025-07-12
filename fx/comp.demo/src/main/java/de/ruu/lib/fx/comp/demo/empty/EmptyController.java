@@ -1,7 +1,6 @@
 package de.ruu.lib.fx.comp.demo.empty;
 
 import de.ruu.lib.fx.comp.FXCController.DefaultFXCController;
-import javafx.fxml.FXML;
 
 /**
  * Java FX Component View Controller
@@ -10,5 +9,5 @@ import javafx.fxml.FXML;
  */
 class EmptyController extends DefaultFXCController<Empty, EmptyService> implements EmptyService
 {
-	@Override @FXML protected void initialize() { }
+	@Override protected void initialize() { }
 }

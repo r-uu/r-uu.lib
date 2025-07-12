@@ -42,24 +42,23 @@ public abstract class DefaultFXCView<
 	private S service;
 	private C controller;
 
-	private Parent localRoot;
-	private Scene  scene;
-	private String fxmlResourceName;
-	private String cssResourceName;
+	private Parent     localRoot;
+	private Scene      scene;
+	private String     fxmlResourceName;
+	private URL        fxmlLocation;
+	private FXMLLoader fxmlLoader;
+	private String     cssResourceName;
 
 	/**
 	 * Loads the component's tree of nodes from an <code>.fxml</code> file. It looks for the file by leveraging the <code>
 	 * FXCView</code> default naming conventions (see {@link de.ruu.lib.fx.comp}) or the overridden return value from
-	 * {@link #getFXMLResourceName()}
+	 * {@link #fxmlResourceName()}
 	 */
 	@Override public @NonNull Parent localRoot()
 	{
 		if (not(isNull(localRoot))) return localRoot;
-
-		final FXMLLoader fxmlLoader = createAndConfigureFXMLLoader();
-
-		localRoot = FXMLUtil.loadFrom(fxmlLoader);
-
+		localRoot = FXMLUtil.loadFrom(fxmlLoader());
+		CDI.current().getBeanManager().getEvent().fire(new FXComponentReadyEvent(service(), (FXCView<FXCService>) this));
 		return localRoot;
 	}
 
@@ -77,12 +76,8 @@ public abstract class DefaultFXCView<
 	 */
 	@Override public @NonNull S service()
 	{
-		if (isNull(localRoot)) localRoot();
-		if (not(isNull(service))) return service;
-
-		final Class<S> serviceClass = serviceClass();
-		service = CDI.current().select(serviceClass).get();
-
+		if (not(isNull(service))) return service; // return service if already set
+		service = CDI.current().select(serviceClass()).get();
 		return service;
 	}
 
@@ -101,8 +96,7 @@ public abstract class DefaultFXCView<
 	 */
 	protected C controller()
 	{
-		if (isNull(localRoot)) localRoot();
-		if (not(isNull(controller))) return controller;
+		if (not(isNull(controller))) return controller; // return controller if already set
 
 		final Class<C> controllerClass = controllerClass();
 
@@ -111,7 +105,8 @@ public abstract class DefaultFXCView<
 			// use CDI to instantiate controller
 			controller = CDI.current().select(controllerClass).get();
 			// pass this view to the controller
-			controller.view((V) this); // safe cast: by contract, this is V, f-bounded polymorphism (Curiously Recurring Template Pattern)
+			controller.view((V) this); // safe cast: by contract
+			                           // this is V, f-bounded polymorphism (Curiously Recurring Template Pattern)
 		}
 		else
 		{
@@ -123,7 +118,7 @@ public abstract class DefaultFXCView<
 
 	protected Scene scene()
 	{
-		if (not(isNull(scene))) { return scene; }
+		if (not(isNull(scene))) { return scene; } // return scene if already set
 		scene = new Scene(localRoot());
 		addStylesheet(scene);
 		return scene;
@@ -131,8 +126,8 @@ public abstract class DefaultFXCView<
 
 	protected void addStylesheet(final Scene scene)
 	{
-		final String resourceName = getCSSResourceName();
-		final URL resource = getClass().getResource(resourceName);
+		final String resourceName = cssResourceName();
+		final URL    resource     = getClass().getResource(resourceName);
 
 		if (null == resource)
 		{
@@ -146,16 +141,22 @@ public abstract class DefaultFXCView<
 	}
 
 	/** @return <code>.fxml</code> resource file name based on default naming convention */
-	protected String getFXMLResourceName()
+	protected @NonNull String fxmlResourceName()
 	{
-		if (null == fxmlResourceName) { fxmlResourceName = getClass().getSimpleName() + ".fxml"; }
+		if (isNull(fxmlResourceName)) { fxmlResourceName = getClass().getSimpleName() + ".fxml"; }
 		return fxmlResourceName;
 	}
 
-	/** @return <code>.css</code> resource file name based on default naming convention */
-	protected String getCSSResourceName()
+	protected @NonNull URL fxmlLocation()
 	{
-		if (null == cssResourceName) { cssResourceName = getClass().getSimpleName() + ".css"; }
+		if (isNull(fxmlLocation)) { fxmlLocation = getClass().getResource(fxmlResourceName()); }
+		return fxmlLocation;
+	}
+
+	/** @return <code>.css</code> resource file name based on default naming convention */
+	protected String cssResourceName()
+	{
+		if (isNull(cssResourceName)) { cssResourceName = getClass().getSimpleName() + ".css"; }
 		return cssResourceName;
 	}
 
@@ -184,7 +185,7 @@ public abstract class DefaultFXCView<
 	@SuppressWarnings("unchecked")
 	protected Class<C> controllerClass()
 	{
-		Class<C> klass = null;
+		Class<C>     klass               = null;
 		final String controllerClassName = controllerClassName();
 
 		try
@@ -212,47 +213,35 @@ public abstract class DefaultFXCView<
 	protected String controllerClassName() { return getClass().getName() + "Controller"; }
 
 	/**
-	 * @return {@link FXCApp} class name that by default is the same as to the name of the current
-	 *         class plus a trailing "App". This complies to the naming conventions.
-	 */
-//	protected String classNameApp() { return getClass().getName() + "App"; }
-
-	/**
 	 * Creates a new {@link FXMLLoader} instance that is configured to load the component's <code>.fxml</code> file.
 	 * <p>
 	 * The <code>.fxml</code> file is looked up by leveraging the <code>FXCView</code> default naming conventions (see
-	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link #getFXMLResourceName()}.
+	 * {@link de.ruu.lib.fx.comp}) or the overridden return value from {@link #fxmlResourceName()}.
 	 * <p>
 	 * In addition, the controller of the component is set on the {@link FXMLLoader} if it is available.
 	 *
 	 * @return a new {@link FXMLLoader} instance
 	 */
-	private FXMLLoader createAndConfigureFXMLLoader()
+	private @NonNull FXMLLoader fxmlLoader()
 	{
-		final FXMLLoader fxmlLoader = new FXMLLoader();
+		if (not(isNull(fxmlLoader))) { return fxmlLoader; } // return fxmlLoader if already set
 
-		// configure fxmlLoader
-		//   find and set location
-		final String fxmlResourceName = getFXMLResourceName();
-		final URL    fxmlLocation     = getClass().getResource(fxmlResourceName);
+		fxmlLoader = new FXMLLoader();
 
-		if (fxmlLocation == null)
+		if (isNull(fxmlLocation()))
 		{
-			log.error(
-					"no resource exists for {} at location {}, does module {} export _and_ open package {}?",
-					getClass().getName(),
-					fxmlResourceName,
-					getClass().getModule().getName(),
-					getClass().getPackage().getName());
+			throw new IllegalStateException("no resource exists for " + getClass().getName() + " at location "
+					+ fxmlResourceName() + ", does module " + getClass().getModule().getName()
+					+ " export _and_ open package " + getClass().getPackage().getName() + "?"
+					);
 		}
-		else
-		{
-			log.debug(
-					"configured {} to load fxml from {}",
-					FXMLLoader.class.getName(),
-					fxmlLocation.toExternalForm());
-			fxmlLoader.setLocation(fxmlLocation);
-		}
+
+		log.debug(
+				"configured {} to load fxml from {}",
+				FXMLLoader.class.getName(),
+				fxmlLocation.toExternalForm());
+
+		fxmlLoader.setLocation(fxmlLocation());
 
 		final Object controllerFromFXML = fxmlLoader.getController();
 
@@ -261,7 +250,6 @@ public abstract class DefaultFXCView<
 			log.warn("found {} controller, controller might be replaced", controllerFromFXML.getClass().getName());
 		}
 
-		//   set controller
 		fxmlLoader.setController(controller());
 
 		return fxmlLoader;
