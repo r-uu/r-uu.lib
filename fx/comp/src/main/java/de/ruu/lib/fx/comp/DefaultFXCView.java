@@ -54,6 +54,7 @@ public abstract class DefaultFXCView<
 	 * FXCView</code> default naming conventions (see {@link de.ruu.lib.fx.comp}) or the overridden return value from
 	 * {@link #fxmlResourceName()}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override public @NonNull Parent localRoot()
 	{
 		if (not(isNull(localRoot))) return localRoot;
@@ -94,6 +95,7 @@ public abstract class DefaultFXCView<
 	 *
 	 * @return the controller of this component
 	 */
+	@SuppressWarnings("unchecked") // see documentation below
 	protected C controller()
 	{
 		if (not(isNull(controller))) return controller; // return controller if already set

@@ -22,7 +22,14 @@ class AddController extends DefaultFXCController<Add, AddService> implements Add
 
 	@Override public Button button() { return btnAdd; }
 
-	@Override protected void initialize() { }
+	@Override @FXML protected void initialize()
+	{
+		CDI
+				.current()
+				.getBeanManager()
+				.getEvent()
+				.fire(new AddComponentReadyEvent(view(), this));
+	}
 
 	@Slf4j
 	private static class FXComponentReadyEventConsumer implements Consumer<FXComponentReadyEvent>
