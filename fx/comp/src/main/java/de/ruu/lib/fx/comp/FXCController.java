@@ -8,11 +8,11 @@ import static de.ruu.lib.util.BooleanFunctions.not;
 import static java.util.Objects.isNull;
 
 /**
- * Defines the behavior of a <code>FXVComp</code> view (see {@link FXCView}).
+ * Defines the behavior of a <code>FXCComp</code> view (see {@link FXCView}).
  *
  * @author r-uu
  */
-public interface FXCController<V extends FXCView<S>, S extends FXCService>
+public interface FXCController<V extends FXCView<S>, S extends FXCService>// extends FXCService
 {
 	void view(@NonNull V view) throws UnsupportedOperationException;
 

@@ -1,14 +1,10 @@
 package de.ruu.lib.fx.control.buttons;
 
+import de.ruu.lib.cdi.common.CDIUtil;
 import de.ruu.lib.fx.comp.FXCController.DefaultFXCController;
-import de.ruu.lib.fx.comp.FXComponentReadyEvent;
-import jakarta.enterprise.inject.spi.CDI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.function.Consumer;
 
 /**
  * Java FX Component View Controller
@@ -22,32 +18,5 @@ class AddController extends DefaultFXCController<Add, AddService> implements Add
 
 	@Override public Button button() { return btnAdd; }
 
-	@Override @FXML protected void initialize()
-	{
-		CDI
-				.current()
-				.getBeanManager()
-				.getEvent()
-				.fire(new AddComponentReadyEvent(view(), this));
-	}
-
-	@Slf4j
-	private static class FXComponentReadyEventConsumer implements Consumer<FXComponentReadyEvent>
-	{
-		private @NonNull AddService service;
-
-		public FXComponentReadyEventConsumer(@NonNull AddService service) { this.service = service; }
-
-		@Override public void accept(FXComponentReadyEvent fxComponentReadyEvent)
-		{
-			log.debug(
-					"\n" + "-".repeat(10) +
-					"received fx component ready event, firing add component ready event");
-			CDI
-					.current()
-					.getBeanManager()
-					.getEvent()
-					.fire(new AddComponentReadyEvent(((AddController) fxComponentReadyEvent.source()).view(), service));
-		}
-	}
+	@Override @FXML protected void initialize() { CDIUtil.fire(new AddComponentReadyEvent(view(), this)); }
 }

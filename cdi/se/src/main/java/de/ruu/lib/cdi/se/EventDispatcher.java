@@ -1,10 +1,10 @@
 package de.ruu.lib.cdi.se;
 
+import jakarta.enterprise.event.Observes;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
-
-import jakarta.enterprise.event.Observes;
 
 /**
  * Generic base class for CDI event observers that propagate received events to {@link Consumer}s.
@@ -18,7 +18,7 @@ import jakarta.enterprise.event.Observes;
  * {
  * }
  *
- * @Singleton
+ * @ApplicationScoped
  * class SomeEventDispatcher extends EventDispatcher<SomeEvent>
  * {
  * }

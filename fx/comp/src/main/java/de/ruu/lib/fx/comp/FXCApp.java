@@ -57,6 +57,15 @@ public abstract class FXCApp extends Application
 		@ApplicationScoped public static class FXStageShowingEventDispatcher extends EventDispatcher<FXStageShowingEvent> { }
 
 		public FXStageShowingEvent(final FXCApp source, final Stage data) { super(source, data); }
+
+		/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
+		public static void addReadsUnnamedModule()
+		{
+			FXStageShowingEvent
+					.class
+					.getModule()
+					.addReads(FXStageShowingEvent.class.getClassLoader().getUnnamedModule());
+		}
 	}
 
 	private Stage                           primaryStage;

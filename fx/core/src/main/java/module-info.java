@@ -28,4 +28,5 @@ module de.ruu.lib.fx.core
 
 	requires static lombok;
 	requires org.slf4j;
+	requires de.ruu.lib.cdi.common;
 }

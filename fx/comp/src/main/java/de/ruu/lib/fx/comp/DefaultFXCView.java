@@ -36,10 +36,7 @@ public abstract class DefaultFXCView<
 		V extends FXCView<S>,
 		S extends FXCService,
 		C extends FXCController<V, S>> implements FXCView<S>
-//public abstract class DefaultFXCView<
-//		S extends FXCService> implements FXCView<S>
 {
-	private S service;
 	private C controller;
 
 	private Parent     localRoot;
@@ -59,7 +56,7 @@ public abstract class DefaultFXCView<
 	{
 		if (not(isNull(localRoot))) return localRoot;
 		localRoot = FXMLUtil.loadFrom(fxmlLoader());
-		CDI.current().getBeanManager().getEvent().fire(new FXComponentReadyEvent(service(), (FXCView<FXCService>) this));
+		CDI.current().getBeanManager().getEvent().fire(new FXComponentReadyEvent((FXCView<FXCService>) this, service()));
 		return localRoot;
 	}
 
@@ -75,12 +72,8 @@ public abstract class DefaultFXCView<
 	 *
 	 * @return the service of this component
 	 */
-	@Override public @NonNull S service()
-	{
-		if (not(isNull(service))) return service; // return service if already set
-		service = CDI.current().select(serviceClass()).get();
-		return service;
-	}
+	@SuppressWarnings("unchecked")
+	@Override public @NonNull S service() { return (S) controller(); }
 
 	/**
 	 * Returns the controller of this component. The controller is usually a class that implements the {@link
@@ -230,7 +223,9 @@ public abstract class DefaultFXCView<
 
 		fxmlLoader = new FXMLLoader();
 
-		if (isNull(fxmlLocation()))
+		if (isNull(fxmlLocation())) // it is not true that this expression never evaluates to true
+		                            // if the runtime does not see the resource because the module does not export and open
+		                            // the repespective package it will evaluate to true
 		{
 			throw new IllegalStateException("no resource exists for " + getClass().getName() + " at location "
 					+ fxmlResourceName() + ", does module " + getClass().getModule().getName()

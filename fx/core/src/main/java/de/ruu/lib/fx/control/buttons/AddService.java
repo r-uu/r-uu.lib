@@ -2,9 +2,10 @@ package de.ruu.lib.fx.control.buttons;
 
 import de.ruu.lib.cdi.se.EventDispatcher;
 import de.ruu.lib.fx.comp.FXCService;
-import de.ruu.lib.util.AbstractEvent;
+import de.ruu.lib.fx.comp.FXComponentReadyEventAbstract;
 import jakarta.enterprise.context.ApplicationScoped;
 import javafx.scene.control.Button;
+import lombok.NonNull;
 
 /**
  * Java FX Component View Service
@@ -16,12 +17,14 @@ public interface AddService extends FXCService
 	Button button();
 
 	/** Event that is fired to indicate that a {@link Add} component has become available. */
-	public class AddComponentReadyEvent extends AbstractEvent<Add, AddService>
+	public class AddComponentReadyEvent extends FXComponentReadyEventAbstract<Add, AddService>
 	{
-		public AddComponentReadyEvent(final Add add, final AddService addService) { super(add, addService); }
-
 		@ApplicationScoped
 		public static class AddComponentReadyEventDispatcher extends EventDispatcher<AddComponentReadyEvent> { }
+//		public static class AddComponentReadyEventDispatcher extends FXComponentReadyEventDispatcherAbstract { }
+
+		public AddComponentReadyEvent(final @NonNull Add add, final @NonNull AddService addService)
+				{ super(add, addService); }
 
 		/** programmatically specify command line vm option {@code --add-reads de.ruu.lib.fx.comp=ALL-UNNAMED} */
 		public static void addReadsUnnamedModule()

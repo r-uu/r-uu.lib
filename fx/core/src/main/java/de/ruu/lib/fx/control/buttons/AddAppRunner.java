@@ -1,12 +1,12 @@
 package de.ruu.lib.fx.control.buttons;
 
+import de.ruu.lib.cdi.common.CDIUtil;
 import de.ruu.lib.fx.comp.FXCApp.FXStageShowingEvent;
 import de.ruu.lib.fx.comp.FXCApp.FXStageShowingEvent.FXStageShowingEventDispatcher;
 import de.ruu.lib.fx.comp.FXCAppRunner;
 import de.ruu.lib.fx.comp.FXCAppStartedEvent;
 import de.ruu.lib.fx.control.buttons.AddService.AddComponentReadyEvent;
 import de.ruu.lib.fx.control.buttons.AddService.AddComponentReadyEvent.AddComponentReadyEventDispatcher;
-import jakarta.enterprise.inject.spi.CDI;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,16 +27,21 @@ import java.util.function.Consumer;
 		// register the AddServiceReadyEvent and FXCAppStartedEvent to read from the unnamed module
 		AddComponentReadyEvent.addReadsUnnamedModule();
 		FXCAppStartedEvent    .addReadsUnnamedModule();
+		FXStageShowingEvent   .addReadsUnnamedModule();
 
 		Runnable runBeforeAppLaunch =
 				() ->
 				{
 					log.debug("starting runBeforeAppLaunch");
+					log.debug("add new consumer to stage showing event dispatcher");
+					// get application scoped event dispatcher from CDI and register a consumer
 					FXStageShowingEventDispatcher fxStageShowingEventDispatcher =
-							CDI.current().select(FXStageShowingEventDispatcher.class).get();
+							CDIUtil.select(FXStageShowingEventDispatcher.class);
 					fxStageShowingEventDispatcher.add(new FXStageShowingEventConsumer());
+					log.debug("add new consumer to add component ready event dispatcher");
+					// get application scoped event dispatcher from CDI and register a consumer
 					AddComponentReadyEventDispatcher componentReadyEventDispatcher =
-							CDI.current().select(AddComponentReadyEventDispatcher.class).get();
+							CDIUtil.select(AddComponentReadyEventDispatcher.class);
 					componentReadyEventDispatcher.add(new AddComponentReadyEventConsumer());
 					log.debug(
 							"\n" + "-".repeat(10) +
@@ -76,11 +81,7 @@ import java.util.function.Consumer;
 			log.debug(
 					"\n" + "-".repeat(10) +
 					"received add component ready event");
-			e.data().ifPresent
-			(
-					addService ->
-							addService.button().setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent))
-			);
+			e.service().button().setOnAction(btnClickedEvent -> log.info("add button clicked: {}", btnClickedEvent));
 		}
 	}
 }

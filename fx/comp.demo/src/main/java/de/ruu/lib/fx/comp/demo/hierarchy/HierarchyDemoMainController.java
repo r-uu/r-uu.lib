@@ -1,11 +1,9 @@
 package de.ruu.lib.fx.comp.demo.hierarchy;
 
-import de.ruu.lib.cdi.se.EventDispatcher;
 import de.ruu.lib.fx.FXUtil;
 import de.ruu.lib.fx.comp.FXCAppStartedEvent;
+import de.ruu.lib.fx.comp.FXCAppStartedEvent.FXCAppStartedEventDispatcher;
 import de.ruu.lib.fx.comp.FXCController.DefaultFXCController;
-import de.ruu.lib.fx.comp.demo.empty.Empty;
-import de.ruu.lib.fx.comp.demo.empty.EmptyService;
 import de.ruu.lib.fx.comp.demo.hierarchy.sub1.HierarchyDemoSub1;
 import de.ruu.lib.fx.comp.demo.hierarchy.sub2.HierarchyDemoSub2;
 import jakarta.inject.Inject;
@@ -31,7 +29,7 @@ public class HierarchyDemoMainController extends DefaultFXCController<HierarchyD
 	@FXML private Button btnShow1;
 	@FXML private Button btnShow2;
 
-	@Inject private EventDispatcher<FXCAppStartedEvent> eventDispatcherFXCAppStarted;
+	@Inject private FXCAppStartedEventDispatcher eventDispatcherFXCAppStarted;
 
 	@Inject private HierarchyDemoSub1 sub1;
 	@Inject private HierarchyDemoSub2 sub2;
@@ -41,7 +39,7 @@ public class HierarchyDemoMainController extends DefaultFXCController<HierarchyD
 	{
 		log.debug("eventDispatcherFXCAppStarted == null {}", eventDispatcherFXCAppStarted == null);
 
-		eventDispatcherFXCAppStarted.add(e -> onAppStarted(e));
+		eventDispatcherFXCAppStarted.add(e -> onAppStarted((FXCAppStartedEvent) e));
 
 		FXUtil.setAnchorsInAnchorPaneTo(root, 0);
 		FXUtil.setAnchorsInAnchorPaneTo(main, 0);

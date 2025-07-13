@@ -5,6 +5,6 @@ import lombok.NonNull;
 
 public abstract class CDIUtil
 {
-//	public static <E extends Event> void fire(@NonNull E event) { CDI.current().getBeanManager().getEvent().fire(event); }
-    public static void fire(@NonNull Object event) { CDI.current().getBeanManager().getEvent().fire(event); }
+	public static <T> void fire (@NonNull T event) { CDI.current().getBeanManager().getEvent().fire(event); }
+  public static <T> T select(@NonNull Class<T> type) { return CDI.current().select(type).get(); }
 }
