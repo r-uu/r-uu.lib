@@ -1,11 +1,11 @@
 package de.ruu.lib.gen.java.element.type;
 
-import static de.ruu.lib.util.StringBuilders.sb;
-
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.Generator;
 import de.ruu.lib.gen.java.context.CompilationUnitContext;
 import lombok.NonNull;
+
+import static de.ruu.lib.util.StringBuilders.sb;
 
 /**
  * {@link GeneratorClassExtends} for interface extends clause like <pre>extends Generator, Serializable</pre>
@@ -13,7 +13,7 @@ import lombok.NonNull;
 public interface GeneratorClassExtends extends Generator
 {
 	@Override GeneratorClassExtends childNodesSeparator(@NonNull String separator);
-        
+
 	GeneratorClassExtends extendsClause(@NonNull Class<?> classType);
 	GeneratorClassExtends extendsClause(@NonNull String   classType);
 
@@ -41,7 +41,7 @@ public interface GeneratorClassExtends extends Generator
 			return this;
 		}
 
-		@Override public GeneratorClassExtends extendsClause(@NonNull String   classType) throws UnsupportedOperationException
+		@Override public GeneratorClassExtends extendsClause(@NonNull String classType) throws UnsupportedOperationException
 		{
 			this.extension = classType;
 			return this;
@@ -59,7 +59,7 @@ public interface GeneratorClassExtends extends Generator
 		protected GeneratorClassExtendsSimple(@NonNull CompilationUnitContext context) { super(context); }
 	}
 
-	static GeneratorClassExtends create(   @NonNull CompilationUnitContext context)
+	static GeneratorClassExtends create(@NonNull CompilationUnitContext context)
 			{ return new GeneratorClassExtendsSimple(context); }
 	static GeneratorClassExtends extendsClause(@NonNull CompilationUnitContext context)
 			{ return create(context); }

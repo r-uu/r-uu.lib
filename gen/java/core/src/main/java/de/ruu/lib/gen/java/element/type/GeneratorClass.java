@@ -1,10 +1,5 @@
 package de.ruu.lib.gen.java.element.type;
 
-import static de.ruu.lib.util.Constants.LS;
-import static javax.lang.model.element.ElementKind.CLASS;
-
-import javax.lang.model.element.ElementKind;
-
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.GeneratorCodeBlock;
 import de.ruu.lib.gen.java.context.CompilationUnitContext;
@@ -12,6 +7,12 @@ import de.ruu.lib.gen.java.doc.GeneratorJavaDoc;
 import de.ruu.lib.gen.java.element.GeneratorAnnotations;
 import de.ruu.lib.gen.java.element.GeneratorModifiers;
 import lombok.NonNull;
+
+import javax.lang.model.element.ElementKind;
+
+import static de.ruu.lib.util.BooleanFunctions.not;
+import static de.ruu.lib.util.Constants.LS;
+import static javax.lang.model.element.ElementKind.CLASS;
 
 public interface GeneratorClass extends GeneratorType
 {
@@ -90,7 +91,7 @@ public interface GeneratorClass extends GeneratorType
 		{
 			StringBuilder importStatements = context().importManager().generateImportStatements();
 			
-			if (importStatements.isEmpty() == false) importStatements.append(LS + LS);
+			if (not(importStatements.isEmpty())) importStatements.append(LS).append(LS);
 
 			return
 					packageStatement.generate()

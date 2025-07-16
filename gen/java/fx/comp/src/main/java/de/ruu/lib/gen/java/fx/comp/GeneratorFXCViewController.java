@@ -1,6 +1,6 @@
 package de.ruu.lib.gen.java.fx.comp;
 
-import de.ruu.lib.fx.comp.FXCController;
+import de.ruu.lib.fx.comp.FXCController.DefaultFXCController;
 import de.ruu.lib.gen.GeneratorException;
 import de.ruu.lib.gen.java.CompilationUnitFileWriter;
 import de.ruu.lib.gen.java.context.CompilationUnitContext;
@@ -21,17 +21,21 @@ import static de.ruu.lib.gen.java.element.GeneratorModifiersMethod.methodModifie
 import static de.ruu.lib.gen.java.element.method.GeneratorMethod.method;
 import static de.ruu.lib.gen.java.element.type.GeneratorClass.classType;
 import static de.ruu.lib.gen.java.element.type.GeneratorClassExtends.extendsClause;
+import static de.ruu.lib.gen.java.element.type.GeneratorClassImplements.implementsClause;
 import static de.ruu.lib.util.Constants.LS;
 
 public class GeneratorFXCViewController
 {
-	private String packageName;
-	private String simpleFileName;
+	private final String packageName;
+	private final String simpleFileName;
+	private final String viewName;
 
 	public GeneratorFXCViewController(String packageName, String simpleFileName)
 	{
 		this.packageName    = packageName;
 		this.simpleFileName = simpleFileName;
+
+		viewName = simpleFileName.substring(0, simpleFileName.indexOf("Controller"));
 	}
 
 	public void run() throws GeneratorException, IOException
@@ -50,7 +54,19 @@ public class GeneratorFXCViewController
 				.extendsClause
 				(
 						extendsClause(context)
-								.extendsClause(FXCController.DefaultFXCController.class)
+								.extendsClause
+								(
+										context.importManager().useType(DefaultFXCController.class)
+												+ "<"
+												+	  context.importManager().useType(viewName            ) + ", "
+												+	  context.importManager().useType(viewName + "Service")
+												+ ">"
+//								        + " implements " + viewName + "Service"
+								)
+				)
+				.implementsClause
+				(
+						implementsClause(context).add(viewName + "Service")
 				)
 				.childNodesSeparator(LS)
 				.codeBlock

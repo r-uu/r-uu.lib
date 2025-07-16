@@ -12,12 +12,12 @@
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../icons/add.png" />
+                  <Image url="@../../../../../../../../../icons/edit.png" />
                </image>
             </ImageView>
          </graphic>
          <tooltip>
-            <Tooltip text="add" />
+            <Tooltip text="edit" />
          </tooltip>
       </Button>
    </children>

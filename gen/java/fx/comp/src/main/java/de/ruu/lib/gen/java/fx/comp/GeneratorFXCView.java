@@ -16,6 +16,7 @@ import static de.ruu.lib.gen.java.doc.GeneratorJavaDoc.javaDoc;
 import static de.ruu.lib.gen.java.element.GeneratorModifiers.modifiers;
 import static de.ruu.lib.gen.java.element.type.GeneratorClass.classType;
 import static de.ruu.lib.gen.java.element.type.GeneratorClassExtends.extendsClause;
+import static de.ruu.lib.gen.java.element.type.GeneratorClassImplements.implementsClause;
 import static de.ruu.lib.util.Constants.LS;
 
 public class GeneratorFXCView
@@ -46,7 +47,19 @@ public class GeneratorFXCView
 				.extendsClause
 				(
 						extendsClause(context)
-								.extendsClause(DefaultFXCView.class)
+								.extendsClause
+								(
+										context.importManager().useType(DefaultFXCView.class) // TODO provide a proper generator for generic parameters
+										+ "<"
+										+	  context.importManager().useType(simpleFileName               ) + ", "
+										+	  context.importManager().useType(simpleFileName + "Service"   ) + ", "
+										+	  context.importManager().useType(simpleFileName + "Controller")
+										+ ">"
+								)
+				)
+				.implementsClause
+				(
+						implementsClause(context).add(simpleFileName + "Service")
 				)
 				.codeBlock
 				(

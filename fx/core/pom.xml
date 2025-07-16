@@ -57,6 +57,11 @@
 			<groupId>r-uu</groupId>
 			<artifactId>r-uu.lib-fx-comp</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>r-uu</groupId>
+            <artifactId>r-uu.lib-gen-java-fx-comp</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 </project>

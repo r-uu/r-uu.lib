@@ -22,9 +22,8 @@ import java.util.function.Consumer;
 {
 	public static void main(String[] args)
 	{
-		log.debug("starting AddAppRunner.class.getName()");
+		log.debug("starting {}", AddAppRunner.class.getName());
 
-		// register the AddServiceReadyEvent and FXCAppStartedEvent to read from the unnamed module
 		AddComponentReadyEvent.addReadsUnnamedModule();
 		FXCAppStartedEvent    .addReadsUnnamedModule();
 		FXStageShowingEvent   .addReadsUnnamedModule();
@@ -48,9 +47,10 @@ import java.util.function.Consumer;
 							"registered add component ready consumer");
 					log.debug("finished runBeforeAppLaunch");
 				};
+
 		FXCAppRunner.run(AddApp.class, args, runBeforeAppLaunch);
 
-		log.debug("finished AddAppRunner.class.getName()");
+		log.debug("finished {}", AddAppRunner.class.getName());
 	}
 
 	private static class FXStageShowingEventConsumer implements Consumer<FXStageShowingEvent>
