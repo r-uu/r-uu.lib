@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -107,7 +106,7 @@ public class AutoCompleteTextField<T> extends HBox
 
 	public T selectedItem() { return listView.getSelectionModel().getSelectedItem(); }
 
-	public TextField textField() { return textField; }
+//	public TextField textField() { return textField; }
 
 	//	private void onValueChanged(final T newValue) { textField().setText(converter.toString(newValue)); }
 	private void onValueChanged(final T newValue) { clearableTextField.textField().setText(textProvider.apply(newValue)); }
