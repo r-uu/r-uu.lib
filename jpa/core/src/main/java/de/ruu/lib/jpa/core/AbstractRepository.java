@@ -115,11 +115,11 @@ public abstract class AbstractRepository<T extends Entity<I>, I extends Serializ
 
 	@Override public boolean isDetached(final T object)
 	{
-		if (object.optionalId().isPresent())                // must not be transient
+		if (object.optionalId().isPresent())             // must not be transient
 		{
 			if (entityManager().contains(object) == false) // must not be managed now
 			{
-				if (find(object.getId()) != null)               // must not be removed
+				if (find(object.getId()) != null)            // must not be removed
 				{
 					return true;
 				}
@@ -128,25 +128,54 @@ public abstract class AbstractRepository<T extends Entity<I>, I extends Serializ
 		return false;
 	}
 
-	@Override public T save(final T object)
+	/**
+	 * Saves the given object to the database. If the object has an ID, it will be merged; otherwise, it will be persisted.
+	 *
+	 * @param object
+	 * @return the saved object, which may be a different instance than the one passed in
+	 * @throws IllegalArgumentException if the object is null or does not have a valid ID
+	 * @throws IllegalStateException if the entity manager is not open or the transaction is not active
+	 * @see EntityManager#persist(Object)
+	 * @see EntityManager#merge(Object)
+	 */
+	@Override public @NonNull T save(@NonNull T object)
 	{
-		T result;
 		EntityManager entityManager = entityManager();
 
 		if (object.getId() != null)
 		{
-			result = entityManager.merge(object);
+			object = entityManager.merge(object);
 		}
 		else
 		{
 			entityManager.persist(object);
-			result = object;
 		}
 
-		entityManager.flush(); // execute flush to update version to the correct value
+		// no entityManager.flush() here, because it is not necessary
+		// and it may cause problems with optimistic locking in some cases
 
-		return result;
+		return object;
 	}
+
+//	@Override public T save(final T object)
+//	{
+//		T result;
+//		EntityManager entityManager = entityManager();
+//
+//		if (object.getId() != null)
+//		{
+//			result = entityManager.merge(object);
+//		}
+//		else
+//		{
+//			entityManager.persist(object);
+//			result = object;
+//		}
+//
+//		entityManager.flush(); // execute flush to update version to the correct value
+//
+//		return result;
+//	}
 
 	//	@SafeVarargs
 	@Override public void save(final T... entities)

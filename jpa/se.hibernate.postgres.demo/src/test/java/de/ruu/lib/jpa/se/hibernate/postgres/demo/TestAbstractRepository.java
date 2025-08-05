@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 						String name = "schmottekk";
 						SimpleTypeEntity entity = new SimpleTypeEntity(name);
 						entity = repository.save(entity);
+						repository.entityManager().flush();
 				});
 	}
 
