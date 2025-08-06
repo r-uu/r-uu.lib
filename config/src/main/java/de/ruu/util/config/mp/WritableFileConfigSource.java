@@ -1,5 +1,6 @@
 package de.ruu.util.config.mp;
 
+import lombok.NonNull;
 import org.eclipse.microprofile.config.spi.ConfigSource;
 
 import java.io.IOException;
@@ -10,22 +11,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class WritableFileConfigSource implements ConfigSource
 {
-	private final Path       configPath = Paths.get("config/runtime.properties");
 	private final Properties properties = new Properties();
+	private       Path       configPath;
 
-	public WritableFileConfigSource()
+	public WritableFileConfigSource() { this(Paths.get("config/runtime.properties")); }
+
+	public WritableFileConfigSource(@NonNull Path path)
 	{
-		try (InputStream in = Files.newInputStream(configPath))
-		{
-			properties.load(in);
-		} catch (IOException e)
-		{
-			// file not found or cannot be read, will be created on first write
-		}
+		this.configPath = path;
+		try (InputStream in = Files.newInputStream(configPath)) { properties.load(in); }
+		catch (IOException e) { } // file not found or cannot be read, will be created on first write
 	}
 
 	@Override public Map<String, String> getProperties()
@@ -43,6 +43,8 @@ public class WritableFileConfigSource implements ConfigSource
 								)
 						);
 	}
+
+	@Override public Set<String> getPropertyNames() { return properties.stringPropertyNames(); }
 
 	@Override public String getValue(String key) { return properties.getProperty(key); }
 

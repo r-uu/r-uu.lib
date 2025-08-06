@@ -2,6 +2,8 @@ package de.ruu.lib.cdi.common;
 
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.AfterDeploymentValidation;
+import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
@@ -18,6 +20,13 @@ public class CDIExtension implements Extension
 	<T> void processAnnotatedType(@Observes ProcessAnnotatedType<T> pat)
 	{
 		log.debug("scanning type: " + pat.getAnnotatedType().getJavaClass().getName());
+	}
+
+	void afterDeploymentValidation(@Observes AfterDeploymentValidation adv, BeanManager bm)
+	{
+		StringBuilder sb = new StringBuilder("finished the deployment validation process, managed beans:\n");
+		bm.getBeans(Object.class).forEach(bean -> sb.append(bean.getBeanClass().getName()).append("\n"));
+		log.debug(sb.toString());
 	}
 
 	void afterBeanDiscovery(@Observes AfterBeanDiscovery abd)
