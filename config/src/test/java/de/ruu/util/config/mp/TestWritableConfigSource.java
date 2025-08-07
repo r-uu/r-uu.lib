@@ -72,28 +72,30 @@ class TestWritableConfigSource
 		configSource.setValue("app.timeout", "60");
 
 		InputStream beansXml = getClass().getClassLoader().getResourceAsStream("META-INF/beans.xml");
-		System.out.println("beans.xml found: " + (beansXml != null));
+		log.debug("_beans.xml found: " + (beansXml != null));
 
 		try
 		{
 			SeContainer seContainer =
 					SeContainerInitializer
 							.newInstance()
-							.disableDiscovery()
+//							.disableDiscovery() // disable automatic discovery of beans
+							                    // weld would otherwise fail with
+							                    // "Invalid bean archive scanning result - found multiple results with
+							                    //  the same reference:
+							                    //  C:\Users\r-uu\develop\github\r-uu.lib\config\target\test-classes"
 							.addExtensions(CDIExtension.class)
-							.addBeanClasses(Configurable.class, WritableFileConfigSource.class)
+							.addBeanClasses(Configurable.class, WritableFileConfigSource.class)             // with discovery disabled, we need to add
+//							.addBeanClasses(WritableFileConfigSource.class) // the bean class explicitly
 							.initialize();
 
-//		CDIContainer.bootstrap(WritableFileConfigSource.class.getClassLoader());
-//			CDIContainer.bootstrap(
-//					Configurable.class.getClassLoader(),
-//					Collections.emptyList(),
-//					List.of(CDIExtension.class),
-//					List.of(Configurable.class));
 		}
 		catch (Exception e)
 		{
-			log.error("failure initialising seContainer", e);
+			log.error(
+					"failure initialising seContainer\n" +
+					"_MAKE SURE TO NOT HAVE A beans.xml IN src/test/resources/META-INF\n" +
+					" WITH MANUAL CONFIGURATION OF SeContainerInitializer", e);
 		}
 
 //		System.setProperty("log4j.debug", "true");

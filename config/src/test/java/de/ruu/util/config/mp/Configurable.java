@@ -4,8 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
- * it is essential to have META-INF/beans.xml in src/test/resource if this class is in src/test/java and not to have
- * another beans.xml in src/main/resource, otherwise the test will fail with
+ * it is essential to have META-INF/_beans.xml in src/test/resource if this class is in src/test/java and not to have
+ * another _beans.xml in src/main/resource, otherwise the test will fail with
  * <pre>
  * Caused by: java.lang.IllegalStateException: WELD-ENV-000033: Invalid bean archive scanning result - found multiple results with the same reference
  * </pre>
