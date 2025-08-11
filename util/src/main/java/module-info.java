@@ -9,9 +9,9 @@ module de.ruu.lib.util
 	exports de.ruu.lib.util.rs;
 	exports de.ruu.lib.util.rs.filter.logging;
 
-	requires static lombok;
-	requires org.slf4j;
-
 	requires java.compiler;
 	requires jakarta.ws.rs;
+
+	requires static lombok;
+	requires org.slf4j;
 }

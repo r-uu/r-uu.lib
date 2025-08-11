@@ -227,18 +227,15 @@ public abstract class DefaultFXCView<
 		                            // if the runtime does not see the resource because the module does not export and open
 		                            // the repespective package it will evaluate to true
 		{
-			throw new IllegalStateException("no resource exists for " + getClass().getName() + " at location "
-					+ fxmlResourceName() + ", does module " + getClass().getModule().getName()
+			throw new IllegalStateException("no resource with name " + fxmlResourceName + " exists for "
+					+ getClass().getName() + ", does module " + getClass().getModule().getName()
 					+ " export _and_ open package " + getClass().getPackage().getName() + "?"
 					);
 		}
 
-		log.debug(
-				"configured {} to load fxml from {}",
-				FXMLLoader.class.getName(),
-				fxmlLocation.toExternalForm());
+		log.debug("configured {} to load fxml from {}", FXMLLoader.class.getSimpleName(), fxmlLocation.toExternalForm());
 
-		fxmlLoader.setLocation(fxmlLocation());
+		fxmlLoader.setLocation(fxmlLocation);
 
 		final Object controllerFromFXML = fxmlLoader.getController();
 

@@ -32,7 +32,9 @@
         <module>mapstruct-explore</module>
         <module>tree</module>
         <module>util</module>
-        <module>config</module>
+        <module>util-config</module>
+        <module>util-config-demo</module>
+        <module>postgres</module>
     </modules>
 
 </project>

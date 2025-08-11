@@ -1,8 +1,19 @@
 package de.ruu.lib.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.io.UncheckedIOException;
+import java.nio.file.CopyOption;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Comparator;
 import java.util.Optional;
@@ -15,6 +26,7 @@ import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.Objects.isNull;
 import static javax.tools.JavaFileObject.Kind.SOURCE;
 
+@Slf4j
 public final class Files
 {
 	public final static char FILE_SEPARATOR_UNIX    = '/';
@@ -103,13 +115,114 @@ public final class Files
 		}
 	}
 
-	public static boolean deleteFile(Path path) throws IOException
+	public enum DeleteMode
+	{
+		STRICT,   // Fail on first error
+		QUIET,    // Log errors, continue
+		EFFICIENT // Walk file tree, low memory (quiet mode)
+	}
+
+	public static boolean deleteRecursively(Path path, DeleteMode mode) throws IOException
+	{
+		if (!java.nio.file.Files.exists(path)) return false; // Nothing to delete
+
+		switch (mode)
+		{
+			case EFFICIENT: return deleteEfficient(path); // Quiet mode only
+			case STRICT   : return deleteStrict(path);
+			case QUIET    : return deleteQuiet(path);
+			default       : throw new IllegalArgumentException("Unsupported mode: " + mode);
+		}
+	}
+
+	// 1. Strict mode: fail immediately if something cannot be deleted
+	private static boolean deleteStrict(Path path) throws IOException
 	{
 		try (Stream<Path> walk = java.nio.file.Files.walk(path))
 		{
-			walk.sorted(Comparator.reverseOrder()).map(Path::toFile).peek(System.out::println).forEach(File::delete);
+			walk
+					.sorted(Comparator.reverseOrder())
+					.forEach
+					(
+							p ->
+							{
+								try
+								{
+									java.nio.file.Files.delete(p);
+									log.debug("deleted: {}", p);
+								}
+								catch (IOException e) { throw new UncheckedIOException("failed to delete: " + p, e); }
+							}
+					);
 		}
-		return java.nio.file.Files.deleteIfExists(path);
+
+		return true;
+	}
+
+	// 2. Quiet mode: log failures but continue
+	private static boolean deleteQuiet(Path path) throws IOException
+	{
+		try (Stream<Path> walk = java.nio.file.Files.walk(path))
+		{
+			walk
+					.sorted(Comparator.reverseOrder())
+					.forEach
+					(
+							p ->
+							{
+								try
+								{
+									java.nio.file.Files.delete(p);
+									log.debug("deleted: " + p);
+								}
+								catch (IOException e) { log.error("failed to delete: " + p + " (" + e.getMessage() + ")"); }
+							}
+					);
+		}
+
+		return true;
+	}
+
+	// 3. Efficient mode: low-memory, quiet deletion using FileVisitor
+	private static boolean deleteEfficient(Path path)
+	{
+		try
+		{
+			java.nio.file.Files.walkFileTree
+			(
+					path, new SimpleFileVisitor<Path>()
+					{
+						@Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+						{
+							try
+							{
+								java.nio.file.Files.delete(file);
+								log.debug("deleted: {}", file);
+							}
+							catch (IOException e) { log.error("failed to delete file: " + file + " (" + e.getMessage() + ")"); }
+							return FileVisitResult.CONTINUE;
+						}
+
+						@Override public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+						{
+							try
+							{
+								java.nio.file.Files.delete(dir);
+								log.debug("deleted: {}", dir);
+							}
+							catch (IOException e) { log.error("failed to delete directory: {}", dir + " (" + e.getMessage() + ")"); }
+							return FileVisitResult.CONTINUE;
+						}
+					}
+			);
+		}
+		catch (IOException e)
+		{
+			log.error("failed to walk file tree: {}", e.getMessage());
+			return false;
+		}
+
+		return true;
 	}
 
 	public static boolean isDirectoryEmpty(Path path) throws IOException
