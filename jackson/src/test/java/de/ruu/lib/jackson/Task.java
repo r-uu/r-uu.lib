@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static java.util.Objects.isNull;
+
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="jsonId", scope = Task.class)
 @Getter
 @Accessors(fluent = true)
@@ -76,7 +78,7 @@ public class Task
 
 	public boolean addSubTask(@NonNull Task task)
 	{
-		if (subTasks == null) subTasks = new HashSet<>();
+		if (isNull(subTasks)) subTasks = new HashSet<>();
 		task.superTask = this;
 		return subTasks.add(task);
 	}

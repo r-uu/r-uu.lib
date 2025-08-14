@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static de.ruu.lib.util.BooleanFunctions.not;
+import static java.util.Objects.isNull;
 
 /**
  * Writable MicroProfile ConfigSource backed by a file.
@@ -56,7 +57,7 @@ public class WritableFileConfigSource implements ConfigSource
 
 		String configFileName = System.getProperty(CONFIG_FILE_NAME_KEY);
 
-		if (configFileName == null || configFileName.isBlank())
+		if (isNull(configFileName) || configFileName.isBlank())
 		{
 			// try to retrieve config file name from bootstrap properties
 			String     bootstrapFileName   = "META-INF/microprofile-config.properties";
@@ -109,7 +110,7 @@ public class WritableFileConfigSource implements ConfigSource
 	/** saves the current {@link #properties} to the backing file {@link #configFile} */
 	public void save() throws UncheckedIOException
 	{
-		if (configFile == null)
+		if (isNull(configFile))
 				throw new IllegalStateException("config file path is not set yet, access a property first to initialize.");
 
 		try (OutputStream os = new FileOutputStream(configFile))

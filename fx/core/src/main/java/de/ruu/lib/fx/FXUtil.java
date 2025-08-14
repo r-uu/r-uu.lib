@@ -49,7 +49,7 @@ public abstract class FXUtil
 	{
 		final Scene scene = node.getScene();
 
-		if (scene == null) return Optional.empty();
+		if (isNull(scene)) return Optional.empty();
 
 		final Window window = scene.getWindow();
 
@@ -172,21 +172,20 @@ public abstract class FXUtil
 	}
 
 	/**
-	 * Aktualisiert nur den BorderStrokeStyle einer Region,
-	 * alle anderen Border-Eigenschaften bleiben erhalten.
+	 * Update the border stroke style of a JavaFX Region,alle other properties of the border remain unchanged.
 	 *
-	 * @param region Die JavaFX-Region (z. B. Pane, StackPane, VBox, ...)
-	 * @param newStyle Der gewünschte neue BorderStrokeStyle (z. B. DASHED, DOTTED, etc.)
+	 * @param region the JavaFX {@link Region} (e.g., {@link Pane}, {@link StackPane}, {@link javafx.scene.layout.VBox}, etc.)
+	 * @param newStyle the new {@link BorderStrokeStyle} to set
 	 */
 	public static void updateBorderStrokeStyle(Region region, BorderStrokeStyle newStyle)
 	{
 		Border currentBorder = region.getBorder();
 
-		if (currentBorder == null || currentBorder.getStrokes().isEmpty()) { return; }  // Nichts zu ändern
+		if (isNull(currentBorder) || currentBorder.getStrokes().isEmpty()) { return; }  // Nichts zu ändern
 
 		BorderStroke oldStroke = currentBorder.getStrokes().get(0);
 
-		// Neuer Stroke mit gleichem Setup, aber geändertem Stil
+		// new Stroke with the same setup, but changed BorderStrokeStyle
 		BorderStroke newStroke =
 				new BorderStroke(
 						oldStroke.getTopStroke(),
@@ -199,18 +198,18 @@ public abstract class FXUtil
 	}
 
 	/**
-	 * Aktualisiert nur den BorderStrokeWidth einer Region, alle anderen Border-Eigenschaften bleiben erhalten.
+	 * Update the border width of a JavaFX Region
 	 *
-	 * @param region Die JavaFX-Region (z. B. Pane, StackPane, VBox, ...)
-	 * @param newBorderWidth Der gewünschte neue BorderWidths (z. B. new BorderWidths(2))
+	 * @param region the JavaFX {@link Region} (e.g., {@link Pane}, {@link StackPane}, {@link javafx.scene.layout.VBox}, etc.)
+	 * @param newBorderWidth the new border width to set
 	 */
 	public static void updateBorderWidth(Region region, double newBorderWidth)
 	{
 		Border currentBorder = region.getBorder();
 
-		if (currentBorder == null || currentBorder.getStrokes().isEmpty()) { return; }  // Nichts zu ändern
+		if (isNull(currentBorder) || currentBorder.getStrokes().isEmpty()) { return; }  // nothing to change
 
-		BorderStroke      oldBorderStroke      = currentBorder.getStrokes().get(0);
+		BorderStroke      oldBorderStroke      = currentBorder.getStrokes().getFirst();
 		BorderStrokeStyle oldBorderStrokeStyle =
 				oldBorderStroke.isStrokeUniform() ? oldBorderStroke.getTopStyle() : BorderStrokeStyle.SOLID;
 

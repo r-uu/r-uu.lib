@@ -10,6 +10,8 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 /** persistence unit info with eclipselink as persistence provider */
 @Slf4j
 public class PersistenceUnitInfo extends AbstractPersistenceUnitInfo
@@ -37,7 +39,7 @@ public class PersistenceUnitInfo extends AbstractPersistenceUnitInfo
 
 		CodeSource codeSource = getClass().getProtectionDomain().getCodeSource();
 
-		if (codeSource == null)
+		if (isNull(codeSource))
 		{
 			// TODO: make this a config-property
 			String spec = "file://";

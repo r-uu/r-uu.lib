@@ -8,6 +8,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ObjectFactory;
 import org.mapstruct.factory.Mappers;
 
+import static java.util.Objects.isNull;
+
 @Slf4j
 @org.mapstruct.Mapper
 abstract class Mapper
@@ -36,7 +38,7 @@ abstract class Mapper
 	@ObjectFactory @NonNull SimpleMappedEntity lookupOrCreate(@NonNull SimpleMappedDTO input)
 	{
 		SimpleMappedEntity result = CONTEXT.get(input, SimpleMappedEntity.class);
-		if (result == null)
+		if (isNull(result))
 		{
 			result = new SimpleMappedEntity(input.name());
 			CONTEXT.put(input, result);
@@ -48,7 +50,7 @@ abstract class Mapper
 	@ObjectFactory @NonNull SimpleMappedDTO lookupOrCreate(@NonNull SimpleMappedEntity input)
 	{
 		SimpleMappedDTO result = CONTEXT.get(input, SimpleMappedDTO.class);
-		if (result == null)
+		if (isNull(result))
 		{
 			result = new SimpleMappedDTO(input.name());
 			CONTEXT.put(input, result);

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -42,7 +43,7 @@ class TestSimpleTypeService
 		{
 			log.error("failure initialising seContainer", e);
 		}
-		log.debug("cdi container initialisation successful: {}", BooleanFunctions.not(seContainer == null));
+		log.debug("cdi container initialisation successful: {}", BooleanFunctions.not(isNull(seContainer)));
 	}
 
 	@AfterAll static void afterAll()
