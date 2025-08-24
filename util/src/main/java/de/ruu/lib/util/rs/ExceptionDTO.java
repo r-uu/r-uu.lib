@@ -11,4 +11,6 @@ public class ExceptionDTO
 {
 	private String message;
 	private String cause;
+
+	public ExceptionDTO(String message) { this.message = message; }
 }
