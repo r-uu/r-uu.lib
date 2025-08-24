@@ -14,4 +14,6 @@ module de.ruu.lib.util
 
 	requires static lombok;
 	requires org.slf4j;
+
+	opens de.ruu.lib.util.rs;
 }
